@@ -37,6 +37,10 @@ exports.onNewEvent = onDocumentCreated("events/{eventId}", async (event) => {
   const data = snap.data() || {};
   const launcherId = data.launcherId || "";
 
+  // AMICIZIA: nessuna notifica broadcast. L'evento si scopre dal radar;
+  // il lanciatore verra' avvisato solo quando qualcuno tocca il caffe' e conferma di andare (onNewResponse).
+  if ((data.mode || "") === "AMICIZIA") return;
+
   const mins = Number(data.minutes) || 15;
   const createdAt = Number(data.createdAt) || Date.now();
   const expiresAt = createdAt + mins * 60000;

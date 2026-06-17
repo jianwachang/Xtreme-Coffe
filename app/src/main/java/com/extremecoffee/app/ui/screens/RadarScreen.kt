@@ -39,10 +39,13 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.rememberMarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.flow.first
 import java.util.Locale
@@ -59,6 +62,7 @@ fun RadarScreen(nav: NavController) {
     val events by CoffeeRepository.openFriendshipEvents().collectAsState(initial = emptyList())
 
     var radiusKm by remember { mutableStateOf(5f) }
+    var view by remember { mutableStateOf("locale") }
     var myLat by remember { mutableStateOf<Double?>(null) }
     var myLng by remember { mutableStateOf<Double?>(null) }
 
@@ -76,6 +80,9 @@ fun RadarScreen(nav: NavController) {
 
     val camera = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(centerLat, centerLng), zoomForRadius(radiusKm))
+    }
+    val cameraNaz = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(LatLng(42.5, 12.5), 5f)  // Italia
     }
     LaunchedEffect(centerLat, centerLng, radiusKm) {
         runCatching {
@@ -99,8 +106,20 @@ fun RadarScreen(nav: NavController) {
             Spacer(Modifier.height(4.dp))
             Text("\uD83D\uDCE1 RADAR AMICIZIE", style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Black, color = Color(0xFF00E5FF))
-            Text("${events.size} caff\u00e8 aperti entro ${fmtKm(radiusKm)} km", color = Color(0xFF7BD8E8))
+            Text(
+                if (view == "locale") "${events.size} caff\u00e8 aperti entro ${fmtKm(radiusKm)} km"
+                else "${events.size} caff\u00e8 aperti in Italia",
+                color = Color(0xFF7BD8E8)
+            )
+            Spacer(Modifier.height(10.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                FilterChip(selected = view == "locale", onClick = { view = "locale" },
+                    label = { Text("Locale") })
+                FilterChip(selected = view == "nazionale", onClick = { view = "nazionale" },
+                    label = { Text("Nazionale") })
+            }
             Spacer(Modifier.height(12.dp))
+            if (view == "locale") {
 
             // Mappa Google circolare con il radar che scandaglia sopra
             BoxWithConstraints(
@@ -198,6 +217,30 @@ fun RadarScreen(nav: NavController) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text("0,1 km", color = Color(0xFF7BD8E8), style = MaterialTheme.typography.bodySmall)
                 Text("20 km", color = Color(0xFF7BD8E8), style = MaterialTheme.typography.bodySmall)
+            }
+            } else {
+                // ---- VISTA NAZIONALE: mappa dell'Italia con tutti gli Extreme Coffee in amicizia ----
+                Box(Modifier.fillMaxWidth().height(460.dp).clip(MaterialTheme.shapes.large)) {
+                    GoogleMap(
+                        modifier = Modifier.matchParentSize(),
+                        cameraPositionState = cameraNaz,
+                        properties = MapProperties(isMyLocationEnabled = perm.status.isGranted),
+                        uiSettings = MapUiSettings(zoomControlsEnabled = true, mapToolbarEnabled = false)
+                    ) {
+                        events.forEach { e ->
+                            Marker(
+                                state = rememberMarkerState(key = e.id, position = LatLng(e.barLat, e.barLng)),
+                                title = e.launcherName,
+                                snippet = "${e.barName} \u00b7 ${e.minutes} min",
+                                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE),
+                                onClick = { nav.goFresh("invite/${e.id}"); true }
+                            )
+                        }
+                    }
+                }
+                Spacer(Modifier.height(8.dp))
+                Text("Tocca un caff\u00e8 sulla mappa per andarci.",
+                    color = Color(0xFF7BD8E8), style = MaterialTheme.typography.bodySmall)
             }
 
             if (events.isEmpty()) {
