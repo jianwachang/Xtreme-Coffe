@@ -1,0 +1,15 @@
+# Build / IDE
+*.iml
+.gradle/
+build/
+/build/
+app/build/
+captures/
+.cxx/
+.idea/
+local.properties
+*.apk
+*.aab
+
+# NB: gradle.properties e app/google-services.json restano nel repo apposta,
+# perche' servono alla build automatica (GitHub Actions) a compilare senza configurazioni extra.

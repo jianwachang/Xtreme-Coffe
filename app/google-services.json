@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "116301472653",
+    "project_id": "extreme-coffe",
+    "storage_bucket": "extreme-coffe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116301472653:android:e8aa2b9550069679ea93c4",
+        "android_client_info": {
+          "package_name": "com.extremecoffee.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZT5omdSkuiBoR35vlnpr69LFfeIQFKa8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

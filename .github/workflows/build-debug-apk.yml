@@ -1,0 +1,87 @@
+name: Build debug APK
+
+# L'AGENTE: compila l'APK debug e lo pubblica nella release "latest" del repo,
+# così il link dentro l'app (.../releases/latest/download/app-debug.apk) punta sempre
+# all'ultima versione. Parte ad ogni "push" su main/master, oppure a mano dal tab Actions.
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write   # serve per creare/aggiornare la release con l'APK
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1) Scarica il codice
+        uses: actions/checkout@v4
+
+      - name: 2) Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: 3) Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: 4) Componenti SDK (platform 35 + build-tools)
+        run: |
+          yes | sdkmanager --licenses >/dev/null 2>&1 || true
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0" >/dev/null
+
+      - name: 5) Chiave Maps (solo se impostata come secret MAPS_API_KEY)
+        env:
+          MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+        run: |
+          if [ -n "$MAPS_API_KEY" ]; then
+            if grep -q '^MAPS_API_KEY=' gradle.properties; then
+              sed -i "s|^MAPS_API_KEY=.*|MAPS_API_KEY=${MAPS_API_KEY}|" gradle.properties
+            else
+              echo "MAPS_API_KEY=${MAPS_API_KEY}" >> gradle.properties
+            fi
+            echo "Chiave Maps presa dal secret."
+          else
+            echo "Nessun secret: uso la chiave gia' presente in gradle.properties."
+          fi
+
+      - name: 6) Compila l'APK debug
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug --stacktrace
+
+      - name: 7) Mostra dove e' l'APK
+        run: ls -la app/build/outputs/apk/debug/
+
+      - name: 8) Salva l'APK come artifact (scaricabile dalla run)
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+
+      - name: 9) Pubblica l'APK nella release (diventa la "latest")
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Extreme Coffee - APK debug (build ${{ github.run_number }})
+          files: app/build/outputs/apk/debug/app-debug.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 10) Pubblica l'APK sul branch 'apk' (scaricabile via raw URL)
+        run: |
+          mkdir -p /tmp/apkout
+          cp app/build/outputs/apk/debug/app-debug.apk /tmp/apkout/app-debug.apk
+          cd /tmp/apkout
+          git init -q
+          git checkout -b apk
+          git config user.email "actions@github.com"
+          git config user.name "extreme-coffee-bot"
+          git add app-debug.apk
+          git commit -q -m "APK debug build ${{ github.run_number }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" apk
+          echo "APK disponibile su: https://raw.githubusercontent.com/${{ github.repository }}/apk/app-debug.apk"
