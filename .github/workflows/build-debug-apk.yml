@@ -51,8 +51,23 @@ jobs:
 
       - name: 6) Compila l'APK debug
         run: |
+          set -o pipefail
           chmod +x ./gradlew
-          ./gradlew assembleDebug --stacktrace
+          ./gradlew assembleDebug --stacktrace 2>&1 | tee /tmp/build.log
+
+      - name: 6b) Se fallisce, salva il log su branch buildlog
+        if: failure()
+        run: |
+          mkdir -p /tmp/lg
+          cp /tmp/build.log /tmp/lg/build.log 2>/dev/null || echo "nessun log" > /tmp/lg/build.log
+          cd /tmp/lg
+          git init -q
+          git checkout -b buildlog
+          git config user.email "bot@extremecoffee.app"
+          git config user.name "log-bot"
+          git add build.log
+          git commit -q -m "build log ${{ github.run_number }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" buildlog
 
       - name: 7) Mostra dove e' l'APK
         run: ls -la app/build/outputs/apk/debug/
