@@ -61,6 +61,8 @@ dependencies {
     implementation("androidx.camera:camera-camera2:1.3.4")
     implementation("androidx.camera:camera-lifecycle:1.3.4")
     implementation("androidx.camera:camera-view:1.3.4")
+    // Fornisce com.google.common.util.concurrent.ListenableFuture usata da CameraX
+    implementation("com.google.guava:guava:33.3.1-android")
 }
 
 // Il plugin si applica solo se esiste il file di config (così compila anche col segnaposto)
