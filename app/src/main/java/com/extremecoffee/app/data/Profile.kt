@@ -54,4 +54,12 @@ object Profile {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             .edit().putBoolean("registered", value).apply()
     }
+
+    fun photoPath(context: Context): String? =
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString("photoPath", null)
+
+    fun setPhotoPath(context: Context, path: String?) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putString("photoPath", path).apply()
+    }
 }

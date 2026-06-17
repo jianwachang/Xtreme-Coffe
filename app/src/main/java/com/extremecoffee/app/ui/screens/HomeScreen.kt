@@ -2,7 +2,11 @@
 
 package com.extremecoffee.app.ui.screens
 
+import android.graphics.BitmapFactory
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
@@ -13,6 +17,9 @@ import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -34,6 +41,7 @@ fun HomeScreen(nav: NavController) {
     val myId = remember { Profile.id(context) }
     val phone = remember { Profile.phone(context) }
     val normPhone = Phones.normalizeIt(phone)
+    val photoPath = remember { Profile.photoPath(context) }
     val incoming by CoffeeRepository.incomingInvites(myId).collectAsState(initial = emptyList())
     val myActive by CoffeeRepository.myActiveEvent(myId).collectAsState(initial = null)
     val scope = rememberCoroutineScope()
@@ -67,8 +75,18 @@ fun HomeScreen(nav: NavController) {
                 Modifier.padding(16.dp),
                 verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
             ) {
-                Icon(Icons.Filled.Person, contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary)
+                val bmp = remember(photoPath) { if (photoPath != null) BitmapFactory.decodeFile(photoPath) else null }
+                if (bmp != null) {
+                    Image(bmp.asImageBitmap(), contentDescription = "Foto profilo",
+                        modifier = Modifier.size(48.dp).clip(CircleShape), contentScale = ContentScale.Crop)
+                } else {
+                    Box(Modifier.size(48.dp).clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.surface),
+                        contentAlignment = androidx.compose.ui.Alignment.Center) {
+                        Icon(Icons.Filled.Person, contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary)
+                    }
+                }
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
                     Text(name, fontWeight = FontWeight.Bold,

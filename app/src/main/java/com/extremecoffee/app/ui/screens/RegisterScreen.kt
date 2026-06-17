@@ -2,7 +2,16 @@
 
 package com.extremecoffee.app.ui.screens
 
+import android.graphics.BitmapFactory
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -11,7 +20,11 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -23,6 +36,7 @@ import com.extremecoffee.app.data.Phones
 import com.extremecoffee.app.data.Profile
 import com.extremecoffee.app.data.RegisterResult
 import com.extremecoffee.app.ui.goFresh
+import java.io.File
 import kotlinx.coroutines.launch
 
 @Composable
@@ -36,13 +50,49 @@ fun RegisterScreen(nav: NavController) {
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
     val normPhone = Phones.normalizeIt(phone)
+    var photoPath by remember { mutableStateOf(Profile.photoPath(context)) }
+    val pickImage = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+        if (uri != null) {
+            val saved = saveProfilePhoto(context, uri)
+            if (saved != null) { photoPath = saved; Profile.setPhotoPath(context, saved) }
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp, vertical = 32.dp)
     ) {
-        Text("\u2615", fontSize = 56.sp)
-        Spacer(Modifier.height(4.dp))
+        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+            Box(
+                Modifier.size(104.dp).clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .clickable {
+                        pickImage.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                val pp = photoPath
+                val bmp = remember(pp) { if (pp != null) BitmapFactory.decodeFile(pp) else null }
+                if (bmp != null) {
+                    Image(bmp.asImageBitmap(), contentDescription = "Foto profilo",
+                        modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
+                } else {
+                    Icon(Icons.Filled.Person, contentDescription = null,
+                        modifier = Modifier.size(44.dp), tint = MaterialTheme.colorScheme.primary)
+                }
+            }
+        }
+        Spacer(Modifier.height(6.dp))
+        Text(
+            if (photoPath != null) "Tocca per cambiare la foto" else "Tocca per aggiungere una foto (opzionale)",
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
+        Spacer(Modifier.height(10.dp))
         Text(
             "Crea il tuo profilo",
             style = MaterialTheme.typography.headlineLarge,
@@ -136,3 +186,12 @@ fun RegisterScreen(nav: NavController) {
         )
     }
 }
+
+private fun saveProfilePhoto(context: android.content.Context, uri: Uri): String? = runCatching {
+    val dir = File(context.filesDir, "profile").apply { mkdirs() }
+    val out = File(dir, "avatar.jpg")
+    context.contentResolver.openInputStream(uri)?.use { input ->
+        out.outputStream().use { output -> input.copyTo(output) }
+    }
+    out.absolutePath
+}.getOrNull()

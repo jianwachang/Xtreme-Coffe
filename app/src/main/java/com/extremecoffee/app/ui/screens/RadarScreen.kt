@@ -39,12 +39,11 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerComposable
 import com.google.maps.android.compose.rememberMarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.flow.first
@@ -228,13 +227,19 @@ fun RadarScreen(nav: NavController) {
                         uiSettings = MapUiSettings(zoomControlsEnabled = true, mapToolbarEnabled = false)
                     ) {
                         events.forEach { e ->
-                            Marker(
+                            MarkerComposable(
+                                e.id,
                                 state = rememberMarkerState(key = e.id, position = LatLng(e.barLat, e.barLng)),
                                 title = e.launcherName,
                                 snippet = "${e.barName} \u00b7 ${e.minutes} min",
-                                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE),
                                 onClick = { nav.goFresh("invite/${e.id}"); true }
-                            )
+                            ) {
+                                Image(
+                                    painter = painterResource(R.drawable.ic_coffee_marker),
+                                    contentDescription = e.launcherName,
+                                    modifier = Modifier.size(40.dp)
+                                )
+                            }
                         }
                     }
                 }
