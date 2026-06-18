@@ -1,0 +1,20 @@
+{
+  "action": "launch_cerchia",
+  "targets": [
+    {
+      "id": "7c85667f-6b2b-4378-99ef-7f0cab1c26bf",
+      "tokenPreview": "cLT_z9ybRI…"
+    }
+  ],
+  "eventId": "sim_1781782586795",
+  "sent": 1,
+  "failed": 0,
+  "perToken": [
+    {
+      "id": "7c85667f-6b2b-4378-99ef-7f0cab1c26bf",
+      "ok": true,
+      "error": null
+    }
+  ],
+  "status": "DONE"
+}
