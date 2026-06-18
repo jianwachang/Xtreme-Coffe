@@ -56,7 +56,7 @@ fun TrackingScreen(nav: NavController, eventId: String, isLauncher: Boolean) {
                 } else false
                 CoffeeRepository.updateMyLocation(
                     eventId,
-                    ParticipantLocation(Profile.id(context), Profile.name(context), lat, lng, arrived, System.currentTimeMillis())
+                    ParticipantLocation(Profile.id(context), Profile.name(context), lat, lng, arrived, System.currentTimeMillis(), photo = Profile.photo64(context))
                 )
             }
         }
@@ -147,7 +147,7 @@ fun TrackingScreen(nav: NavController, eventId: String, isLauncher: Boolean) {
             // --- AREA MAPPA DEDICATA (riempie lo spazio rimanente, separata) ---
             val markers = buildList {
                 add(GeoMarker(e.barLat, e.barLng, "${e.barName} \u2615", coffee = true))
-                locations.forEach { add(GeoMarker(it.lat, it.lng, it.name)) }
+                locations.forEach { add(GeoMarker(it.lat, it.lng, it.name, photo = it.photo)) }
             }
             val lines = locations.map { GeoLine(it.lat, it.lng, e.barLat, e.barLng) }
 

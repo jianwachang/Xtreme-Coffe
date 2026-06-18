@@ -123,7 +123,7 @@ fun LauncherStatusScreen(nav: NavController, eventId: String) {
             // --- MAPPA LIVE: bar + chi ha accettato (marker + linea verso il bar) + la tua posizione ---
             val markers = buildList {
                 add(GeoMarker(e.barLat, e.barLng, "${e.barName} \u2615", coffee = true))
-                locations.forEach { add(GeoMarker(it.lat, it.lng, it.name)) }
+                locations.forEach { add(GeoMarker(it.lat, it.lng, it.name, photo = it.photo)) }
             }
             val lines = locations.filter { it.userId !in routes }
                 .map { GeoLine(it.lat, it.lng, e.barLat, e.barLng) }

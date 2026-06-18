@@ -31,7 +31,8 @@ data class ParticipantLocation(
     val lat: Double = 0.0,
     val lng: Double = 0.0,
     val arrived: Boolean = false,
-    val updatedAt: Long = 0L
+    val updatedAt: Long = 0L,
+    val photo: String = ""   // avatar (base64) del partecipante, per il segnaposto
 )
 
 /** Risposta di un invitato (accetta/rifiuta) verso chi ha lanciato il caffè */

@@ -26,7 +26,7 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 
-data class GeoMarker(val lat: Double, val lng: Double, val title: String = "", val coffee: Boolean = false)
+data class GeoMarker(val lat: Double, val lng: Double, val title: String = "", val coffee: Boolean = false, val photo: String = "")
 data class GeoLine(val fromLat: Double, val fromLng: Double, val toLat: Double, val toLng: Double)
 
 /**
@@ -74,6 +74,14 @@ fun AppMap(
         }.getOrNull()
     }
 
+    // Icone-avatar dei partecipanti (foto profilo dentro un cerchio). Ricalcolate solo se cambiano le foto.
+    val avatarIcons: Map<String, BitmapDescriptor> = remember(markers.map { it.photo }) {
+        runCatching {
+            markers.asSequence().map { it.photo }.filter { it.isNotBlank() }.distinct()
+                .mapNotNull { ph -> avatarDescriptor(ph)?.let { ph to it } }.toMap()
+        }.getOrDefault(emptyMap())
+    }
+
     GoogleMap(
         modifier = modifier,
         cameraPositionState = camera,
@@ -95,15 +103,40 @@ fun AppMap(
             if (pts.size >= 2) Polyline(points = pts, color = Color(0xFFE8772E), width = 12f)
         }
         markers.forEach { m ->
+            val avatar = if (m.photo.isNotBlank()) avatarIcons[m.photo] else null
             Marker(
                 state = MarkerState(LatLng(m.lat, m.lng)),
                 title = m.title,
-                icon = if (m.coffee) coffeeIcon else null,
-                anchor = if (m.coffee) Offset(0.5f, 0.5f) else Offset(0.5f, 1f)
+                icon = avatar ?: if (m.coffee) coffeeIcon else null,
+                anchor = if (m.coffee || avatar != null) Offset(0.5f, 0.5f) else Offset(0.5f, 1f)
             )
         }
     }
 }
+
+private fun avatarDescriptor(b64: String): BitmapDescriptor? = runCatching {
+    val raw = decodeAvatar(b64) ?: return null
+    val side = minOf(raw.width, raw.height).coerceAtLeast(1)
+    val cropped = Bitmap.createBitmap(raw, (raw.width - side) / 2, (raw.height - side) / 2, side, side)
+    val sizePx = 130
+    val scaled = Bitmap.createScaledBitmap(cropped, sizePx, sizePx, true)
+    val out = Bitmap.createBitmap(sizePx, sizePx, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(out)
+    val r = sizePx / 2f
+    val ring = sizePx * 0.09f
+    val photoPaint = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+        shader = android.graphics.BitmapShader(scaled,
+            android.graphics.Shader.TileMode.CLAMP, android.graphics.Shader.TileMode.CLAMP)
+    }
+    canvas.drawCircle(r, r, r - ring, photoPaint)
+    val ringPaint = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+        style = android.graphics.Paint.Style.STROKE
+        strokeWidth = ring
+        color = android.graphics.Color.parseColor("#F08730")
+    }
+    canvas.drawCircle(r, r, r - ring / 2f, ringPaint)
+    BitmapDescriptorFactory.fromBitmap(out)
+}.getOrNull()
 
 private fun bitmapFromVector(context: Context, resId: Int, scale: Float = 1f): BitmapDescriptor? = runCatching {
     val drawable = ContextCompat.getDrawable(context, resId) ?: return null
