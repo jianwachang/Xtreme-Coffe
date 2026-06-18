@@ -62,4 +62,12 @@ object Profile {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             .edit().putString("photoPath", path).apply()
     }
+
+    fun photo64(context: Context): String =
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString("photo64", "") ?: ""
+
+    fun setPhoto64(context: Context, b64: String?) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putString("photo64", b64 ?: "").apply()
+    }
 }

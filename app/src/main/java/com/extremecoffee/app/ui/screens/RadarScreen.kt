@@ -6,6 +6,7 @@ import android.Manifest
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -25,6 +27,7 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
@@ -44,6 +47,7 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.MarkerComposable
+import com.extremecoffee.app.ui.decodeAvatar
 import com.google.maps.android.compose.rememberMarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.flow.first
@@ -190,11 +194,22 @@ fun RadarScreen(nav: NavController) {
                                         .graphicsLayer { scaleX = scale; scaleY = scale }
                                         .clickable { nav.goFresh("invite/${e.id}") }
                                 ) {
-                                    Image(
-                                        painter = painterResource(R.drawable.ic_coffee_marker),
-                                        contentDescription = e.launcherName,
-                                        modifier = Modifier.fillMaxSize()
-                                    )
+                                    val avatar = remember(e.launcherPhoto) { decodeAvatar(e.launcherPhoto) }
+                                    if (avatar != null) {
+                                        Image(
+                                            avatar.asImageBitmap(),
+                                            contentDescription = e.launcherName,
+                                            modifier = Modifier.fillMaxSize().clip(CircleShape)
+                                                .border(2.dp, Color(0xFFF08730), CircleShape),
+                                            contentScale = ContentScale.Crop
+                                        )
+                                    } else {
+                                        Image(
+                                            painter = painterResource(R.drawable.ic_coffee_marker),
+                                            contentDescription = e.launcherName,
+                                            modifier = Modifier.fillMaxSize()
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -228,17 +243,28 @@ fun RadarScreen(nav: NavController) {
                     ) {
                         events.forEach { e ->
                             MarkerComposable(
-                                e.id,
+                                e.id, e.launcherPhoto,
                                 state = rememberMarkerState(key = e.id, position = LatLng(e.barLat, e.barLng)),
                                 title = e.launcherName,
                                 snippet = "${e.barName} \u00b7 ${e.minutes} min",
                                 onClick = { nav.goFresh("invite/${e.id}"); true }
                             ) {
-                                Image(
-                                    painter = painterResource(R.drawable.ic_coffee_marker),
-                                    contentDescription = e.launcherName,
-                                    modifier = Modifier.size(40.dp)
-                                )
+                                val avatar = remember(e.launcherPhoto) { decodeAvatar(e.launcherPhoto) }
+                                if (avatar != null) {
+                                    Image(
+                                        avatar.asImageBitmap(),
+                                        contentDescription = e.launcherName,
+                                        modifier = Modifier.size(40.dp).clip(CircleShape)
+                                            .border(2.dp, Color(0xFFF08730), CircleShape),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                } else {
+                                    Image(
+                                        painter = painterResource(R.drawable.ic_coffee_marker),
+                                        contentDescription = e.launcherName,
+                                        modifier = Modifier.size(40.dp)
+                                    )
+                                }
                             }
                         }
                     }

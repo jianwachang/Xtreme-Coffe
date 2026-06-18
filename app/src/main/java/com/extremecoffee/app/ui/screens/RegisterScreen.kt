@@ -54,7 +54,11 @@ fun RegisterScreen(nav: NavController) {
     val pickImage = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
         if (uri != null) {
             val saved = saveProfilePhoto(context, uri)
-            if (saved != null) { photoPath = saved; Profile.setPhotoPath(context, saved) }
+            if (saved != null) {
+                photoPath = saved
+                Profile.setPhotoPath(context, saved)
+                Profile.setPhoto64(context, makeAvatarBase64(saved))
+            }
         }
     }
 
@@ -194,4 +198,14 @@ private fun saveProfilePhoto(context: android.content.Context, uri: Uri): String
         out.outputStream().use { output -> input.copyTo(output) }
     }
     out.absolutePath
+}.getOrNull()
+
+private fun makeAvatarBase64(path: String): String? = runCatching {
+    val src = BitmapFactory.decodeFile(path) ?: return null
+    val w = src.width; val h = src.height; val side = minOf(w, h)
+    val cropped = android.graphics.Bitmap.createBitmap(src, (w - side) / 2, (h - side) / 2, side, side)
+    val scaled = android.graphics.Bitmap.createScaledBitmap(cropped, 256, 256, true)
+    val baos = java.io.ByteArrayOutputStream()
+    scaled.compress(android.graphics.Bitmap.CompressFormat.JPEG, 70, baos)
+    android.util.Base64.encodeToString(baos.toByteArray(), android.util.Base64.NO_WRAP)
 }.getOrNull()

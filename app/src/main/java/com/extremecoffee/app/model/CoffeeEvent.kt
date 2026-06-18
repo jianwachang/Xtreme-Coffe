@@ -15,7 +15,8 @@ data class CoffeeEvent(
     val createdAt: Long = System.currentTimeMillis(),
     val mode: String = "CERCHIA",
     val acceptedCount: Int = 0,
-    val invitedIds: List<String> = emptyList()
+    val invitedIds: List<String> = emptyList(),
+    val launcherPhoto: String = ""   // avatar piccolo (base64) di chi ha lanciato
 ) {
     /** Millisecondi rimanenti prima della scadenza del caffè gratis */
     fun remainingMillis(now: Long = System.currentTimeMillis()): Long =

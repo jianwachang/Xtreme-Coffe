@@ -33,6 +33,7 @@ import com.extremecoffee.app.data.CoffeeRepository
 import com.extremecoffee.app.data.Phones
 import com.extremecoffee.app.data.Profile
 import com.extremecoffee.app.ui.goFresh
+import com.extremecoffee.app.ui.decodeAvatar
 
 @Composable
 fun HomeScreen(nav: NavController) {
@@ -114,7 +115,14 @@ fun HomeScreen(nav: NavController) {
                 ) {
                     Row(Modifier.padding(16.dp),
                         verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                        Text("\u2615", fontSize = 28.sp)
+                        val inv = remember(e.launcherPhoto) { decodeAvatar(e.launcherPhoto) }
+                        if (inv != null) {
+                            Image(inv.asImageBitmap(), contentDescription = e.launcherName,
+                                modifier = Modifier.size(40.dp).clip(CircleShape),
+                                contentScale = ContentScale.Crop)
+                        } else {
+                            Text("\u2615", fontSize = 28.sp)
+                        }
                         Spacer(Modifier.width(12.dp))
                         Column(Modifier.weight(1f)) {
                             Text("${e.launcherName} ti invita",

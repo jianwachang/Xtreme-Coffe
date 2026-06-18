@@ -180,6 +180,7 @@ fun LaunchCoffeeScreen(nav: NavController) {
                             val id = CoffeeRepository.launchCoffee(
                                 CoffeeEvent(
                                     launcherId = Profile.id(context), launcherName = Profile.name(context),
+                                    launcherPhoto = Profile.photo64(context),
                                     barName = query, barLat = la, barLng = ln,
                                     minutes = minutes, mode = mode
                                 )

@@ -1,11 +1,16 @@
 package com.extremecoffee.app.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -18,6 +23,7 @@ import com.extremecoffee.app.model.ParticipantLocation
 import com.extremecoffee.app.data.Profile
 import com.extremecoffee.app.ui.CoffeeScaffold
 import com.extremecoffee.app.ui.goFresh
+import com.extremecoffee.app.ui.decodeAvatar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -41,7 +47,17 @@ fun InvitePopupScreen(nav: NavController, eventId: String) {
             val e: CoffeeEvent? = event
             if (e == null) { CircularProgressIndicator(); return@Column }
 
-            Text("\u2615\uD83D\uDD25", fontSize = 56.sp)
+            val avatar = remember(e.launcherPhoto) { decodeAvatar(e.launcherPhoto) }
+            if (avatar != null) {
+                Image(
+                    avatar.asImageBitmap(),
+                    contentDescription = e.launcherName,
+                    modifier = Modifier.size(104.dp).clip(CircleShape),
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                Text("\u2615\uD83D\uDD25", fontSize = 56.sp)
+            }
             Spacer(Modifier.height(8.dp))
             Text(
                 "${e.launcherName} ha lanciato un\nEXTREME COFFEE!!",
