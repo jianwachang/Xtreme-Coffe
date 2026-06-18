@@ -147,6 +147,19 @@ object CoffeeRepository {
         }
     }
 
+    /** Elimina account e dati personali: profilo, nickname, token e dati locali. */
+    suspend fun deleteMyAccountAndData(context: android.content.Context) {
+        val d = db
+        val id = Profile.id(context)
+        val phone = Profile.phone(context)
+        val nick = Profile.name(context).lowercase()
+        runCatching { d?.collection("tokens")?.document(id)?.delete()?.await() }
+        if (phone.isNotBlank()) runCatching { d?.collection("users")?.document(phone)?.delete()?.await() }
+        if (nick.isNotBlank()) runCatching { d?.collection("nicknames")?.document(nick)?.delete()?.await() }
+        // pulizia stato locale (id, profilo, foto, flag)
+        Profile.clearAll(context)
+    }
+
     /** Registra il mio numero nel registro "users" (chi ha l'app). Idempotente. */
     suspend fun registerMe(phone: String, id: String, name: String) {
         if (phone.isBlank()) return

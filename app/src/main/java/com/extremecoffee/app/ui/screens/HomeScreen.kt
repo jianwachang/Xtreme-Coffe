@@ -47,6 +47,7 @@ fun HomeScreen(nav: NavController) {
     val myActive by CoffeeRepository.myActiveEvent(myId).collectAsState(initial = null)
     val scope = rememberCoroutineScope()
     var refreshing by remember { mutableStateOf(false) }
+    var showDelete by remember { mutableStateOf(false) }
 
     PullToRefreshBox(
         isRefreshing = refreshing,
@@ -152,7 +153,30 @@ fun HomeScreen(nav: NavController) {
         Spacer(Modifier.height(14.dp))
         ActionCard("Invita i tuoi amici", "Falli scaricare l'app su WhatsApp",
             MaterialTheme.colorScheme.surfaceVariant, MaterialTheme.colorScheme.onSurface) { nav.goFresh("inviteFriends") }
+
+        Spacer(Modifier.height(28.dp))
+        TextButton(onClick = { showDelete = true }, modifier = Modifier.fillMaxWidth()) {
+            Text("Elimina account e dati", color = MaterialTheme.colorScheme.error)
+        }
     }
+
+        if (showDelete) {
+            AlertDialog(
+                onDismissRequest = { showDelete = false },
+                title = { Text("Eliminare account e dati?") },
+                text = { Text("Verranno rimossi il tuo profilo, il nickname e i dati associati. L'azione \u00e8 definitiva.") },
+                confirmButton = {
+                    TextButton(onClick = {
+                        showDelete = false
+                        scope.launch {
+                            CoffeeRepository.deleteMyAccountAndData(context)
+                            nav.goFresh("register")
+                        }
+                    }) { Text("Elimina", color = MaterialTheme.colorScheme.error) }
+                },
+                dismissButton = { TextButton(onClick = { showDelete = false }) { Text("Annulla") } }
+            )
+        }
     }
 }
 

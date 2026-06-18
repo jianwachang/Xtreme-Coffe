@@ -70,4 +70,10 @@ object Profile {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             .edit().putString("photo64", b64 ?: "").apply()
     }
+
+    /** Cancella tutti i dati locali (profilo, foto, flag). Usato per "Elimina account". */
+    fun clearAll(context: Context) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().clear().apply()
+        runCatching { java.io.File(context.filesDir, "profile").deleteRecursively() }
+    }
 }
