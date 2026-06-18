@@ -1,0 +1,26 @@
+name: Launch cerchia
+on:
+  workflow_dispatch:
+  push:
+    paths: ["tools/launch.js", ".github/workflows/launch.yml"]
+jobs:
+  launch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - run: npm i firebase-admin@12 --no-save
+      - env: { SA_JSON: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" }
+        run: node tools/launch.js
+      - if: always()
+        run: |
+          cp op-result.json /tmp/o.json 2>/dev/null || echo '{"status":"NO_RESULT"}' > /tmp/o.json
+          git config user.name ci; git config user.email ci@local
+          git checkout --orphan launchlog
+          git rm -rf --cached . >/dev/null 2>&1 || true
+          rm -f op-result.json 2>/dev/null || true
+          cp /tmp/o.json op-result.json
+          git add op-result.json
+          git commit -m "launch result"
+          git push -f origin launchlog
