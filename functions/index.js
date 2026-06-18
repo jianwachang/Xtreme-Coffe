@@ -37,6 +37,9 @@ exports.onNewEvent = onDocumentCreated("events/{eventId}", async (event) => {
   const data = snap.data() || {};
   const launcherId = data.launcherId || "";
 
+  // Eventi di simulazione: niente broadcast automatico (avvisiamo noi i destinatari mirati).
+  if (data.simulated === true) return;
+
   // AMICIZIA: nessuna notifica broadcast. L'evento si scopre dal radar;
   // il lanciatore verra' avvisato solo quando qualcuno tocca il caffe' e conferma di andare (onNewResponse).
   if ((data.mode || "") === "AMICIZIA") return;
