@@ -16,7 +16,8 @@ data class CoffeeEvent(
     val mode: String = "CERCHIA",
     val acceptedCount: Int = 0,
     val invitedIds: List<String> = emptyList(),
-    val launcherPhoto: String = ""   // avatar piccolo (base64) di chi ha lanciato
+    val launcherPhoto: String = "",   // avatar piccolo (base64) di chi ha lanciato
+    val cancelled: Boolean = false    // true se il lanciatore ha annullato l'Extreme Coffee
 ) {
     /** Millisecondi rimanenti prima della scadenza del caffè gratis */
     fun remainingMillis(now: Long = System.currentTimeMillis()): Long =

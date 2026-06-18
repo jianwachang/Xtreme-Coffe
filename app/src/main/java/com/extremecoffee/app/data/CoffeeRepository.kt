@@ -10,6 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
@@ -115,8 +116,13 @@ object CoffeeRepository {
     }
 
     suspend fun cancelCoffee(eventId: String) {
-        eventsState.value = eventsState.value - eventId
-        runCatching { db?.collection("events")?.document(eventId)?.delete()?.await() }
+        // Segna l'evento come annullato (NON lo cancella): la Cloud Function avvisa gli invitati
+        // e tutte le viste filtrano gli eventi annullati, quindi sparisce da solo.
+        eventsState.value[eventId]?.let { putEvent(it.copy(cancelled = true)) }
+        runCatching {
+            db?.collection("events")?.document(eventId)
+                ?.set(mapOf("cancelled" to true), SetOptions.merge())?.await()
+        }
     }
 
     suspend fun acceptInvite(eventId: String, me: ParticipantLocation) = updateMyLocation(eventId, me)
@@ -251,7 +257,7 @@ object CoffeeRepository {
         }
         return eventsState.map { m ->
             val now = System.currentTimeMillis()
-            m.values.filter { it.mode == "AMICIZIA" && it.remainingMillis(now) > 0 }
+            m.values.filter { it.mode == "AMICIZIA" && !it.cancelled && it.remainingMillis(now) > 0 }
                 .sortedByDescending { it.createdAt }
         }
     }
@@ -276,7 +282,7 @@ object CoffeeRepository {
         }
         return combine(invitedEventsState, declinedState) { list, declined ->
             val now = System.currentTimeMillis()
-            list.filter { it.launcherId != myId && it.remainingMillis(now) > 0 && it.id !in declined }
+            list.filter { it.launcherId != myId && !it.cancelled && it.remainingMillis(now) > 0 && it.id !in declined }
                 .sortedByDescending { it.createdAt }
         }
     }
@@ -285,7 +291,7 @@ object CoffeeRepository {
     /** L'Extreme Coffee attivo lanciato da me (se c'è), altrimenti null. */
     fun myActiveEvent(myId: String): Flow<CoffeeEvent?> = eventsState.map { m ->
         val now = System.currentTimeMillis()
-        m.values.filter { it.launcherId == myId && it.remainingMillis(now) > 0 }
+        m.values.filter { it.launcherId == myId && !it.cancelled && it.remainingMillis(now) > 0 }
             .maxByOrNull { it.createdAt }
     }
 

@@ -47,6 +47,24 @@ fun InvitePopupScreen(nav: NavController, eventId: String) {
             val e: CoffeeEvent? = event
             if (e == null) { CircularProgressIndicator(); return@Column }
 
+            if (e.cancelled) {
+                Text("\u274C", fontSize = 56.sp)
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    "Questo Extreme Coffee \u00e8 stato annullato",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.error
+                )
+                Spacer(Modifier.height(24.dp))
+                Button(
+                    onClick = { nav.goFresh("home") },
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    shape = RoundedCornerShape(20.dp)
+                ) { Text("Torna alla home", fontWeight = FontWeight.Bold) }
+                return@Column
+            }
+
             val avatar = remember(e.launcherPhoto) { decodeAvatar(e.launcherPhoto) }
             if (avatar != null) {
                 Image(

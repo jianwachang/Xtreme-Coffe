@@ -31,6 +31,11 @@ fun TrackingScreen(nav: NavController, eventId: String, isLauncher: Boolean) {
     val context = LocalContext.current
     val event by CoffeeRepository.eventFlow(eventId).collectAsState(initial = null)
     val locations by CoffeeRepository.participantLocations(eventId).collectAsState(initial = emptyList())
+
+    // Se il lanciatore annulla mentre sei in viaggio, torni alla home (ricevi anche la notifica).
+    LaunchedEffect(event?.cancelled) {
+        if (event?.cancelled == true) nav.goFresh("home")
+    }
     var remaining by remember { mutableStateOf(0L) }
     var myLat by remember { mutableStateOf<Double?>(null) }
     var myLng by remember { mutableStateOf<Double?>(null) }

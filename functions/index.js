@@ -8,7 +8,7 @@
  *  - ttl: se il dispositivo è offline e torna online DOPO la scadenza, FCM non recapita più l'invito.
  *  - expiresAt: l'app, quando costruisce la notifica, la fa sparire da sola alla scadenza.
  */
-const { onDocumentCreated } = require("firebase-functions/v2/firestore");
+const { onDocumentCreated, onDocumentUpdated } = require("firebase-functions/v2/firestore");
 const { setGlobalOptions } = require("firebase-functions/v2");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
@@ -117,6 +117,55 @@ exports.onNewResponse = onDocumentCreated("responses/{responseId}", async (event
   await getMessaging().send(message).catch(() => {});
 });
 
+// --- Evento annullato -> avvisa SOLO gli invitati diretti (CERCHIA) ---
+// Push "data-only": l'app, anche in background, rimuove la vecchia notifica d'invito
+// e mostra "Extreme Coffee annullato". Per l'AMICIZIA non ci sono invitati diretti:
+// l'evento sparisce comunque dal radar perché le viste filtrano gli annullati.
+exports.onEventCancelled = onDocumentUpdated("events/{eventId}", async (event) => {
+  const before = event.data && event.data.before ? event.data.before.data() : null;
+  const after = event.data && event.data.after ? event.data.after.data() : null;
+  if (!after) return;
+
+  const wasCancelled = !!(before && before.cancelled === true);
+  const nowCancelled = after.cancelled === true;
+  if (wasCancelled || !nowCancelled) return; // reagisci solo alla transizione -> annullato
+
+  const invited = Array.isArray(after.invitedIds) ? after.invitedIds.map(String) : [];
+  if (invited.length === 0) return; // nessun invitato diretto da avvisare
+
+  const mins = Number(after.minutes) || 15;
+  const createdAt = Number(after.createdAt) || Date.now();
+  const expiresAt = createdAt + mins * 60000;
+
+  const tokensSnap = await db.collection("tokens").get();
+  const invitedSet = new Set(invited);
+  const tokens = [];
+  tokensSnap.forEach((d) => {
+    const t = d.data();
+    if (invitedSet.has(String(d.id)) && t && t.token) tokens.push(t.token);
+  });
+  if (tokens.length === 0) return;
+
+  const title = "\u274C Extreme Coffee annullato";
+  const body = (after.launcherName || "Qualcuno") + " ha annullato l'Extreme Coffee" +
+               (after.barName ? " da " + after.barName : "") + ".";
+
+  const message = {
+    data: {
+      type: "cancelled",
+      eventId: String(event.params.eventId),
+      title: title,
+      body: body,
+      expiresAt: String(expiresAt),
+    },
+    android: { priority: "high", ttl: Math.max(expiresAt - Date.now(), 60000) },
+    tokens,
+  };
+
+  const res = await getMessaging().sendEachForMulticast(message);
+  await pruneInvalid(res, tokens, tokensSnap);
+});
+
 // Rimuove dal registro i token non più validi (app disinstallata, ecc.)
 async function pruneInvalid(res, tokens, tokensSnap) {
   if (!res || !res.responses) return;
@@ -138,5 +187,3 @@ async function pruneInvalid(res, tokens, tokensSnap) {
   });
   await batch.commit().catch(() => {});
 }
-
-// redeploy 2026-06-17T18:33:47Z

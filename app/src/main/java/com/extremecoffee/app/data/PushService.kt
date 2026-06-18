@@ -13,10 +13,20 @@ class PushService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
+        val data = message.data
+        // Evento annullato: rimuovo l'eventuale invito ancora a schermo e avviso dell'annullamento.
+        if (data["type"] == "cancelled") {
+            val eventId = data["eventId"]
+            if (!eventId.isNullOrBlank()) Notifier.cancelInvite(applicationContext, eventId)
+            val title = data["title"] ?: "\u274C Extreme Coffee annullato"
+            val body = data["body"] ?: "L'Extreme Coffee \u00e8 stato annullato."
+            Notifier.showCancelled(applicationContext, title, body, eventId)
+            return
+        }
         val n = message.notification
-        val title = n?.title ?: message.data["title"] ?: "Extreme Coffee"
-        val body = n?.body ?: message.data["body"] ?: ""
-        val expiresAt = message.data["expiresAt"]?.toLongOrNull()
-        Notifier.showRaw(applicationContext, title, body, message.data["eventId"], expiresAt)
+        val title = n?.title ?: data["title"] ?: "Extreme Coffee"
+        val body = n?.body ?: data["body"] ?: ""
+        val expiresAt = data["expiresAt"]?.toLongOrNull()
+        Notifier.showRaw(applicationContext, title, body, data["eventId"], expiresAt)
     }
 }

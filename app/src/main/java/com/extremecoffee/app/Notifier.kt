@@ -41,6 +41,29 @@ object Notifier {
         ContextCompat.getSystemService(context, NotificationManager::class.java)?.cancelAll()
     }
 
+    /** Notifica di annullamento. Persistente finché l'utente non la scarta. */
+    fun showCancelled(context: Context, title: String, body: String, eventId: String?) {
+        if (!hasPerm(context)) return
+        ensureChannel(context)
+        val intent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        val pi = PendingIntent.getActivity(
+            context, ("cancel_" + (eventId ?: "")).hashCode(), intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        val notif = NotificationCompat.Builder(context, CHANNEL)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(title)
+            .setContentText(body)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .setContentIntent(pi)
+            .build()
+        ContextCompat.getSystemService(context, NotificationManager::class.java)
+            ?.notify(("cancel_" + (eventId ?: title)).hashCode(), notif)
+    }
+
     fun showInvite(context: Context, event: CoffeeEvent) {
         if (!hasPerm(context)) return
         val remaining = event.remainingMillis()
