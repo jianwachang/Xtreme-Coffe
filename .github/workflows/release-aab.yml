@@ -54,16 +54,17 @@ jobs:
         if: success()
         run: |
           AAB=$(ls app/build/outputs/bundle/release/*.aab | head -1)
-          echo "Trovato: $AAB"
-          cp "$AAB" /tmp/app-release.aab
-          git config user.name ci; git config user.email ci@local
-          git checkout --orphan aab
-          git rm -rf --cached . >/dev/null 2>&1 || true
-          rm -f app-release.aab 2>/dev/null || true
-          cp /tmp/app-release.aab app-release.aab
+          test -n "$AAB" && test -f "$AAB" || { echo "AAB non trovato"; exit 1; }
+          echo "Trovato: $AAB ($(du -h "$AAB" | cut -f1))"
+          mkdir -p /tmp/pub && cp "$AAB" /tmp/pub/app-release.aab
+          cd /tmp/pub
+          git init -q
+          git checkout -b aab
+          git config user.email b@e.app
+          git config user.name bot
           git add app-release.aab
-          git commit -m "release aab"
-          git push -f origin aab
+          git commit -q -m "release aab ${{ github.run_number }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" aab
       - uses: actions/upload-artifact@v4
         if: success()
         with: { name: app-release-aab, path: app/build/outputs/bundle/release/*.aab }
