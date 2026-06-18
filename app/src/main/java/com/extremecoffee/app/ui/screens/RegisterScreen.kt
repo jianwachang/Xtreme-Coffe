@@ -23,6 +23,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -110,6 +111,12 @@ fun RegisterScreen(nav: NavController) {
         )
 
         Spacer(Modifier.height(24.dp))
+        val fieldColors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = Color(0xFF241309),
+            unfocusedTextColor = Color(0xFF241309),
+            disabledTextColor = Color(0xFF241309),
+            cursorColor = Color(0xFF241309)
+        )
         OutlinedTextField(
             value = nickname,
             onValueChange = { nickname = it; error = null },
@@ -119,6 +126,7 @@ fun RegisterScreen(nav: NavController) {
             isError = error != null,
             singleLine = true,
             shape = MaterialTheme.shapes.medium,
+            colors = fieldColors,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -131,12 +139,14 @@ fun RegisterScreen(nav: NavController) {
             supportingText = {
                 Text(
                     if (normPhone != null) "Riconosciuto come $normPhone"
-                    else "Inserisci il tuo numero di cellulare"
+                    else "Il numero serve solo a farti trovare dai tuoi contatti che hanno l'app. " +
+                        "Non viene mostrato pubblicamente."
                 )
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             singleLine = true,
             shape = MaterialTheme.shapes.medium,
+            colors = fieldColors,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -181,13 +191,6 @@ fun RegisterScreen(nav: NavController) {
             ) else Text("Crea profilo", fontWeight = FontWeight.Bold)
         }
 
-        Spacer(Modifier.height(12.dp))
-        Text(
-            "Il numero serve solo a farti trovare dai tuoi contatti che hanno l'app. " +
-                "Non viene mostrato pubblicamente.",
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
     }
 }
 
