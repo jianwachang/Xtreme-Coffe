@@ -1,0 +1,26 @@
+{
+  "action": "cleanup",
+  "deletedEvents": [
+    "sim_1781781902148"
+  ],
+  "prunedTokens": [
+    "4e84eeb8-3b22-4441-a917-f50c54925ed5",
+    "9c4b5df9-845c-4cd3-97c3-5bb3f95b2e6e",
+    "cd1dc8bc-2fa7-454a-8905-94c70d4d3fc3"
+  ],
+  "remaining": [
+    {
+      "id": "7c85667f-6b2b-4378-99ef-7f0cab1c26bf",
+      "name": "Dario"
+    },
+    {
+      "id": "d621b79f-2552-473e-9550-60d0e087bedd",
+      "name": "Alucard"
+    },
+    {
+      "id": "feece49f-1c0b-4cf0-bf1c-e545bd4b3449",
+      "name": "Utente-feec"
+    }
+  ],
+  "status": "DONE"
+}
