@@ -37,6 +37,8 @@ import com.extremecoffee.app.data.Phones
 import com.extremecoffee.app.data.Profile
 import com.extremecoffee.app.data.RegisterResult
 import com.extremecoffee.app.ui.goFresh
+import com.extremecoffee.app.ui.makeAvatarBase64
+import com.extremecoffee.app.ui.saveProfilePhoto
 import java.io.File
 import kotlinx.coroutines.launch
 
@@ -194,21 +196,4 @@ fun RegisterScreen(nav: NavController) {
     }
 }
 
-private fun saveProfilePhoto(context: android.content.Context, uri: Uri): String? = runCatching {
-    val dir = File(context.filesDir, "profile").apply { mkdirs() }
-    val out = File(dir, "avatar.jpg")
-    context.contentResolver.openInputStream(uri)?.use { input ->
-        out.outputStream().use { output -> input.copyTo(output) }
-    }
-    out.absolutePath
-}.getOrNull()
-
-private fun makeAvatarBase64(path: String): String? = runCatching {
-    val src = BitmapFactory.decodeFile(path) ?: return null
-    val w = src.width; val h = src.height; val side = minOf(w, h)
-    val cropped = android.graphics.Bitmap.createBitmap(src, (w - side) / 2, (h - side) / 2, side, side)
-    val scaled = android.graphics.Bitmap.createScaledBitmap(cropped, 256, 256, true)
-    val baos = java.io.ByteArrayOutputStream()
-    scaled.compress(android.graphics.Bitmap.CompressFormat.JPEG, 70, baos)
-    android.util.Base64.encodeToString(baos.toByteArray(), android.util.Base64.NO_WRAP)
-}.getOrNull()
+// saveProfilePhoto / makeAvatarBase64 sono ora condivise in ui/AvatarUtil.kt

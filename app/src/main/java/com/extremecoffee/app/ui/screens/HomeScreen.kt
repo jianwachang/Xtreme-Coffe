@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -34,6 +35,14 @@ import com.extremecoffee.app.data.Phones
 import com.extremecoffee.app.data.Profile
 import com.extremecoffee.app.ui.goFresh
 import com.extremecoffee.app.ui.decodeAvatar
+import com.extremecoffee.app.ui.saveProfilePhoto
+import com.extremecoffee.app.ui.makeAvatarBase64
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.Alignment
 
 @Composable
 fun HomeScreen(nav: NavController) {
@@ -42,7 +51,23 @@ fun HomeScreen(nav: NavController) {
     val myId = remember { Profile.id(context) }
     val phone = remember { Profile.phone(context) }
     val normPhone = Phones.normalizeIt(phone)
-    val photoPath = remember { Profile.photoPath(context) }
+    var photoPath by remember { mutableStateOf(Profile.photoPath(context)) }
+    val pickImage = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+        if (uri != null) {
+            val saved = saveProfilePhoto(context, uri)
+            if (saved != null) {
+                Profile.setPhotoPath(context, saved)
+                Profile.setPhoto64(context, makeAvatarBase64(saved))
+                photoPath = saved
+                Toast.makeText(context, "Foto profilo aggiornata", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Impossibile usare questa immagine", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    fun editPhoto() = pickImage.launch(
+        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+    )
     val incoming by CoffeeRepository.incomingInvites(myId).collectAsState(initial = emptyList())
     val myActive by CoffeeRepository.myActiveEvent(myId).collectAsState(initial = null)
     val scope = rememberCoroutineScope()
@@ -69,6 +94,7 @@ fun HomeScreen(nav: NavController) {
 
         Spacer(Modifier.height(20.dp))
         Surface(
+            onClick = { editPhoto() },
             shape = MaterialTheme.shapes.large,
             color = MaterialTheme.colorScheme.surfaceVariant,
             modifier = Modifier.fillMaxWidth()
@@ -77,16 +103,28 @@ fun HomeScreen(nav: NavController) {
                 Modifier.padding(16.dp),
                 verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
             ) {
-                val bmp = remember(photoPath) { if (photoPath != null) BitmapFactory.decodeFile(photoPath) else null }
-                if (bmp != null) {
-                    Image(bmp.asImageBitmap(), contentDescription = "Foto profilo",
-                        modifier = Modifier.size(48.dp).clip(CircleShape), contentScale = ContentScale.Crop)
-                } else {
-                    Box(Modifier.size(48.dp).clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.surface),
-                        contentAlignment = androidx.compose.ui.Alignment.Center) {
-                        Icon(Icons.Filled.Person, contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary)
+                Box(contentAlignment = Alignment.BottomEnd) {
+                    val bmp = remember(photoPath) { if (photoPath != null) BitmapFactory.decodeFile(photoPath) else null }
+                    if (bmp != null) {
+                        Image(bmp.asImageBitmap(), contentDescription = "Foto profilo",
+                            modifier = Modifier.size(48.dp).clip(CircleShape), contentScale = ContentScale.Crop)
+                    } else {
+                        Box(Modifier.size(48.dp).clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.surface),
+                            contentAlignment = Alignment.Center) {
+                            Icon(Icons.Filled.Person, contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary)
+                        }
+                    }
+                    // Badge fotocamera: indica che la foto è modificabile
+                    Box(
+                        Modifier.size(18.dp).clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primary),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(Icons.Filled.PhotoCamera, contentDescription = "Modifica foto",
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier.size(11.dp))
                     }
                 }
                 Spacer(Modifier.width(12.dp))
@@ -96,6 +134,9 @@ fun HomeScreen(nav: NavController) {
                     Text(normPhone ?: phone,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("Tocca per modificare la foto",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary)
                 }
             }
         }
