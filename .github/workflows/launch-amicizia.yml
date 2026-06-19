@@ -1,0 +1,28 @@
+name: Launch amicizia
+on:
+  workflow_dispatch:
+  push:
+    paths: ["tools/launch_amicizia.js", ".github/workflows/launch-amicizia.yml"]
+jobs:
+  launch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - run: npm i firebase-admin@12 --no-save
+      - env:
+          SA_JSON: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          MAPS_KEY: "AIzaSyBu9KWGYiMlY4i_3U_SrkhEKYP5cS-zQKk"
+        run: node tools/launch_amicizia.js
+      - if: always()
+        run: |
+          cp op-result.json /tmp/o.json 2>/dev/null || echo '{"status":"NO_RESULT"}' > /tmp/o.json
+          mkdir /tmp/pub && cd /tmp/pub
+          git init -q
+          git config user.name ci; git config user.email ci@local
+          git checkout -q -b amicizialog
+          cp /tmp/o.json op-result.json
+          git add op-result.json
+          git commit -q -m "amicizia launch result"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" amicizialog
