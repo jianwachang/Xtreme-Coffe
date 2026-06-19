@@ -54,11 +54,13 @@ fun RegisterScreen(nav: NavController) {
     var error by remember { mutableStateOf<String?>(null) }
     val normPhone = Phones.normalizeIt(phone)
     var photoPath by remember { mutableStateOf(Profile.photoPath(context)) }
+    var photoVersion by remember { mutableStateOf(0) }
     val pickImage = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
         if (uri != null) {
             val saved = saveProfilePhoto(context, uri)
             if (saved != null) {
                 photoPath = saved
+                photoVersion++
                 Profile.setPhotoPath(context, saved)
                 Profile.setPhoto64(context, makeAvatarBase64(saved))
             }
@@ -81,7 +83,7 @@ fun RegisterScreen(nav: NavController) {
                 contentAlignment = Alignment.Center
             ) {
                 val pp = photoPath
-                val bmp = remember(pp) { if (pp != null) BitmapFactory.decodeFile(pp) else null }
+                val bmp = remember(pp, photoVersion) { if (pp != null) BitmapFactory.decodeFile(pp) else null }
                 if (bmp != null) {
                     Image(bmp.asImageBitmap(), contentDescription = "Foto profilo",
                         modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)

@@ -52,6 +52,7 @@ fun HomeScreen(nav: NavController) {
     val phone = remember { Profile.phone(context) }
     val normPhone = Phones.normalizeIt(phone)
     var photoPath by remember { mutableStateOf(Profile.photoPath(context)) }
+    var photoVersion by remember { mutableStateOf(0) }
     val pickImage = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
         if (uri != null) {
             val saved = saveProfilePhoto(context, uri)
@@ -59,6 +60,7 @@ fun HomeScreen(nav: NavController) {
                 Profile.setPhotoPath(context, saved)
                 Profile.setPhoto64(context, makeAvatarBase64(saved))
                 photoPath = saved
+                photoVersion++   // il file ha sempre lo stesso nome: forziamo il refresh dell'anteprima
                 Toast.makeText(context, "Foto profilo aggiornata", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(context, "Impossibile usare questa immagine", Toast.LENGTH_SHORT).show()
@@ -104,7 +106,7 @@ fun HomeScreen(nav: NavController) {
                 verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
             ) {
                 Box(contentAlignment = Alignment.BottomEnd) {
-                    val bmp = remember(photoPath) { if (photoPath != null) BitmapFactory.decodeFile(photoPath) else null }
+                    val bmp = remember(photoPath, photoVersion) { if (photoPath != null) BitmapFactory.decodeFile(photoPath) else null }
                     if (bmp != null) {
                         Image(bmp.asImageBitmap(), contentDescription = "Foto profilo",
                             modifier = Modifier.size(48.dp).clip(CircleShape), contentScale = ContentScale.Crop)
