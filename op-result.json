@@ -1,0 +1,15 @@
+{
+  "action": "launch_amicizia",
+  "address": "Via Silvio Pellico 25, Montecatini Terme",
+  "geocodeApiStatus": "OK",
+  "formattedAddress": "Via Silvio Pellico, 25, 51016 Montecatini-Terme PT, Italy",
+  "coords": {
+    "lat": 43.8787216,
+    "lng": 10.7696759,
+    "source": "GOOGLE"
+  },
+  "eventId": "test_amicizia_1781897949423",
+  "minutes": 60,
+  "expiresAt": "2026-06-19T20:39:09.423Z",
+  "status": "DONE"
+}
