@@ -86,6 +86,7 @@ object CoffeeRepository {
         val launchedTimes = ArrayList<Long>()
         val joinedTimes = ArrayList<Long>()
         val bars = ArrayList<String>()
+        var maxDist = 0.0
         // Eventi che ho lanciato io (escludo annullati e simulati)
         runCatching {
             val snap = d.collection("events").whereEqualTo("launcherId", me).get().await()
@@ -108,6 +109,7 @@ object CoffeeRepository {
                 if (r.updatedAt > 0) {
                     joinedTimes.add(r.updatedAt)
                     if (r.barName.isNotBlank()) bars.add(r.barName)
+                    if (r.distanceKm > maxDist) maxDist = r.distanceKm
                 }
             }
         }
@@ -128,8 +130,18 @@ object CoffeeRepository {
             thisMonth = month,
             streakWeeks = streak,
             atRisk = atRisk,
-            favoriteBar = favorite
+            favoriteBar = favorite,
+            distinctBars = bars.distinct().size,
+            maxDistanceKm = maxDist
         )
+    }
+
+    /** Registra (merge) la distanza percorsa dal partecipante per il badge "amico vero". */
+    suspend fun setParticipationDistanceKm(eventId: String, userId: String, km: Double) {
+        runCatching {
+            db?.collection("responses")?.document("${eventId}_$userId")
+                ?.set(mapOf("distanceKm" to km), SetOptions.merge())?.await()
+        }
     }
 
     private val downloadUrlState = MutableStateFlow(Config.DOWNLOAD_URL)

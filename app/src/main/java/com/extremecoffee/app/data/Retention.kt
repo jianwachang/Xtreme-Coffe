@@ -10,7 +10,9 @@ data class MyStats(
     val thisMonth: Int = 0,
     val streakWeeks: Int = 0,
     val atRisk: Boolean = false,        // questa settimana ancora nessun caffè: streak da difendere
-    val favoriteBar: String = ""
+    val favoriteBar: String = "",
+    val distinctBars: Int = 0,          // locali diversi visitati (badge "esploratore")
+    val maxDistanceKm: Double = 0.0     // distanza massima percorsa (badge "amico vero")
 )
 
 /** Indice di settimana (lunedì primo giorno) stabile: settimane consecutive differiscono di 1. */

@@ -39,6 +39,7 @@ fun TrackingScreen(nav: NavController, eventId: String, isLauncher: Boolean) {
     var remaining by remember { mutableStateOf(0L) }
     var myLat by remember { mutableStateOf<Double?>(null) }
     var myLng by remember { mutableStateOf<Double?>(null) }
+    var maxDistKm by remember { mutableStateOf(0.0) }
     val role = if (isLauncher) "launcher" else "guest"
 
     val locPermission = rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -52,6 +53,11 @@ fun TrackingScreen(nav: NavController, eventId: String, isLauncher: Boolean) {
                 val arrived = if (ev != null) {
                     val r = FloatArray(1)
                     android.location.Location.distanceBetween(lat, lng, ev.barLat, ev.barLng, r)
+                    val km = r[0] / 1000.0
+                    if (km > maxDistKm) {
+                        maxDistKm = km
+                        CoffeeRepository.setParticipationDistanceKm(eventId, Profile.id(context), km)
+                    }
                     r[0] <= 120f
                 } else false
                 CoffeeRepository.updateMyLocation(

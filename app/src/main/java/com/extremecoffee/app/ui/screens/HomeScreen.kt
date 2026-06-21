@@ -34,6 +34,7 @@ import com.extremecoffee.app.data.CoffeeRepository
 import com.extremecoffee.app.data.Phones
 import com.extremecoffee.app.data.Profile
 import com.extremecoffee.app.data.MyStats
+import com.extremecoffee.app.data.evaluateBadges
 import com.extremecoffee.app.ui.goFresh
 import com.extremecoffee.app.ui.decodeAvatar
 import com.extremecoffee.app.ui.saveProfilePhoto
@@ -151,6 +152,7 @@ fun HomeScreen(nav: NavController) {
             if (s.total > 0) {
                 Spacer(Modifier.height(20.dp))
                 Surface(
+                    onClick = { nav.navigate("badges") },
                     shape = MaterialTheme.shapes.large,
                     color = MaterialTheme.colorScheme.surfaceVariant,
                     modifier = Modifier.fillMaxWidth()
@@ -170,6 +172,11 @@ fun HomeScreen(nav: NavController) {
                         Text("${s.thisMonth} caffè questo mese \u00b7 ${s.total} totali",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Spacer(Modifier.height(6.dp))
+                        Text("\uD83C\uDFC5 ${evaluateBadges(s).count { it.earned }} traguardi sbloccati \u203A",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Medium)
                         if (s.favoriteBar.isNotBlank()) {
                             Spacer(Modifier.height(10.dp))
                             Text("Locale preferito: ${s.favoriteBar}",

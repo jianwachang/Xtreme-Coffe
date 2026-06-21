@@ -157,6 +157,7 @@ fun ExtremeCoffeeApp(incomingEventId: String?) {
                 SelfieCoffeeScreen(nav, it.arguments?.getString("eventId") ?: "")
             }
             composable("radar") { RadarScreen(nav) }
+            composable("badges") { BadgesScreen(nav) }
             composable("inviteFriends") { InviteFriendsScreen(nav) }
         }
     }

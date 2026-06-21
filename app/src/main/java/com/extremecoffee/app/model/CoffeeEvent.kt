@@ -43,7 +43,8 @@ data class InviteResponse(
     val fromName: String = "",
     val status: String = "",   // "accepted" oppure "declined"
     val updatedAt: Long = 0L,
-    val barName: String = ""
+    val barName: String = "",
+    val distanceKm: Double = 0.0   // quanto lontano è arrivato il partecipante (badge "amico vero")
 )
 
 /** Utente registrato nel registro "users" (chi ha l'app). */
