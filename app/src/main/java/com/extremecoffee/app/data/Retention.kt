@@ -4,7 +4,9 @@ import java.util.Calendar
 
 /** Statistiche di retention dell'utente, calcolate dagli eventi lanciati e dagli inviti accettati. */
 data class MyStats(
-    val total: Int = 0,
+    val launched: Int = 0,              // Extreme Coffee che ho lanciato io
+    val joined: Int = 0,                // inviti a cui ho partecipato (accettati)
+    val total: Int = 0,                 // launched + joined
     val thisMonth: Int = 0,
     val streakWeeks: Int = 0,
     val atRisk: Boolean = false,        // questa settimana ancora nessun caffè: streak da difendere

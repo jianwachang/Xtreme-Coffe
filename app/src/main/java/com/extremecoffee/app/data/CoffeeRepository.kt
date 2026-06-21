@@ -83,7 +83,8 @@ object CoffeeRepository {
     suspend fun loadMyStats(context: android.content.Context): MyStats {
         val d = db ?: return MyStats()
         val me = Profile.id(context)
-        val times = ArrayList<Long>()
+        val launchedTimes = ArrayList<Long>()
+        val joinedTimes = ArrayList<Long>()
         val bars = ArrayList<String>()
         // Eventi che ho lanciato io (escludo annullati e simulati)
         runCatching {
@@ -93,7 +94,7 @@ object CoffeeRepository {
                 if (ev.cancelled) continue
                 if (doc.getBoolean("simulated") == true) continue
                 if (ev.createdAt > 0) {
-                    times.add(ev.createdAt)
+                    launchedTimes.add(ev.createdAt)
                     if (ev.barName.isNotBlank()) bars.add(ev.barName)
                 }
             }
@@ -105,11 +106,12 @@ object CoffeeRepository {
                 val r = doc.toObject<InviteResponse>() ?: continue
                 if (r.status != "accepted") continue
                 if (r.updatedAt > 0) {
-                    times.add(r.updatedAt)
+                    joinedTimes.add(r.updatedAt)
                     if (r.barName.isNotBlank()) bars.add(r.barName)
                 }
             }
         }
+        val times = launchedTimes + joinedTimes
         if (times.isEmpty()) return MyStats()
         val now = System.currentTimeMillis()
         val curWeek = weekIndex(now)
@@ -119,7 +121,15 @@ object CoffeeRepository {
         val month = times.count { monthKey(it) == curMonth }
         val favorite = bars.groupingBy { it }.eachCount().maxByOrNull { it.value }?.key ?: ""
         val atRisk = streak > 0 && !weeks.contains(curWeek)
-        return MyStats(total = times.size, thisMonth = month, streakWeeks = streak, atRisk = atRisk, favoriteBar = favorite)
+        return MyStats(
+            launched = launchedTimes.size,
+            joined = joinedTimes.size,
+            total = times.size,
+            thisMonth = month,
+            streakWeeks = streak,
+            atRisk = atRisk,
+            favoriteBar = favorite
+        )
     }
 
     private val downloadUrlState = MutableStateFlow(Config.DOWNLOAD_URL)

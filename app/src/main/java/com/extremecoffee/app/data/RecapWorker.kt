@@ -24,6 +24,7 @@ class RecapWorker(appContext: Context, params: WorkerParameters) :
             val body = buildString {
                 append("${stats.thisMonth} caffè questo mese")
                 if (stats.streakWeeks > 0) append(" \u00b7 streak ${stats.streakWeeks} settimane \uD83D\uDD25")
+                append("\n${stats.launched} lanciati \u00b7 ${stats.joined} partecipati")
                 if (stats.atRisk) append("\nLancia un Extreme Coffee per non perdere lo streak!")
             }
             Notifier.showRecap(ctx, title, body)

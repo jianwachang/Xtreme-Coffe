@@ -163,9 +163,13 @@ fun HomeScreen(nav: NavController) {
                         Row(Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceEvenly) {
                             StatCell("\uD83D\uDD25", s.streakWeeks.toString(), "settimane")
-                            StatCell("\u2615", s.thisMonth.toString(), "questo mese")
-                            StatCell("\u2211", s.total.toString(), "totali")
+                            StatCell("\uD83D\uDE80", s.launched.toString(), "lanciati")
+                            StatCell("\uD83D\uDE4C", s.joined.toString(), "partecipati")
                         }
+                        Spacer(Modifier.height(10.dp))
+                        Text("${s.thisMonth} caffè questo mese \u00b7 ${s.total} totali",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant)
                         if (s.favoriteBar.isNotBlank()) {
                             Spacer(Modifier.height(10.dp))
                             Text("Locale preferito: ${s.favoriteBar}",
