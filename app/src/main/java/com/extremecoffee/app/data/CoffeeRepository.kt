@@ -74,9 +74,52 @@ object CoffeeRepository {
     suspend fun sendResponse(event: CoffeeEvent, fromId: String, fromName: String, status: String) {
         runCatching {
             db?.collection("responses")?.document("${event.id}_$fromId")?.set(
-                InviteResponse(event.id, event.launcherId, fromId, fromName, status, System.currentTimeMillis())
+                InviteResponse(event.id, event.launcherId, fromId, fromName, status, System.currentTimeMillis(), event.barName)
             )?.await()
         }
+    }
+
+    /** Statistiche personali (caffè totali, del mese, streak, locale preferito) per il loop di retention. */
+    suspend fun loadMyStats(context: android.content.Context): MyStats {
+        val d = db ?: return MyStats()
+        val me = Profile.id(context)
+        val times = ArrayList<Long>()
+        val bars = ArrayList<String>()
+        // Eventi che ho lanciato io (escludo annullati e simulati)
+        runCatching {
+            val snap = d.collection("events").whereEqualTo("launcherId", me).get().await()
+            for (doc in snap.documents) {
+                val ev = doc.toObject<CoffeeEvent>() ?: continue
+                if (ev.cancelled) continue
+                if (doc.getBoolean("simulated") == true) continue
+                if (ev.createdAt > 0) {
+                    times.add(ev.createdAt)
+                    if (ev.barName.isNotBlank()) bars.add(ev.barName)
+                }
+            }
+        }
+        // Inviti che HO accettato io (filtro lo status lato client: una sola query per evitare indici)
+        runCatching {
+            val snap = d.collection("responses").whereEqualTo("fromId", me).get().await()
+            for (doc in snap.documents) {
+                val r = doc.toObject<InviteResponse>() ?: continue
+                if (r.status != "accepted") continue
+                if (r.updatedAt > 0) {
+                    times.add(r.updatedAt)
+                    if (r.barName.isNotBlank()) bars.add(r.barName)
+                }
+            }
+        }
+        if (times.isEmpty()) return MyStats()
+        val now = System.currentTimeMillis()
+        val curWeek = weekIndex(now)
+        val curMonth = monthKey(now)
+        val weeks = times.map { weekIndex(it) }.toSet()
+        val streak = computeStreak(weeks, curWeek)
+        val month = times.count { monthKey(it) == curMonth }
+        val favorite = bars.groupingBy { it }.eachCount().maxByOrNull { it.value }?.key ?: ""
+        val atRisk = streak > 0 && !weeks.contains(curWeek)
+        return MyStats(total = times.size, thisMonth = month, streakWeeks = streak, atRisk = atRisk, favoriteBar = favorite)
     }
 
     private val downloadUrlState = MutableStateFlow(Config.DOWNLOAD_URL)

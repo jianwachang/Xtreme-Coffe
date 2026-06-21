@@ -42,7 +42,8 @@ data class InviteResponse(
     val fromId: String = "",
     val fromName: String = "",
     val status: String = "",   // "accepted" oppure "declined"
-    val updatedAt: Long = 0L
+    val updatedAt: Long = 0L,
+    val barName: String = ""
 )
 
 /** Utente registrato nel registro "users" (chi ha l'app). */

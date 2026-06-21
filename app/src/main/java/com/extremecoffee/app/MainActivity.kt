@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.extremecoffee.app.data.CoffeeRepository
 import com.extremecoffee.app.data.Phones
 import com.extremecoffee.app.data.Profile
+import com.extremecoffee.app.data.RetentionScheduler
 import com.extremecoffee.app.ui.screens.*
 import com.extremecoffee.app.ui.theme.ExtremeCoffeeTheme
 import com.google.firebase.messaging.FirebaseMessaging
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Notifier.ensureChannel(applicationContext)
+        RetentionScheduler.schedule(applicationContext)
         Notifier.cancelAll(applicationContext)  // niente avvisi di caffè vecchi/scaduti alla riapertura
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
             CoffeeRepository.saveFcmToken(Profile.id(this), token, Profile.name(this))

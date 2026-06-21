@@ -77,6 +77,9 @@ dependencies {
     // await() sulle Task (Places + Firestore)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
 
+    // Recap settimanale via notifica anche ad app chiusa
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
+
     implementation("com.google.accompanist:accompanist-permissions:0.36.0")
 
     // Fotocamera (Selfie Coffee)

@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 import com.extremecoffee.app.data.CoffeeRepository
 import com.extremecoffee.app.data.Phones
 import com.extremecoffee.app.data.Profile
+import com.extremecoffee.app.data.MyStats
 import com.extremecoffee.app.ui.goFresh
 import com.extremecoffee.app.ui.decodeAvatar
 import com.extremecoffee.app.ui.saveProfilePhoto
@@ -143,6 +144,46 @@ fun HomeScreen(nav: NavController) {
             }
         }
 
+        val myStats by produceState<MyStats?>(initialValue = null) {
+            value = CoffeeRepository.loadMyStats(context)
+        }
+        myStats?.let { s ->
+            if (s.total > 0) {
+                Spacer(Modifier.height(20.dp))
+                Surface(
+                    shape = MaterialTheme.shapes.large,
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(Modifier.padding(16.dp)) {
+                        Text("La tua settimana di caffè",
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.titleSmall)
+                        Spacer(Modifier.height(12.dp))
+                        Row(Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceEvenly) {
+                            StatCell("\uD83D\uDD25", s.streakWeeks.toString(), "settimane")
+                            StatCell("\u2615", s.thisMonth.toString(), "questo mese")
+                            StatCell("\u2211", s.total.toString(), "totali")
+                        }
+                        if (s.favoriteBar.isNotBlank()) {
+                            Spacer(Modifier.height(10.dp))
+                            Text("Locale preferito: ${s.favoriteBar}",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                        if (s.atRisk) {
+                            Spacer(Modifier.height(8.dp))
+                            Text("\u26A0\uFE0F Questa settimana ancora nessun caffè: lancia un Extreme Coffee per non perdere lo streak!",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.Medium)
+                        }
+                    }
+                }
+            }
+        }
+
         if (incoming.isNotEmpty()) {
             Spacer(Modifier.height(24.dp))
             Text("Hai ricevuto un Extreme Coffee!",
@@ -241,5 +282,17 @@ private fun ActionCard(
             Spacer(Modifier.height(2.dp))
             Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = content.copy(alpha = 0.8f))
         }
+    }
+}
+
+@Composable
+private fun StatCell(emoji: String, value: String, label: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text("$emoji $value",
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.titleMedium)
+        Text(label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }

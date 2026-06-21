@@ -71,6 +71,15 @@ object Profile {
             .edit().putString("photo64", b64 ?: "").apply()
     }
 
+    /** Ultima settimana per cui è stato inviato il recap (per non duplicarlo). */
+    fun lastRecapWeek(context: Context): Int =
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt("lastRecapWeek", -1)
+
+    fun setLastRecapWeek(context: Context, week: Int) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putInt("lastRecapWeek", week).apply()
+    }
+
     /** Cancella tutti i dati locali (profilo, foto, flag). Usato per "Elimina account". */
     fun clearAll(context: Context) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().clear().apply()
