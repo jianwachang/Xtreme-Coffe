@@ -37,6 +37,31 @@ object Notifier {
     }
 
     /** Rimuove TUTTE le notifiche dell'app. Usato alla riapertura per non lasciare avvisi di caffè scaduti. */
+    /** Notifica del promemoria ricorrente. Tap = apre l'app. */
+    fun showReminder(context: Context, label: String, notifId: Int) {
+        if (!hasPerm(context)) return
+        ensureChannel(context)
+        val intent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        val pi = PendingIntent.getActivity(
+            context, notifId, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        val text = if (label.isBlank()) "È l'ora del caffè: lancia un Extreme Coffee!"
+        else "È l'ora del caffè con $label: lancia un Extreme Coffee!"
+        val notif = NotificationCompat.Builder(context, CHANNEL)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle("Caffè ricorrente \u2615")
+            .setContentText(text)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(text))
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+            .setContentIntent(pi)
+            .build()
+        ContextCompat.getSystemService(context, NotificationManager::class.java)?.notify(notifId, notif)
+    }
+
     fun cancelAll(context: Context) {
         ContextCompat.getSystemService(context, NotificationManager::class.java)?.cancelAll()
     }

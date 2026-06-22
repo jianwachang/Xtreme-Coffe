@@ -195,6 +195,24 @@ fun HomeScreen(nav: NavController) {
             }
         }
 
+        Spacer(Modifier.height(16.dp))
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Surface(onClick = { nav.navigate("recurring") },
+                shape = MaterialTheme.shapes.large,
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                modifier = Modifier.weight(1f)) {
+                Text("\u23F0  Ricorrenti", modifier = Modifier.padding(14.dp),
+                    fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
+            }
+            Surface(onClick = { nav.navigate("leaderboard") },
+                shape = MaterialTheme.shapes.large,
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                modifier = Modifier.weight(1f)) {
+                Text("\uD83C\uDFC6  Classifica", modifier = Modifier.padding(14.dp),
+                    fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
+            }
+        }
+
         if (incoming.isNotEmpty()) {
             Spacer(Modifier.height(24.dp))
             Text("Hai ricevuto un Extreme Coffee!",

@@ -15,6 +15,11 @@ data class MyStats(
     val maxDistanceKm: Double = 0.0     // distanza massima percorsa (badge "amico vero")
 )
 
+/** Voce della classifica tra amici. */
+data class LeaderEntry(val id: String, val name: String, val launched: Int, val joined: Int) {
+    val total: Int get() = launched + joined
+}
+
 /** Indice di settimana (lunedì primo giorno) stabile: settimane consecutive differiscono di 1. */
 fun weekIndex(millis: Long): Int {
     val epochDay = Math.floorDiv(millis, 86_400_000L)

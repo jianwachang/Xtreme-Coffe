@@ -144,6 +144,38 @@ object CoffeeRepository {
         }
     }
 
+    /** Conta (lanciati, partecipati) di un utente, per la classifica. */
+    suspend fun countCoffeesFor(userId: String): Pair<Int, Int> {
+        val d = db ?: return 0 to 0
+        var launched = 0
+        var joined = 0
+        runCatching {
+            val snap = d.collection("events").whereEqualTo("launcherId", userId).get().await()
+            for (doc in snap.documents) {
+                if (doc.getBoolean("cancelled") == true) continue
+                if (doc.getBoolean("simulated") == true) continue
+                launched++
+            }
+        }
+        runCatching {
+            val snap = d.collection("responses").whereEqualTo("fromId", userId).get().await()
+            for (doc in snap.documents) {
+                if (doc.getString("status") == "accepted") joined++
+            }
+        }
+        return launched to joined
+    }
+
+    /** Costruisce la classifica per un insieme di utenti (id -> nome). */
+    suspend fun loadLeaderboard(users: List<Pair<String, String>>): List<LeaderEntry> {
+        val out = ArrayList<LeaderEntry>()
+        for ((id, name) in users) {
+            val (l, j) = countCoffeesFor(id)
+            out.add(LeaderEntry(id, name, l, j))
+        }
+        return out
+    }
+
     private val downloadUrlState = MutableStateFlow(Config.DOWNLOAD_URL)
     private var configReg: ListenerRegistration? = null
     /** Link di download dell'APK: si aggiorna da Firestore (config/app -> downloadUrl). */
