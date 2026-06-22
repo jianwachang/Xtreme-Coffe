@@ -1,12 +1,13 @@
 name: Deploy Firestore rules
 
-# Deploy delle regole Firestore. NON parte da solo: si attiva solo modificando
-# tools/deploy_rules_request.txt (così committare le regole non le pubblica per sbaglio)
-# oppure a mano dal tab Actions.
+# Deploy delle regole Firestore. Si attiva modificando tools/deploy_rules_request.txt
+# (così committare le regole non le pubblica per sbaglio) o a mano dal tab Actions.
+# SICUREZZA: prima verifica che l'accesso anonimo sia abilitato; se non lo è NON distribuisce
+# (le regole richiedono auth e bloccherebbero l'app). Richiede FIREBASE_SERVICE_ACCOUNT.
 on:
   workflow_dispatch: {}
   push:
-    paths: [ "tools/deploy_rules_request.txt" ]
+    paths: [ "tools/deploy_rules_request.txt", ".github/workflows/deploy-rules.yml" ]
 
 jobs:
   deploy:
@@ -21,16 +22,35 @@ jobs:
           cat > "$GITHUB_WORKSPACE/sa.json" <<'EOF'
           ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           EOF
-      - name: Deploy regole
+      - name: Preflight auth anonima + deploy regole
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/sa.json
         run: |
           set -o pipefail
-          firebase deploy --only firestore:rules --project extreme-coffe --non-interactive 2>&1 | tee /tmp/r.log
+          KEY="AIzaSyAZT5omdSkuiBoR35vlnpr69LFfeIQFKa8"
+          RESP=$(curl -s -X POST "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=$KEY" \
+            -H "Content-Type: application/json" -d '{"returnSecureToken":true}')
+          if echo "$RESP" | grep -q '"idToken"'; then ANON="enabled"; else ANON="disabled"; fi
+          echo "anonAuth=$ANON"
+          DEPLOY="skipped"
+          : > /tmp/r.log
+          if [ "$ANON" = "enabled" ]; then
+            if firebase deploy --only firestore:rules --project extreme-coffe --non-interactive 2>&1 | tee /tmp/r.log; then
+              DEPLOY="success"
+            else
+              DEPLOY="failed"
+            fi
+          else
+            echo "Accesso anonimo DISABILITATO in console: deploy saltato per non bloccare l'app." | tee /tmp/r.log
+          fi
+          printf '{"anonAuth":"%s","deploy":"%s"}\n' "$ANON" "$DEPLOY" > /tmp/op-result.json
+          cat /tmp/op-result.json
       - if: always()
         run: |
-          mkdir -p /tmp/dl && (cp /tmp/r.log /tmp/dl/rules-deploy.log 2>/dev/null || echo "nessun log" > /tmp/dl/rules-deploy.log)
+          mkdir -p /tmp/dl
+          cp /tmp/op-result.json /tmp/dl/op-result.json 2>/dev/null || echo '{"deploy":"no-result"}' > /tmp/dl/op-result.json
+          cp /tmp/r.log /tmp/dl/rules-deploy.log 2>/dev/null || echo "nessun log" > /tmp/dl/rules-deploy.log
           cd /tmp/dl && git init -q && git checkout -b ruleslog
           git config user.email bot@local; git config user.name log-bot
-          git add rules-deploy.log; git commit -q -m "rules deploy ${{ github.run_number }}"
+          git add op-result.json rules-deploy.log; git commit -q -m "rules deploy ${{ github.run_number }}"
           git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ruleslog
