@@ -23,7 +23,7 @@ import java.io.FileOutputStream
 object SelfieShare {
 
     /** Decodifica lo scatto, corregge l'orientamento EXIF e applica la cornice. */
-    fun frameFromFile(context: Context, file: File, event: CoffeeEvent?): Bitmap {
+    fun frameFromFile(context: Context, file: File, event: CoffeeEvent?, badgeText: String? = null): Bitmap {
         var bmp = BitmapFactory.decodeFile(file.absolutePath)
         runCatching {
             val exif = ExifInterface(file.absolutePath)
@@ -35,10 +35,10 @@ object SelfieShare {
             }
             if (!m.isIdentity) bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.width, bmp.height, m, true)
         }
-        return drawFrame(context, bmp, event)
+        return drawFrame(context, bmp, event, badgeText)
     }
 
-    private fun drawFrame(context: Context, src: Bitmap, event: CoffeeEvent?): Bitmap {
+    private fun drawFrame(context: Context, src: Bitmap, event: CoffeeEvent?, badgeText: String? = null): Bitmap {
         val innerW = src.width.toFloat()
         val innerH = src.height.toFloat()
         val mx = innerW * 0.07f          // margine laterale crema
@@ -91,6 +91,25 @@ object SelfieShare {
         c.restore()
         c.drawRoundRect(px, py, px + innerW, py + innerH, photoRad, photoRad,
             Paint().apply { isAntiAlias = true; style = Paint.Style.STROKE; strokeWidth = W * 0.008f; color = orange })
+
+        // badge "sticker" in alto a destra sulla foto (traguardo top dell'utente)
+        if (!badgeText.isNullOrBlank()) {
+            val bp = Paint().apply {
+                isAntiAlias = true; textSize = innerW * 0.045f
+                typeface = Typeface.DEFAULT_BOLD; color = 0xFFFFFFFF.toInt()
+            }
+            val padH = innerW * 0.032f; val padV = innerW * 0.020f
+            val tw = bp.measureText(badgeText)
+            val fm = bp.fontMetrics
+            val pillW = tw + padH * 2f
+            val pillH = (fm.descent - fm.ascent) + padV * 2f
+            val margin = innerW * 0.04f
+            val left = px + innerW - margin - pillW
+            val top = py + margin
+            c.drawRoundRect(left, top, left + pillW, top + pillH, pillH / 2f, pillH / 2f,
+                Paint().apply { isAntiAlias = true; color = orange })
+            c.drawText(badgeText, left + padH, top + padV - fm.ascent, bp)
+        }
 
         // logo reale in basso a destra
         val ls = bottomH * 0.9f

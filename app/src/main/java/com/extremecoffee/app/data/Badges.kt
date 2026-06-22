@@ -25,3 +25,10 @@ fun evaluateBadges(s: MyStats): List<Badge> {
         b("veterano", "\uD83C\uDFC5", "Veterano", "Totalizza 50 caffè", s.total, 50)
     )
 }
+
+/** Il traguardo più prestigioso già sbloccato (mostrato nel Selfie); null se nessuno. */
+fun topEarnedBadge(s: MyStats): Badge? {
+    val priority = listOf("veterano", "re", "anima", "amico", "fedele", "esploratore", "primo")
+    val earned = evaluateBadges(s).filter { it.earned }
+    return priority.firstNotNullOfOrNull { id -> earned.firstOrNull { it.id == id } }
+}

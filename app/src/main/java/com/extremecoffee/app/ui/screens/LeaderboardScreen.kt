@@ -1,5 +1,6 @@
 package com.extremecoffee.app.ui.screens
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -12,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.extremecoffee.app.data.Circles
 import com.extremecoffee.app.data.CoffeeRepository
 import com.extremecoffee.app.data.LeaderEntry
 import com.extremecoffee.app.data.Phones
@@ -29,51 +31,55 @@ import kotlinx.coroutines.withContext
 fun LeaderboardScreen(nav: NavController) {
     val context = LocalContext.current
     val perm = rememberPermissionState(android.Manifest.permission.READ_CONTACTS)
+    val circles = remember { Circles.all(context) }
+    var selectedCircleId by remember { mutableStateOf<String?>(null) }
     var entries by remember { mutableStateOf<List<LeaderEntry>?>(null) }
     var metric by remember { mutableStateOf(0) } // 0=totale 1=lanciati 2=partecipati
 
-    LaunchedEffect(perm.status.isGranted) {
-        if (perm.status.isGranted) {
+    LaunchedEffect(perm.status.isGranted, selectedCircleId) {
+        val circle = circles.firstOrNull { it.id == selectedCircleId }
+        if (circle == null && !perm.status.isGranted) { perm.launchPermissionRequest(); return@LaunchedEffect }
+        entries = null
+        val users = LinkedHashMap<String, String>()
+        users[Profile.id(context)] = Profile.name(context).ifBlank { "Tu" }
+        if (circle != null) {
+            circle.members.forEach { if (it.id.isNotBlank()) users[it.id] = it.name }
+        } else {
             val contacts = withContext(Dispatchers.IO) { readContacts(context) }
             val phones = contacts.mapNotNull { Phones.normalizeIt(it.phone) ?: Phones.normalizeIt(it.raw) }
             val registered = withContext(Dispatchers.IO) { CoffeeRepository.findRegistered(phones) }
-            val users = LinkedHashMap<String, String>()
-            users[Profile.id(context)] = Profile.name(context).ifBlank { "Tu" }
-            registered.values.take(25).forEach { u -> if (u.id.isNotBlank()) users[u.id] = u.name }
-            entries = withContext(Dispatchers.IO) {
-                CoffeeRepository.loadLeaderboard(users.map { it.key to it.value })
-            }
-        } else perm.launchPermissionRequest()
+            registered.values.take(25).forEach { if (it.id.isNotBlank()) users[it.id] = it.name }
+        }
+        entries = withContext(Dispatchers.IO) { CoffeeRepository.loadLeaderboard(users.map { it.key to it.value }) }
     }
 
     CoffeeScaffold("Classifica amici", nav, "leaderboard") { mod ->
         Column(mod.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp)) {
+            // selettore cerchia
+            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                SelectChip("Tutti", selectedCircleId == null) { selectedCircleId = null }
+                circles.forEach { c -> SelectChip(c.name, selectedCircleId == c.id) { selectedCircleId = c.id } }
+            }
+            Spacer(Modifier.height(8.dp))
+            TextButton(onClick = { nav.navigate("circles") }) { Text("Gestisci cerchie \u203A") }
+            Spacer(Modifier.height(8.dp))
+
+            // selettore metrica
             val labels = listOf("Totale", "Lanciati", "Partecipati")
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                labels.forEachIndexed { i, l ->
-                    val sel = metric == i
-                    Surface(onClick = { metric = i }, shape = MaterialTheme.shapes.small,
-                        color = if (sel) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
-                        modifier = Modifier.weight(1f)) {
-                        Text(l, modifier = Modifier.padding(vertical = 8.dp).fillMaxWidth(),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.labelMedium,
-                            color = if (sel) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface)
-                    }
-                }
+                labels.forEachIndexed { i, l -> SelectChip(l, metric == i, Modifier.weight(1f)) { metric = i } }
             }
             Spacer(Modifier.height(16.dp))
 
             val e = entries
             when {
-                !perm.status.isGranted -> Text(
-                    "Per la classifica servono i contatti: confronto solo chi ha già l'app. Concedi il permesso per continuare.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+                selectedCircleId == null && !perm.status.isGranted -> Text(
+                    "Per la classifica generale servono i contatti (confronto solo chi ha l'app). In alternativa scegli una cerchia salvata.",
+                    style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 e == null -> Row(verticalAlignment = Alignment.CenterVertically) {
                     CircularProgressIndicator(modifier = Modifier.size(20.dp))
-                    Spacer(Modifier.width(10.dp))
-                    Text("Calcolo la classifica\u2026")
+                    Spacer(Modifier.width(10.dp)); Text("Calcolo la classifica\u2026")
                 }
                 else -> {
                     val me = Profile.id(context)
@@ -89,24 +95,32 @@ fun LeaderboardScreen(nav: NavController) {
                             color = if (le.id == me) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
                             modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
                             Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
-                                Text(medal, modifier = Modifier.width(40.dp),
-                                    style = MaterialTheme.typography.titleMedium)
+                                Text(medal, modifier = Modifier.width(40.dp), style = MaterialTheme.typography.titleMedium)
                                 Text(le.name.ifBlank { "Anonimo" }, modifier = Modifier.weight(1f),
                                     fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge)
                                 Text(value.toString(), fontWeight = FontWeight.Bold,
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = MaterialTheme.colorScheme.primary)
+                                    style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
                             }
                         }
                     }
                     if (ranked.size <= 1) {
                         Spacer(Modifier.height(10.dp))
-                        Text("Quando i tuoi contatti useranno l'app, li vedrai qui in classifica.",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text("Aggiungi amici (o crea una cerchia) per popolare la classifica.",
+                            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun SelectChip(label: String, selected: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    Surface(onClick = onClick, shape = MaterialTheme.shapes.small,
+        color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
+        modifier = modifier) {
+        Text(label, modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
+            textAlign = TextAlign.Center, style = MaterialTheme.typography.labelMedium,
+            color = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface)
     }
 }

@@ -34,6 +34,7 @@ import androidx.navigation.NavController
 import com.extremecoffee.app.R
 import com.extremecoffee.app.data.CoffeeRepository
 import com.extremecoffee.app.ui.CoffeeScaffold
+import com.extremecoffee.app.data.topEarnedBadge
 import com.extremecoffee.app.ui.SelfieShare
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -50,6 +51,13 @@ fun SelfieCoffeeScreen(nav: NavController, eventId: String) {
 
     val imageCapture = remember { ImageCapture.Builder().build() }
     var captured by remember { mutableStateOf<Bitmap?>(null) }
+    var badgeText by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(Unit) {
+        runCatching {
+            val s = CoffeeRepository.loadMyStats(context)
+            badgeText = topEarnedBadge(s)?.let { "${it.emoji} ${it.title}" }
+        }
+    }
 
     CoffeeScaffold("Selfie Coffee", nav, "selfie/$eventId") { mod ->
         Box(mod.fillMaxSize()) {
@@ -159,7 +167,7 @@ fun SelfieCoffeeScreen(nav: NavController, eventId: String) {
                                     opts, ContextCompat.getMainExecutor(context),
                                     object : ImageCapture.OnImageSavedCallback {
                                         override fun onImageSaved(o: ImageCapture.OutputFileResults) {
-                                            captured = SelfieShare.frameFromFile(context, file, event)
+                                            captured = SelfieShare.frameFromFile(context, file, event, badgeText)
                                         }
                                         override fun onError(e: ImageCaptureException) {
                                             Toast.makeText(context, "Scatto non riuscito", Toast.LENGTH_SHORT).show()
