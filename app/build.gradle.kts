@@ -80,6 +80,9 @@ dependencies {
     // Recap settimanale via notifica anche ad app chiusa
     implementation("androidx.work:work-runtime-ktx:2.9.1")
 
+    // Accesso anonimo: serve a mettere in sicurezza Firestore con le regole
+    implementation("com.google.firebase:firebase-auth-ktx")
+
     implementation("com.google.accompanist:accompanist-permissions:0.36.0")
 
     // Fotocamera (Selfie Coffee)

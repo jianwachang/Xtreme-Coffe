@@ -17,6 +17,7 @@ import com.extremecoffee.app.data.Phones
 import com.extremecoffee.app.data.Profile
 import com.extremecoffee.app.data.Reminders
 import com.extremecoffee.app.data.RetentionScheduler
+import com.google.firebase.auth.FirebaseAuth
 import com.extremecoffee.app.ui.screens.*
 import com.extremecoffee.app.ui.theme.ExtremeCoffeeTheme
 import com.google.firebase.messaging.FirebaseMessaging
@@ -31,6 +32,12 @@ import kotlinx.coroutines.delay
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Accesso anonimo Firebase: necessario perché le regole Firestore richiedono un utente autenticato.
+        runCatching {
+            if (FirebaseAuth.getInstance().currentUser == null) {
+                FirebaseAuth.getInstance().signInAnonymously()
+            }
+        }
         Notifier.ensureChannel(applicationContext)
         RetentionScheduler.schedule(applicationContext)
         Reminders.rescheduleAll(applicationContext)

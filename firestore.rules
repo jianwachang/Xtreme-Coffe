@@ -1,0 +1,74 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Richiede un client autenticato (accesso anonimo dell'app).
+    // NB: le Cloud Functions usano l'Admin SDK e bypassano queste regole.
+    function signedIn() { return request.auth != null; }
+
+    // EVENTI: leggibili dai client autenticati (radar/inviti); creabili e aggiornabili,
+    // mai cancellabili dal client (l'annullamento avviene col flag cancelled).
+    match /events/{eventId} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.launcherId is string
+        && request.resource.data.mode is string
+        && request.resource.data.barName is string
+        && request.resource.data.barName.size() < 200
+        && request.resource.data.minutes is int
+        && request.resource.data.createdAt is int
+        && (!('launcherPhoto' in request.resource.data) || request.resource.data.launcherPhoto.size() < 60000);
+      allow update: if signedIn()
+        && (!('launcherPhoto' in request.resource.data) || request.resource.data.launcherPhoto.size() < 60000);
+      allow delete: if false;
+
+      // Posizioni live dei partecipanti
+      match /locations/{userId} {
+        allow read: if signedIn();
+        allow write: if signedIn()
+          && (!('photo' in request.resource.data) || request.resource.data.photo.size() < 60000);
+        allow delete: if signedIn();
+      }
+    }
+
+    // RISPOSTE agli inviti (accettato/rifiutato + distanza)
+    match /responses/{responseId} {
+      allow read: if signedIn();
+      allow create, update: if signedIn()
+        && request.resource.data.fromId is string
+        && request.resource.data.status is string;
+      allow delete: if false;
+    }
+
+    // REGISTRO UTENTI (telefono -> id): richiede auth, così i numeri non sono raccoglibili in anonimo
+    match /users/{phone} {
+      allow read: if signedIn();
+      allow create, update: if signedIn()
+        && request.resource.data.id is string
+        && request.resource.data.phone is string;
+      allow delete: if signedIn();   // cancellazione account
+    }
+
+    // NICKNAME univoci
+    match /nicknames/{nick} {
+      allow read: if signedIn();
+      allow create, update, delete: if signedIn();
+    }
+
+    // TOKEN FCM: sensibili, solo client autenticati
+    match /tokens/{deviceId} {
+      allow read, write: if signedIn();
+    }
+
+    // CONFIG dell'app: sola lettura dai client (scrittura solo da console / Admin SDK)
+    match /config/{doc} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // Tutto il resto: negato
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

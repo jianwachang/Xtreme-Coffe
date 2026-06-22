@@ -1,0 +1,36 @@
+name: Deploy Firestore rules
+
+# Deploy delle regole Firestore. NON parte da solo: si attiva solo modificando
+# tools/deploy_rules_request.txt (così committare le regole non le pubblica per sbaglio)
+# oppure a mano dal tab Actions.
+on:
+  workflow_dispatch: {}
+  push:
+    paths: [ "tools/deploy_rules_request.txt" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm i -g firebase-tools
+      - name: Credenziale service account
+        run: |
+          cat > "$GITHUB_WORKSPACE/sa.json" <<'EOF'
+          ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          EOF
+      - name: Deploy regole
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/sa.json
+        run: |
+          set -o pipefail
+          firebase deploy --only firestore:rules --project extreme-coffe --non-interactive 2>&1 | tee /tmp/r.log
+      - if: always()
+        run: |
+          mkdir -p /tmp/dl && (cp /tmp/r.log /tmp/dl/rules-deploy.log 2>/dev/null || echo "nessun log" > /tmp/dl/rules-deploy.log)
+          cd /tmp/dl && git init -q && git checkout -b ruleslog
+          git config user.email bot@local; git config user.name log-bot
+          git add rules-deploy.log; git commit -q -m "rules deploy ${{ github.run_number }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ruleslog
