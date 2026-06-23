@@ -35,7 +35,7 @@ import androidx.navigation.NavController
 import com.extremecoffee.app.data.CoffeeRepository
 import com.extremecoffee.app.data.Phones
 import com.extremecoffee.app.data.Profile
-import com.extremecoffee.app.ui.CoffeeScaffold
+import com.extremecoffee.app.ui.TabScaffold
 import com.extremecoffee.app.ui.goFresh
 import com.extremecoffee.app.ui.makeAvatarBase64
 import com.extremecoffee.app.ui.saveProfilePhoto
@@ -70,11 +70,11 @@ fun AccountScreen(nav: NavController) {
     val name = Profile.name(context)
     val phone = Phones.normalizeIt(Profile.phone(context)) ?: Profile.phone(context)
 
-    CoffeeScaffold("Account", nav, "account") { mod ->
+    TabScaffold("Account", nav, "account") { mod ->
         Column(mod.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp)) {
             // Intestazione profilo
             Surface(shape = MaterialTheme.shapes.large,
-                color = MaterialTheme.colorScheme.surfaceVariant, modifier = Modifier.fillMaxWidth()) {
+                color = MaterialTheme.colorScheme.surfaceVariant, shadowElevation = 3.dp, modifier = Modifier.fillMaxWidth()) {
                 Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     val bmp = remember(photoPath, photoVersion) {
                         if (photoPath != null) BitmapFactory.decodeFile(photoPath) else null
@@ -150,7 +150,7 @@ fun AccountScreen(nav: NavController) {
 @Composable
 private fun AccountRow(icon: ImageVector, title: String, subtitle: String, error: Boolean = false, onClick: () -> Unit) {
     Surface(onClick = onClick, shape = MaterialTheme.shapes.large,
-        color = MaterialTheme.colorScheme.surfaceVariant,
+        color = MaterialTheme.colorScheme.surfaceVariant, shadowElevation = 3.dp,
         modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)) {
         Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(icon, contentDescription = null,

@@ -19,7 +19,7 @@ import com.extremecoffee.app.data.LeaderEntry
 import com.extremecoffee.app.data.Phones
 import com.extremecoffee.app.data.Profile
 import com.extremecoffee.app.data.readContacts
-import com.extremecoffee.app.ui.CoffeeScaffold
+import com.extremecoffee.app.ui.TabScaffold
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -53,7 +53,7 @@ fun LeaderboardScreen(nav: NavController) {
         entries = withContext(Dispatchers.IO) { CoffeeRepository.loadLeaderboard(users.map { it.key to it.value }) }
     }
 
-    CoffeeScaffold("Classifica amici", nav, "leaderboard") { mod ->
+    TabScaffold("Classifica", nav, "leaderboard") { mod ->
         Column(mod.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp)) {
             // selettore cerchia
             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),

@@ -5,6 +5,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.TrackChanges
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -64,5 +67,62 @@ fun CoffeeScaffold(
                 }
             )
         }
+    ) { padding -> content(Modifier.padding(padding)) }
+}
+
+/** Barra di navigazione inferiore condivisa tra le schede principali. */
+@Composable
+fun AppBottomBar(nav: NavController, selected: String) {
+    androidx.compose.material3.NavigationBar(
+        containerColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant
+    ) {
+        androidx.compose.material3.NavigationBarItem(
+            selected = selected == "home",
+            onClick = { if (selected != "home") nav.goFresh("home") },
+            icon = { Icon(Icons.Filled.Home, contentDescription = null) },
+            label = { Text("Home") }
+        )
+        androidx.compose.material3.NavigationBarItem(
+            selected = selected == "radar",
+            onClick = { if (selected != "radar") nav.goFresh("radar") },
+            icon = { Icon(Icons.Filled.TrackChanges, contentDescription = null) },
+            label = { Text("Radar") }
+        )
+        androidx.compose.material3.NavigationBarItem(
+            selected = selected == "leaderboard",
+            onClick = { if (selected != "leaderboard") nav.navigate("leaderboard") },
+            icon = { Icon(Icons.Filled.EmojiEvents, contentDescription = null) },
+            label = { Text("Classifica") }
+        )
+        androidx.compose.material3.NavigationBarItem(
+            selected = selected == "account",
+            onClick = { if (selected != "account") nav.navigate("account") },
+            icon = { Icon(Icons.Filled.Person, contentDescription = null) },
+            label = { Text("Account") }
+        )
+    }
+}
+
+/** Scaffold per le schede principali: titolo serif (senza freccia indietro) + barra inferiore. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TabScaffold(
+    title: String,
+    nav: NavController,
+    selected: String,
+    content: @Composable (Modifier) -> Unit
+) {
+    Scaffold(
+        containerColor = androidx.compose.material3.MaterialTheme.colorScheme.background,
+        topBar = {
+            TopAppBar(
+                title = { Text(title, style = androidx.compose.material3.MaterialTheme.typography.headlineMedium) },
+                colors = androidx.compose.material3.TopAppBarDefaults.topAppBarColors(
+                    containerColor = androidx.compose.material3.MaterialTheme.colorScheme.background,
+                    titleContentColor = androidx.compose.material3.MaterialTheme.colorScheme.onBackground
+                )
+            )
+        },
+        bottomBar = { AppBottomBar(nav, selected) }
     ) { padding -> content(Modifier.padding(padding)) }
 }

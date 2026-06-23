@@ -48,6 +48,7 @@ import com.extremecoffee.app.data.Phones
 import com.extremecoffee.app.data.Profile
 import com.extremecoffee.app.data.MyStats
 import com.extremecoffee.app.ui.goFresh
+import com.extremecoffee.app.ui.AppBottomBar
 import com.extremecoffee.app.ui.decodeAvatar
 
 private val HeroStart = Color(0xFFF3923F)
@@ -76,7 +77,7 @@ fun HomeScreen(nav: NavController) {
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = { HomeBottomBar(nav) }
+        bottomBar = { AppBottomBar(nav, "home") }
     ) { inner ->
         PullToRefreshBox(
             isRefreshing = refreshing,
@@ -203,20 +204,6 @@ fun HomeScreen(nav: NavController) {
                 Spacer(Modifier.height(8.dp))
             }
         }
-    }
-}
-
-@Composable
-private fun HomeBottomBar(nav: NavController) {
-    NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceVariant) {
-        NavigationBarItem(selected = true, onClick = { },
-            icon = { Icon(Icons.Filled.Home, contentDescription = null) }, label = { Text("Home") })
-        NavigationBarItem(selected = false, onClick = { nav.goFresh("radar") },
-            icon = { Icon(Icons.Filled.TrackChanges, contentDescription = null) }, label = { Text("Radar") })
-        NavigationBarItem(selected = false, onClick = { nav.navigate("leaderboard") },
-            icon = { Icon(Icons.Filled.EmojiEvents, contentDescription = null) }, label = { Text("Classifica") })
-        NavigationBarItem(selected = false, onClick = { nav.navigate("account") },
-            icon = { Icon(Icons.Filled.Person, contentDescription = null) }, label = { Text("Account") })
     }
 }
 
