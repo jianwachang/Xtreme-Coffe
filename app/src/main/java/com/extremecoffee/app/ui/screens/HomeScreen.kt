@@ -8,75 +8,58 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Coffee
+import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.GroupAdd
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.PhotoCamera
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.TrackChanges
 import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.extremecoffee.app.R
 import com.extremecoffee.app.data.CoffeeRepository
 import com.extremecoffee.app.data.Phones
 import com.extremecoffee.app.data.Profile
 import com.extremecoffee.app.data.MyStats
-import com.extremecoffee.app.data.evaluateBadges
 import com.extremecoffee.app.ui.goFresh
 import com.extremecoffee.app.ui.decodeAvatar
-import com.extremecoffee.app.ui.saveProfilePhoto
-import com.extremecoffee.app.ui.makeAvatarBase64
-import android.net.Uri
-import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.ui.Alignment
+
+private val HeroStart = Color(0xFFF3923F)
+private val HeroEnd = Color(0xFFC85F1C)
 
 @Composable
 fun HomeScreen(nav: NavController) {
     val context = LocalContext.current
     val name = remember { Profile.name(context) }
     val myId = remember { Profile.id(context) }
-    val phone = remember { Profile.phone(context) }
-    val normPhone = Phones.normalizeIt(phone)
     var photoPath by remember { mutableStateOf(Profile.photoPath(context)) }
     var photoVersion by remember { mutableStateOf(0) }
-    val pickImage = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
-        if (uri != null) {
-            val saved = saveProfilePhoto(context, uri)
-            if (saved != null) {
-                Profile.setPhotoPath(context, saved)
-                Profile.setPhoto64(context, makeAvatarBase64(saved))
-                photoPath = saved
-                photoVersion++   // il file ha sempre lo stesso nome: forziamo il refresh dell'anteprima
-                Toast.makeText(context, "Foto profilo aggiornata", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, "Impossibile usare questa immagine", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-    fun editPhoto() = pickImage.launch(
-        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-    )
-    // Aggiorna l'anteprima quando si torna su Home (es. dopo aver cambiato foto in Account)
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val obs = LifecycleEventObserver { _, e ->
@@ -87,230 +70,192 @@ fun HomeScreen(nav: NavController) {
     }
     val incoming by CoffeeRepository.incomingInvites(myId).collectAsState(initial = emptyList())
     val myActive by CoffeeRepository.myActiveEvent(myId).collectAsState(initial = null)
+    val myStats by produceState<MyStats?>(initialValue = null) { value = CoffeeRepository.loadMyStats(context) }
     val scope = rememberCoroutineScope()
     var refreshing by remember { mutableStateOf(false) }
 
-    PullToRefreshBox(
-        isRefreshing = refreshing,
-        onRefresh = { scope.launch { refreshing = true; delay(500); refreshing = false } },
-        modifier = Modifier.fillMaxSize()
-    ) {
-    Column(
-        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp, vertical = 32.dp)
-    ) {
-        Text("\u2615", fontSize = 56.sp)
-        Spacer(Modifier.height(4.dp))
-        Text("Extreme Coffee",
-            style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.primary)
-        Text("Un caffè. Un timer. Zero scuse.",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant)
-
-        Spacer(Modifier.height(20.dp))
-        Surface(
-            onClick = { nav.navigate("account") },
-            shape = MaterialTheme.shapes.large,
-            color = MaterialTheme.colorScheme.surfaceVariant,
-            modifier = Modifier.fillMaxWidth()
+    Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
+        bottomBar = { HomeBottomBar(nav) }
+    ) { inner ->
+        PullToRefreshBox(
+            isRefreshing = refreshing,
+            onRefresh = { scope.launch { refreshing = true; delay(500); refreshing = false } },
+            modifier = Modifier.fillMaxSize().padding(inner)
         ) {
-            Row(
-                Modifier.padding(16.dp),
-                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+            Column(
+                Modifier.fillMaxSize().verticalScroll(rememberScrollState())
+                    .padding(horizontal = 20.dp).padding(top = 10.dp, bottom = 16.dp)
             ) {
-                Box(contentAlignment = Alignment.BottomEnd) {
+                // ---- App bar ----
+                Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Image(painterResource(R.drawable.ic_coffee_marker), contentDescription = null, modifier = Modifier.size(40.dp))
+                    Spacer(Modifier.width(10.dp))
+                    Text("Extreme Coffee", style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.weight(1f))
                     val bmp = remember(photoPath, photoVersion) { if (photoPath != null) BitmapFactory.decodeFile(photoPath) else null }
-                    if (bmp != null) {
-                        Image(bmp.asImageBitmap(), contentDescription = "Foto profilo",
-                            modifier = Modifier.size(48.dp).clip(CircleShape), contentScale = ContentScale.Crop)
-                    } else {
-                        Box(Modifier.size(48.dp).clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.surface),
-                            contentAlignment = Alignment.Center) {
-                            Icon(Icons.Filled.Person, contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary)
-                        }
-                    }
-                    // Badge fotocamera: indica che la foto è modificabile
-                    Box(
-                        Modifier.size(18.dp).clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primary),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(Icons.Filled.Settings, contentDescription = "Gestisci profilo",
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier.size(11.dp))
-                    }
-                }
-                Spacer(Modifier.width(12.dp))
-                Column(Modifier.weight(1f)) {
-                    Text(name, fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.titleMedium)
-                    Text(normPhone ?: phone,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    Text("Tocca per gestire il profilo",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary)
-                }
-            }
-        }
-
-        val myStats by produceState<MyStats?>(initialValue = null) {
-            value = CoffeeRepository.loadMyStats(context)
-        }
-        myStats?.let { s ->
-            if (s.total > 0) {
-                Spacer(Modifier.height(20.dp))
-                Surface(
-                    onClick = { nav.navigate("badges") },
-                    shape = MaterialTheme.shapes.large,
-                    color = MaterialTheme.colorScheme.surfaceVariant,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(Modifier.padding(16.dp)) {
-                        Text("La tua settimana di caffè",
-                            fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.titleSmall)
-                        Spacer(Modifier.height(12.dp))
-                        Row(Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceEvenly) {
-                            StatCell("\uD83D\uDD25", s.streakWeeks.toString(), "settimane")
-                            StatCell("\uD83D\uDE80", s.launched.toString(), "lanciati")
-                            StatCell("\uD83D\uDE4C", s.joined.toString(), "partecipati")
-                        }
-                        Spacer(Modifier.height(10.dp))
-                        Text("${s.thisMonth} caffè questo mese \u00b7 ${s.total} totali",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Spacer(Modifier.height(6.dp))
-                        Text("\uD83C\uDFC5 ${evaluateBadges(s).count { it.earned }} traguardi sbloccati \u203A",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Medium)
-                        if (s.favoriteBar.isNotBlank()) {
-                            Spacer(Modifier.height(10.dp))
-                            Text("Locale preferito: ${s.favoriteBar}",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-                        if (s.atRisk) {
-                            Spacer(Modifier.height(8.dp))
-                            Text("\u26A0\uFE0F Questa settimana ancora nessun caffè: lancia un Extreme Coffee per non perdere lo streak!",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.primary,
-                                fontWeight = FontWeight.Medium)
-                        }
-                    }
-                }
-            }
-        }
-
-        Spacer(Modifier.height(16.dp))
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Surface(onClick = { nav.navigate("recurring") },
-                shape = MaterialTheme.shapes.large,
-                color = MaterialTheme.colorScheme.surfaceVariant,
-                modifier = Modifier.weight(1f)) {
-                Text("\u23F0  Ricorrenti", modifier = Modifier.padding(14.dp),
-                    fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
-            }
-            Surface(onClick = { nav.navigate("leaderboard") },
-                shape = MaterialTheme.shapes.large,
-                color = MaterialTheme.colorScheme.surfaceVariant,
-                modifier = Modifier.weight(1f)) {
-                Text("\uD83C\uDFC6  Classifica", modifier = Modifier.padding(14.dp),
-                    fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
-            }
-        }
-
-        if (incoming.isNotEmpty()) {
-            Spacer(Modifier.height(24.dp))
-            Text("Hai ricevuto un Extreme Coffee!",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.secondary,
-                fontWeight = FontWeight.Bold)
-            Spacer(Modifier.height(8.dp))
-            incoming.forEach { e ->
-                Surface(
-                    onClick = { nav.goFresh("invite/${e.id}") },
-                    shape = MaterialTheme.shapes.large,
-                    color = MaterialTheme.colorScheme.secondaryContainer,
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
-                ) {
-                    Row(Modifier.padding(16.dp),
-                        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                        val inv = remember(e.launcherPhoto) { decodeAvatar(e.launcherPhoto) }
-                        if (inv != null) {
-                            Image(inv.asImageBitmap(), contentDescription = e.launcherName,
-                                modifier = Modifier.size(40.dp).clip(CircleShape),
-                                contentScale = ContentScale.Crop)
+                    Surface(onClick = { nav.navigate("account") }, shape = CircleShape,
+                        color = MaterialTheme.colorScheme.primary, modifier = Modifier.size(44.dp)) {
+                        if (bmp != null) {
+                            Image(bmp.asImageBitmap(), contentDescription = "Profilo",
+                                modifier = Modifier.fillMaxSize().clip(CircleShape), contentScale = ContentScale.Crop)
                         } else {
-                            Text("\u2615", fontSize = 28.sp)
+                            Box(contentAlignment = Alignment.Center) {
+                                Text(name.trim().take(1).uppercase().ifBlank { "C" },
+                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                            }
                         }
-                        Spacer(Modifier.width(12.dp))
-                        Column(Modifier.weight(1f)) {
-                            Text("${e.launcherName} ti invita",
-                                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                                fontWeight = FontWeight.Bold)
-                            Text("${e.barName} · ${e.remainingMillis() / 60_000} min rimasti",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.8f))
-                        }
-                        Icon(Icons.Filled.Person, contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSecondaryContainer)
                     }
                 }
+
+                Spacer(Modifier.height(14.dp))
+                // ---- Hero ----
+                val active = myActive
+                val bigText = if (active != null) "Il tuo caffè\nè in corso" else "Pronto per\nun caffè?"
+                val btnText = if (active != null) "Vedi sulla mappa" else "Lancia un Extreme Coffee"
+                val heroRoute = if (active != null) "launched/${active.id}" else "launch"
+                Box(
+                    Modifier.fillMaxWidth()
+                        .shadow(10.dp, MaterialTheme.shapes.extraLarge, clip = false)
+                        .clip(MaterialTheme.shapes.extraLarge)
+                        .background(Brush.linearGradient(listOf(HeroStart, HeroEnd)))
+                ) {
+                    Image(painterResource(R.drawable.ic_coffee_marker), contentDescription = null,
+                        modifier = Modifier.align(Alignment.TopEnd).padding(18.dp).size(80.dp))
+                    Column(Modifier.padding(22.dp)) {
+                        Text("BUONGIORNO, ${name.trim().uppercase().ifBlank { "AMICO" }}",
+                            style = MaterialTheme.typography.labelMedium, color = Color(0xFFFFE6D2))
+                        Spacer(Modifier.height(8.dp))
+                        Text(bigText, style = MaterialTheme.typography.displaySmall, color = Color.White)
+                        Spacer(Modifier.height(16.dp))
+                        Surface(onClick = { nav.goFresh(heroRoute) }, shape = MaterialTheme.shapes.extraLarge,
+                            color = Color.White, shadowElevation = 2.dp) {
+                            Text(btnText, modifier = Modifier.padding(horizontal = 22.dp, vertical = 13.dp),
+                                color = HeroEnd, style = MaterialTheme.typography.labelLarge)
+                        }
+                    }
+                }
+
+                Spacer(Modifier.height(18.dp))
+                // ---- Stat cards ----
+                val s = myStats
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                    StatCard(Modifier.weight(1f), "STREAK", Icons.Filled.LocalFireDepartment,
+                        (s?.streakWeeks ?: 0).toString(), "settimane") { nav.navigate("badges") }
+                    StatCard(Modifier.weight(1f), "CAFFÈ", Icons.Filled.Coffee,
+                        (s?.total ?: 0).toString(), "totali") { nav.navigate("badges") }
+                }
+                if (s?.atRisk == true) {
+                    Spacer(Modifier.height(10.dp))
+                    Text("Questa settimana ancora nessun caffè: lancia un Extreme Coffee per non perdere lo streak.",
+                        style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Medium)
+                }
+
+                // ---- Inviti in arrivo ----
+                if (incoming.isNotEmpty()) {
+                    Spacer(Modifier.height(24.dp))
+                    Text("Inviti per te", style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                    Spacer(Modifier.height(10.dp))
+                    incoming.forEach { e ->
+                        Surface(onClick = { nav.goFresh("invite/${e.id}") }, shape = MaterialTheme.shapes.large,
+                            color = MaterialTheme.colorScheme.secondaryContainer, shadowElevation = 2.dp,
+                            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)) {
+                            Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                                val inv = remember(e.launcherPhoto) { decodeAvatar(e.launcherPhoto) }
+                                if (inv != null) {
+                                    Image(inv.asImageBitmap(), contentDescription = e.launcherName,
+                                        modifier = Modifier.size(42.dp).clip(CircleShape), contentScale = ContentScale.Crop)
+                                } else {
+                                    Box(Modifier.size(42.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary),
+                                        contentAlignment = Alignment.Center) {
+                                        Text("\u2615", fontSize = 20.sp)
+                                    }
+                                }
+                                Spacer(Modifier.width(14.dp))
+                                Column(Modifier.weight(1f)) {
+                                    Text("${e.launcherName} ti invita",
+                                        color = MaterialTheme.colorScheme.onSecondaryContainer, fontWeight = FontWeight.Bold,
+                                        style = MaterialTheme.typography.titleMedium)
+                                    Text("${e.barName} · ${e.remainingMillis() / 60_000} min rimasti",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.8f))
+                                }
+                                Icon(Icons.Filled.ChevronRight, contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSecondaryContainer)
+                            }
+                        }
+                    }
+                }
+
+                // ---- Esplora ----
+                Spacer(Modifier.height(24.dp))
+                Text("Esplora", style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                Spacer(Modifier.height(12.dp))
+                ExploreRow(Icons.Filled.TrackChanges, "Radar amici", "Chi è in pausa caffè ora") { nav.goFresh("radar") }
+                Spacer(Modifier.height(12.dp))
+                ExploreRow(Icons.Filled.GroupAdd, "Invita gli amici", "Falli entrare nel giro") { nav.goFresh("inviteFriends") }
+                Spacer(Modifier.height(12.dp))
+                ExploreRow(Icons.Filled.Schedule, "Caffè ricorrenti", "Promemoria settimanali") { nav.navigate("recurring") }
+                Spacer(Modifier.height(8.dp))
             }
         }
-
-        Spacer(Modifier.height(28.dp))
-        val active = myActive
-        ActionCard(
-            if (active != null) "Extreme Coffee in corso" else "Lancia un Extreme Coffee",
-            if (active != null) "Ne hai gi\u00e0 uno attivo \u00b7 vedi la mappa" else "Dai appuntamento, parte il timer",
-            MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.onPrimary
-        ) { nav.goFresh(if (active != null) "launched/${active.id}" else "launch") }
-        Spacer(Modifier.height(14.dp))
-        ActionCard("Modalità nuove amicizie", "Trova chi prende un caffè vicino a te",
-            MaterialTheme.colorScheme.secondaryContainer, MaterialTheme.colorScheme.onSecondaryContainer) { nav.goFresh("radar") }
-        Spacer(Modifier.height(14.dp))
-        ActionCard("Invita i tuoi amici", "Falli scaricare l'app su WhatsApp",
-            MaterialTheme.colorScheme.surfaceVariant, MaterialTheme.colorScheme.onSurface) { nav.goFresh("inviteFriends") }
-    }
     }
 }
 
 @Composable
-private fun ActionCard(
-    title: String, subtitle: String,
-    container: androidx.compose.ui.graphics.Color,
-    content: androidx.compose.ui.graphics.Color,
-    onClick: () -> Unit
-) {
-    Surface(
-        onClick = onClick,
-        shape = MaterialTheme.shapes.large,
-        color = container,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(Modifier.padding(20.dp)) {
-            Text(title, style = MaterialTheme.typography.titleLarge, color = content, fontWeight = FontWeight.Bold)
-            Spacer(Modifier.height(2.dp))
-            Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = content.copy(alpha = 0.8f))
+private fun HomeBottomBar(nav: NavController) {
+    NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceVariant) {
+        NavigationBarItem(selected = true, onClick = { },
+            icon = { Icon(Icons.Filled.Home, contentDescription = null) }, label = { Text("Home") })
+        NavigationBarItem(selected = false, onClick = { nav.goFresh("radar") },
+            icon = { Icon(Icons.Filled.TrackChanges, contentDescription = null) }, label = { Text("Radar") })
+        NavigationBarItem(selected = false, onClick = { nav.navigate("leaderboard") },
+            icon = { Icon(Icons.Filled.EmojiEvents, contentDescription = null) }, label = { Text("Classifica") })
+        NavigationBarItem(selected = false, onClick = { nav.navigate("account") },
+            icon = { Icon(Icons.Filled.Person, contentDescription = null) }, label = { Text("Account") })
+    }
+}
+
+@Composable
+private fun StatCard(modifier: Modifier, label: String, icon: ImageVector, value: String, unit: String, onClick: () -> Unit) {
+    Surface(onClick = onClick, shape = MaterialTheme.shapes.large,
+        color = MaterialTheme.colorScheme.surfaceVariant, shadowElevation = 3.dp, modifier = modifier) {
+        Column(Modifier.padding(18.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(label, style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.weight(1f))
+                Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
+            }
+            Spacer(Modifier.height(6.dp))
+            Row(verticalAlignment = Alignment.Bottom) {
+                Text(value, style = MaterialTheme.typography.displaySmall, color = MaterialTheme.colorScheme.primary)
+                Spacer(Modifier.width(8.dp))
+                Text(unit, style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 7.dp))
+            }
         }
     }
 }
 
 @Composable
-private fun StatCell(emoji: String, value: String, label: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("$emoji $value",
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.titleMedium)
-        Text(label,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant)
+private fun ExploreRow(icon: ImageVector, title: String, subtitle: String, onClick: () -> Unit) {
+    Surface(onClick = onClick, shape = MaterialTheme.shapes.large,
+        color = MaterialTheme.colorScheme.surfaceVariant, shadowElevation = 3.dp, modifier = Modifier.fillMaxWidth()) {
+        Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Box(Modifier.size(40.dp).clip(MaterialTheme.shapes.medium)
+                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.13f)), contentAlignment = Alignment.Center) {
+                Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
+            }
+            Spacer(Modifier.width(14.dp))
+            Column(Modifier.weight(1f)) {
+                Text(title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
+                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Icon(Icons.Filled.ChevronRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
     }
 }
