@@ -129,6 +129,7 @@ fun ExtremeCoffeeApp(incomingEventId: String?) {
         NavHost(navController = nav, startDestination = start) {
             composable("register") { RegisterScreen(nav) }
             composable("home") { HomeScreen(nav) }
+            composable("account") { AccountScreen(nav) }
             composable("launch") { LaunchCoffeeScreen(nav) }
             composable("inviteCircle/{eventId}") {
                 InviteCircleScreen(nav, it.arguments?.getString("eventId") ?: "")

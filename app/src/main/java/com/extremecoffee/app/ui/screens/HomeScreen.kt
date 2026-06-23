@@ -13,10 +13,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
@@ -72,11 +76,19 @@ fun HomeScreen(nav: NavController) {
     fun editPhoto() = pickImage.launch(
         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
     )
+    // Aggiorna l'anteprima quando si torna su Home (es. dopo aver cambiato foto in Account)
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val obs = LifecycleEventObserver { _, e ->
+            if (e == Lifecycle.Event.ON_RESUME) { photoPath = Profile.photoPath(context); photoVersion++ }
+        }
+        lifecycleOwner.lifecycle.addObserver(obs)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(obs) }
+    }
     val incoming by CoffeeRepository.incomingInvites(myId).collectAsState(initial = emptyList())
     val myActive by CoffeeRepository.myActiveEvent(myId).collectAsState(initial = null)
     val scope = rememberCoroutineScope()
     var refreshing by remember { mutableStateOf(false) }
-    var showDelete by remember { mutableStateOf(false) }
 
     PullToRefreshBox(
         isRefreshing = refreshing,
@@ -98,7 +110,7 @@ fun HomeScreen(nav: NavController) {
 
         Spacer(Modifier.height(20.dp))
         Surface(
-            onClick = { editPhoto() },
+            onClick = { nav.navigate("account") },
             shape = MaterialTheme.shapes.large,
             color = MaterialTheme.colorScheme.surfaceVariant,
             modifier = Modifier.fillMaxWidth()
@@ -126,7 +138,7 @@ fun HomeScreen(nav: NavController) {
                             .background(MaterialTheme.colorScheme.primary),
                         contentAlignment = Alignment.Center
                     ) {
-                        Icon(Icons.Filled.PhotoCamera, contentDescription = "Modifica foto",
+                        Icon(Icons.Filled.Settings, contentDescription = "Gestisci profilo",
                             tint = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.size(11.dp))
                     }
@@ -138,7 +150,7 @@ fun HomeScreen(nav: NavController) {
                     Text(normPhone ?: phone,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    Text("Tocca per modificare la foto",
+                    Text("Tocca per gestire il profilo",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.primary)
                 }
@@ -266,30 +278,7 @@ fun HomeScreen(nav: NavController) {
         Spacer(Modifier.height(14.dp))
         ActionCard("Invita i tuoi amici", "Falli scaricare l'app su WhatsApp",
             MaterialTheme.colorScheme.surfaceVariant, MaterialTheme.colorScheme.onSurface) { nav.goFresh("inviteFriends") }
-
-        Spacer(Modifier.height(28.dp))
-        TextButton(onClick = { showDelete = true }, modifier = Modifier.fillMaxWidth()) {
-            Text("Elimina account e dati", color = MaterialTheme.colorScheme.error)
-        }
     }
-
-        if (showDelete) {
-            AlertDialog(
-                onDismissRequest = { showDelete = false },
-                title = { Text("Eliminare account e dati?") },
-                text = { Text("Verranno rimossi il tuo profilo, il nickname e i dati associati. L'azione \u00e8 definitiva.") },
-                confirmButton = {
-                    TextButton(onClick = {
-                        showDelete = false
-                        scope.launch {
-                            CoffeeRepository.deleteMyAccountAndData(context)
-                            nav.goFresh("register")
-                        }
-                    }) { Text("Elimina", color = MaterialTheme.colorScheme.error) }
-                },
-                dismissButton = { TextButton(onClick = { showDelete = false }) { Text("Annulla") } }
-            )
-        }
     }
 }
 
