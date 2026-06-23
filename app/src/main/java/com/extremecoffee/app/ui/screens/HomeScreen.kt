@@ -85,7 +85,7 @@ fun HomeScreen(nav: NavController) {
         ) {
             Column(
                 Modifier.fillMaxSize().verticalScroll(rememberScrollState())
-                    .padding(horizontal = 20.dp).padding(top = 10.dp, bottom = 16.dp)
+                    .padding(horizontal = 20.dp).padding(top = 6.dp, bottom = 12.dp)
             ) {
                 // ---- App bar ----
                 Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -109,7 +109,7 @@ fun HomeScreen(nav: NavController) {
                     }
                 }
 
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(10.dp))
                 // ---- Hero ----
                 val active = myActive
                 val bigText = if (active != null) "Il tuo caffè\nè in corso" else "Pronto per\nun caffè?"
@@ -123,12 +123,12 @@ fun HomeScreen(nav: NavController) {
                 ) {
                     Image(painterResource(R.drawable.ic_coffee_marker), contentDescription = null,
                         modifier = Modifier.align(Alignment.TopEnd).padding(18.dp).size(80.dp))
-                    Column(Modifier.padding(22.dp)) {
+                    Column(Modifier.padding(20.dp)) {
                         Text("BUONGIORNO, ${name.trim().uppercase().ifBlank { "AMICO" }}",
                             style = MaterialTheme.typography.labelMedium, color = Color(0xFFFFE6D2))
                         Spacer(Modifier.height(8.dp))
                         Text(bigText, style = MaterialTheme.typography.displaySmall, color = Color.White)
-                        Spacer(Modifier.height(16.dp))
+                        Spacer(Modifier.height(12.dp))
                         Surface(onClick = { nav.goFresh(heroRoute) }, shape = MaterialTheme.shapes.extraLarge,
                             color = Color.White, shadowElevation = 2.dp) {
                             Text(btnText, modifier = Modifier.padding(horizontal = 22.dp, vertical = 13.dp),
@@ -137,7 +137,7 @@ fun HomeScreen(nav: NavController) {
                     }
                 }
 
-                Spacer(Modifier.height(18.dp))
+                Spacer(Modifier.height(12.dp))
                 // ---- Stat cards ----
                 val s = myStats
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
@@ -147,15 +147,26 @@ fun HomeScreen(nav: NavController) {
                         (s?.total ?: 0).toString(), "totali") { nav.navigate("badges") }
                 }
                 if (s?.atRisk == true) {
-                    Spacer(Modifier.height(10.dp))
+                    Spacer(Modifier.height(8.dp))
                     Text("Questa settimana ancora nessun caffè: lancia un Extreme Coffee per non perdere lo streak.",
                         style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Medium)
                 }
 
+                // ---- Esplora (sopra la piega) ----
+                Spacer(Modifier.height(18.dp))
+                Text("Esplora", style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                Spacer(Modifier.height(10.dp))
+                ExploreRow(Icons.Filled.TrackChanges, "Radar amici", "Chi è in pausa caffè ora") { nav.goFresh("radar") }
+                Spacer(Modifier.height(10.dp))
+                ExploreRow(Icons.Filled.GroupAdd, "Invita gli amici", "Falli entrare nel giro") { nav.goFresh("inviteFriends") }
+                Spacer(Modifier.height(10.dp))
+                ExploreRow(Icons.Filled.Schedule, "Caffè ricorrenti", "Promemoria settimanali") { nav.navigate("recurring") }
+
                 // ---- Inviti in arrivo ----
                 if (incoming.isNotEmpty()) {
-                    Spacer(Modifier.height(24.dp))
+                    Spacer(Modifier.height(22.dp))
                     Text("Inviti per te", style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
                     Spacer(Modifier.height(10.dp))
@@ -189,17 +200,6 @@ fun HomeScreen(nav: NavController) {
                         }
                     }
                 }
-
-                // ---- Esplora ----
-                Spacer(Modifier.height(24.dp))
-                Text("Esplora", style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
-                Spacer(Modifier.height(12.dp))
-                ExploreRow(Icons.Filled.TrackChanges, "Radar amici", "Chi è in pausa caffè ora") { nav.goFresh("radar") }
-                Spacer(Modifier.height(12.dp))
-                ExploreRow(Icons.Filled.GroupAdd, "Invita gli amici", "Falli entrare nel giro") { nav.goFresh("inviteFriends") }
-                Spacer(Modifier.height(12.dp))
-                ExploreRow(Icons.Filled.Schedule, "Caffè ricorrenti", "Promemoria settimanali") { nav.navigate("recurring") }
                 Spacer(Modifier.height(8.dp))
             }
         }
