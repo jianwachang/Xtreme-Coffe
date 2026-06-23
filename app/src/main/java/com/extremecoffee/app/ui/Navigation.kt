@@ -14,6 +14,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Modifier
@@ -73,28 +77,28 @@ fun CoffeeScaffold(
 /** Barra di navigazione inferiore condivisa tra le schede principali. */
 @Composable
 fun AppBottomBar(nav: NavController, selected: String) {
-    androidx.compose.material3.NavigationBar(
-        containerColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
-        androidx.compose.material3.NavigationBarItem(
+        NavigationBarItem(
             selected = selected == "home",
             onClick = { if (selected != "home") nav.goFresh("home") },
             icon = { Icon(Icons.Filled.Home, contentDescription = null) },
             label = { Text("Home") }
         )
-        androidx.compose.material3.NavigationBarItem(
+        NavigationBarItem(
             selected = selected == "radar",
             onClick = { if (selected != "radar") nav.goFresh("radar") },
             icon = { Icon(Icons.Filled.TrackChanges, contentDescription = null) },
             label = { Text("Radar") }
         )
-        androidx.compose.material3.NavigationBarItem(
+        NavigationBarItem(
             selected = selected == "leaderboard",
             onClick = { if (selected != "leaderboard") nav.navigate("leaderboard") },
             icon = { Icon(Icons.Filled.EmojiEvents, contentDescription = null) },
             label = { Text("Classifica") }
         )
-        androidx.compose.material3.NavigationBarItem(
+        NavigationBarItem(
             selected = selected == "account",
             onClick = { if (selected != "account") nav.navigate("account") },
             icon = { Icon(Icons.Filled.Person, contentDescription = null) },
@@ -113,13 +117,13 @@ fun TabScaffold(
     content: @Composable (Modifier) -> Unit
 ) {
     Scaffold(
-        containerColor = androidx.compose.material3.MaterialTheme.colorScheme.background,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text(title, style = androidx.compose.material3.MaterialTheme.typography.headlineMedium) },
-                colors = androidx.compose.material3.TopAppBarDefaults.topAppBarColors(
-                    containerColor = androidx.compose.material3.MaterialTheme.colorScheme.background,
-                    titleContentColor = androidx.compose.material3.MaterialTheme.colorScheme.onBackground
+                title = { Text(title, style = MaterialTheme.typography.headlineMedium) },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    titleContentColor = MaterialTheme.colorScheme.onBackground
                 )
             )
         },
