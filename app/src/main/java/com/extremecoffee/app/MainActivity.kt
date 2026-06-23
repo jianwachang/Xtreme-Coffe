@@ -41,7 +41,6 @@ class MainActivity : ComponentActivity() {
         Notifier.ensureChannel(applicationContext)
         RetentionScheduler.schedule(applicationContext)
         Reminders.rescheduleAll(applicationContext)
-        Notifier.cancelAll(applicationContext)  // niente avvisi di caffè vecchi/scaduti alla riapertura
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
             CoffeeRepository.saveFcmToken(Profile.id(this), token, Profile.name(this))
         }
@@ -67,49 +66,34 @@ fun ExtremeCoffeeApp(incomingEventId: String?) {
         LaunchedEffect(Unit) { if (!notifPerm.status.isGranted) notifPerm.launchPermissionRequest() }
     }
 
-    // Notifica locale quando arriva un nuovo invito (mentre l'app è aperta)
+    // CICLO DI VITA DELLE NOTIFICHE DI INVITO (modalità cerchia):
+    // - NASCE col push FCM (PushService.showRaw, con scadenza) nel momento in cui vieni invitato;
+    // - si ESAURISCE da sola alla scadenza (setTimeoutAfter) o con il push di annullamento (cancelInvite).
+    // Qui NON ricreiamo MAI le notifiche (era la causa della ricomparsa a ogni apertura):
+    // facciamo solo da rete di sicurezza, CANCELLANDO quelle di inviti non più attivi (scaduti/annullati/rifiutati).
     val myId = remember { Profile.id(context) }
     val incoming by CoffeeRepository.incomingInvites(myId).collectAsState(initial = emptyList())
-    val notified = remember { mutableStateListOf<String>() }
-    // Mostra/aggiorna le notifiche degli inviti ANCORA attivi; toglie quelle scadute/annullate/rifiutate
+    val tracked = remember { mutableStateListOf<String>() }   // id inviti visti come attivi (solo per poterli cancellare)
     LaunchedEffect(incoming) {
         val now = System.currentTimeMillis()
         val activeIds = incoming.filter { it.remainingMillis(now) > 0 }.map { it.id }.toSet()
-        incoming.forEach { e ->
-            if (e.remainingMillis(now) > 0 && notified.add(e.id)) Notifier.showInvite(context, e)
-        }
-        notified.toList().forEach { id ->
-            if (id !in activeIds) { Notifier.cancelInvite(context, id); notified.remove(id) }
+        activeIds.forEach { if (it !in tracked) tracked.add(it) }   // traccia soltanto: la notifica la crea il push
+        tracked.toList().forEach { id ->
+            if (id !in activeIds) { Notifier.cancelInvite(context, id); tracked.remove(id) }
         }
     }
-    // Tick periodico: fa sparire le notifiche alla scadenza anche senza aggiornamenti da Firestore
+    // Tick periodico: rimuove la notifica alla scadenza/annullamento anche senza aggiornamenti da Firestore.
     LaunchedEffect(Unit) {
         while (true) {
             delay(15_000)
             val now = System.currentTimeMillis()
-            notified.toList().forEach { id ->
+            tracked.toList().forEach { id ->
                 val ev = CoffeeRepository.eventById(id)
-                if (ev == null || ev.remainingMillis(now) <= 0) {
-                    Notifier.cancelInvite(context, id); notified.remove(id)
+                if (ev == null || ev.cancelled || ev.remainingMillis(now) <= 0) {
+                    Notifier.cancelInvite(context, id); tracked.remove(id)
                 }
             }
         }
-    }
-    // Ad ogni ritorno in primo piano: pulisci il vassoio e riproponi SOLO gli inviti ancora attivi
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
-        val obs = LifecycleEventObserver { _, ev ->
-            if (ev == Lifecycle.Event.ON_RESUME) {
-                Notifier.cancelAll(context)
-                notified.clear()
-                val now = System.currentTimeMillis()
-                incoming.filter { it.remainingMillis(now) > 0 }.forEach { e ->
-                    notified.add(e.id); Notifier.showInvite(context, e)
-                }
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(obs)
-        onDispose { lifecycleOwner.lifecycle.removeObserver(obs) }
     }
 
     // Inviti già rifiutati: non devono riapparire
