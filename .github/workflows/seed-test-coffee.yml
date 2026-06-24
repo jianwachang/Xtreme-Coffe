@@ -1,0 +1,55 @@
+name: Seed Test Coffee
+
+# Crea un Extreme Coffee di prova invitando Dario, scrivendo direttamente su Firestore
+# col service account. Parte quando tocchi tools/seed_test_coffee.txt o a mano (Run workflow).
+# Richiede il secret FIREBASE_SERVICE_ACCOUNT.
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - "tools/seed_test_coffee.txt"
+      - "tools/seedTestCoffee.js"
+      - ".github/workflows/seed-test-coffee.yml"
+  workflow_dispatch: {}
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Scarica il codice
+        uses: actions/checkout@v4
+
+      - name: Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Installa firebase-admin
+        run: npm i firebase-admin@^12
+
+      - name: Scrivi la credenziale del service account
+        run: |
+          cat > "$GITHUB_WORKSPACE/sa.json" <<'EOF'
+          ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          EOF
+
+      - name: Crea l'evento di prova
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/sa.json
+        run: node tools/seedTestCoffee.js 2>&1 | tee seed.log
+
+      - name: Pubblica il risultato su branch seedlog
+        if: always()
+        run: |
+          mkdir -p /tmp/sl
+          cp op-result.json /tmp/sl/ 2>/dev/null || echo '{"ok":false,"error":"nessun op-result"}' > /tmp/sl/op-result.json
+          cp seed.log /tmp/sl/ 2>/dev/null || echo "nessun log" > /tmp/sl/seed.log
+          cd /tmp/sl
+          git init -q
+          git checkout -b seedlog
+          git config user.email "bot@extremecoffee.app"
+          git config user.name "seed-bot"
+          git add -A
+          git commit -q -m "seed result ${{ github.run_number }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" seedlog
