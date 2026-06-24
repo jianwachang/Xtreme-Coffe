@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.extremecoffee.app.data.CoffeeRepository
@@ -99,19 +100,19 @@ fun AppBottomBar(nav: NavController, selected: String) {
             selected = selected == "home",
             onClick = { if (selected != "home") nav.goFresh("home") },
             icon = { Icon(Icons.Filled.Home, contentDescription = null) },
-            label = { Text("Home") }
+            label = { Text("Home", maxLines = 1, softWrap = false, fontSize = 10.sp) }
         )
         NavigationBarItem(
             selected = selected == "radar",
             onClick = { if (selected != "radar") nav.goFresh("radar") },
             icon = { Icon(Icons.Filled.TrackChanges, contentDescription = null) },
-            label = { Text("Radar") }
+            label = { Text("Radar", maxLines = 1, softWrap = false, fontSize = 10.sp) }
         )
         NavigationBarItem(
             selected = selected == "leaderboard",
             onClick = { if (selected != "leaderboard") nav.navigate("leaderboard") },
             icon = { Icon(Icons.Filled.EmojiEvents, contentDescription = null) },
-            label = { Text("Classifica") }
+            label = { Text("Classifica", maxLines = 1, softWrap = false, fontSize = 10.sp) }
         )
         NavigationBarItem(
             selected = selected == "notifications",
@@ -121,13 +122,13 @@ fun AppBottomBar(nav: NavController, selected: String) {
                     if (pending > 0) Badge { Text(if (pending > 9) "9+" else pending.toString()) }
                 }) { Icon(Icons.Filled.Notifications, contentDescription = null) }
             },
-            label = { Text("Notifiche") }
+            label = { Text("Notifiche", maxLines = 1, softWrap = false, fontSize = 10.sp) }
         )
         NavigationBarItem(
             selected = selected == "account",
             onClick = { if (selected != "account") nav.navigate("account") },
             icon = { Icon(Icons.Filled.Person, contentDescription = null) },
-            label = { Text("Account") }
+            label = { Text("Account", maxLines = 1, softWrap = false, fontSize = 10.sp) }
         )
     }
 }

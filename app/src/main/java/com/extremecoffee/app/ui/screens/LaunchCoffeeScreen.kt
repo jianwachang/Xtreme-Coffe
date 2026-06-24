@@ -6,6 +6,7 @@ import android.Manifest
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -153,9 +154,10 @@ fun LaunchCoffeeScreen(nav: NavController) {
             Spacer(Modifier.height(20.dp))
             Text("Quanto tempo hanno?", style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(8.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.horizontalScroll(rememberScrollState())) {
                 TIMES.forEach { t ->
-                    FilterChip(selected = minutes == t, onClick = { minutes = t }, label = { Text("$t min") })
+                    FilterChip(selected = minutes == t, onClick = { minutes = t }, label = { Text("$t min", maxLines = 1, softWrap = false) })
                 }
             }
 
@@ -194,7 +196,7 @@ fun LaunchCoffeeScreen(nav: NavController) {
                 },
                 modifier = Modifier.fillMaxWidth().height(56.dp),
                 shape = MaterialTheme.shapes.large
-            ) { Text("Lancia Extreme Coffee · $minutes min", fontWeight = FontWeight.Bold) }
+            ) { Text("Lancia Extreme Coffee · $minutes min", fontWeight = FontWeight.Bold, maxLines = 1, softWrap = false) }
             Spacer(Modifier.height(28.dp))
         }
     }
