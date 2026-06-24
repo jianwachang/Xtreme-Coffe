@@ -71,6 +71,7 @@ fun HomeScreen(nav: NavController) {
     }
     val incoming by CoffeeRepository.incomingInvites(myId).collectAsState(initial = emptyList())
     val myActive by CoffeeRepository.myActiveEvent(myId).collectAsState(initial = null)
+    val acceptedInvite by CoffeeRepository.myAcceptedActiveEvent(myId).collectAsState(initial = null)
     val myStats by produceState<MyStats?>(initialValue = null) { value = CoffeeRepository.loadMyStats(context) }
     val scope = rememberCoroutineScope()
     var refreshing by remember { mutableStateOf(false) }
@@ -113,9 +114,12 @@ fun HomeScreen(nav: NavController) {
                 Spacer(Modifier.height(10.dp))
                 // ---- Hero ----
                 val active = myActive
-                val bigText = if (active != null) "Il tuo caffè\nè in corso" else "Pronto per\nun caffè?"
-                val btnText = if (active != null) "Vedi sulla mappa" else "Lancia un Extreme Coffee"
-                val heroRoute = if (active != null) "launched/${active.id}" else "launch"
+                val accepted = acceptedInvite
+                val bigText = when {
+                    active != null -> "Il tuo caffè\nè in corso"
+                    accepted != null -> "Sei atteso\na un caffè"
+                    else -> "Pronto per\nun caffè?"
+                }
                 Box(
                     Modifier.fillMaxWidth()
                         .shadow(10.dp, MaterialTheme.shapes.extraLarge, clip = false)
@@ -130,10 +134,43 @@ fun HomeScreen(nav: NavController) {
                         Spacer(Modifier.height(8.dp))
                         Text(bigText, style = MaterialTheme.typography.displaySmall, color = Color.White)
                         Spacer(Modifier.height(12.dp))
-                        Surface(onClick = { nav.goFresh(heroRoute) }, shape = MaterialTheme.shapes.extraLarge,
-                            color = Color.White, shadowElevation = 2.dp) {
-                            Text(btnText, modifier = Modifier.padding(horizontal = 22.dp, vertical = 13.dp),
-                                color = HeroEnd, style = MaterialTheme.typography.labelLarge)
+                        when {
+                            active != null -> {
+                                Surface(onClick = { nav.goFresh("launched/${active.id}") },
+                                    shape = MaterialTheme.shapes.extraLarge,
+                                    color = Color.White, shadowElevation = 2.dp) {
+                                    Text("Vedi sulla mappa",
+                                        modifier = Modifier.padding(horizontal = 22.dp, vertical = 13.dp),
+                                        color = HeroEnd, style = MaterialTheme.typography.labelLarge)
+                                }
+                            }
+                            accepted != null -> {
+                                // Hai accettato un invito: lancio disabilitato finché non si conclude.
+                                Surface(
+                                    shape = MaterialTheme.shapes.extraLarge,
+                                    color = Color.White.copy(alpha = 0.55f)
+                                ) {
+                                    Text("☕ Sei già in viaggio per un caffè",
+                                        modifier = Modifier.padding(horizontal = 22.dp, vertical = 13.dp),
+                                        color = HeroEnd.copy(alpha = 0.75f),
+                                        style = MaterialTheme.typography.labelLarge,
+                                        maxLines = 1, softWrap = false)
+                                }
+                                Spacer(Modifier.height(8.dp))
+                                Text(
+                                    "Hai accettato un invito: potrai lanciare il tuo appena questo si conclude.",
+                                    style = MaterialTheme.typography.bodySmall, color = Color(0xFFFFE6D2)
+                                )
+                            }
+                            else -> {
+                                Surface(onClick = { nav.goFresh("launch") },
+                                    shape = MaterialTheme.shapes.extraLarge,
+                                    color = Color.White, shadowElevation = 2.dp) {
+                                    Text("Lancia un Extreme Coffee",
+                                        modifier = Modifier.padding(horizontal = 22.dp, vertical = 13.dp),
+                                        color = HeroEnd, style = MaterialTheme.typography.labelLarge)
+                                }
+                            }
                         }
                     }
                 }

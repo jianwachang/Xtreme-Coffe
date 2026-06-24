@@ -106,6 +106,7 @@ fun InvitePopupScreen(nav: NavController, eventId: String) {
                             eventId, ParticipantLocation(userId = Profile.id(context), name = Profile.name(context), photo = Profile.photo64(context))
                         )
                         CoffeeRepository.sendResponse(e, Profile.id(context), Profile.name(context), "accepted")
+                        CoffeeRepository.markJoined(context, eventId)
                         nav.goFresh("tracking/$eventId/guest")
                     }
                 },

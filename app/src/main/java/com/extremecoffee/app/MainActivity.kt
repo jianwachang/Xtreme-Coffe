@@ -97,7 +97,10 @@ fun ExtremeCoffeeApp(incomingEventId: String?) {
     }
 
     // Inviti già rifiutati: non devono riapparire
-    LaunchedEffect(Unit) { CoffeeRepository.setDeclined(Profile.declined(context)) }
+    LaunchedEffect(Unit) {
+        CoffeeRepository.setDeclined(Profile.declined(context))
+        CoffeeRepository.setJoined(Profile.joinedEvent(context))
+    }
 
     // Mi registro nel registro "users" (se ho già messo il numero) così gli amici mi trovano
     LaunchedEffect(Unit) {

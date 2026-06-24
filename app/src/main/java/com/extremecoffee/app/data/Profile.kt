@@ -40,6 +40,20 @@ object Profile {
         p.edit().putStringSet("declined", cur).apply()
     }
 
+    /** Id dell'invito che ho accettato e a cui sto andando (null se nessuno). */
+    fun joinedEvent(context: Context): String? =
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString("joinedEventId", null)
+
+    fun setJoinedEvent(context: Context, id: String) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putString("joinedEventId", id).apply()
+    }
+
+    fun clearJoinedEvent(context: Context) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().remove("joinedEventId").apply()
+    }
+
     fun setName(context: Context, name: String) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             .edit().putString("name", name.ifBlank { "Utente" }).apply()

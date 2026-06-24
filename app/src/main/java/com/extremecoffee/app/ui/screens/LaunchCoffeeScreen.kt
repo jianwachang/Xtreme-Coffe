@@ -42,6 +42,8 @@ private val TIMES = listOf(5, 10, 15, 20, 25)
 fun LaunchCoffeeScreen(nav: NavController) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val myId = remember { Profile.id(context) }
+    val acceptedInvite by CoffeeRepository.myAcceptedActiveEvent(myId).collectAsState(initial = null)
 
     var query by remember { mutableStateOf("") }
     var suggestions by remember { mutableStateOf<List<PlacesService.Suggestion>>(emptyList()) }
@@ -170,7 +172,23 @@ fun LaunchCoffeeScreen(nav: NavController) {
             }
 
             Spacer(Modifier.height(28.dp))
+            if (acceptedInvite != null) {
+                Surface(
+                    shape = MaterialTheme.shapes.large,
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        "☕ Sei già in viaggio per un caffè. Potrai lanciare il tuo appena questo si conclude.",
+                        modifier = Modifier.padding(16.dp),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+                Spacer(Modifier.height(12.dp))
+            }
             Button(
+                enabled = acceptedInvite == null,
                 onClick = {
                     val la = barLat; val ln = barLng
                     if (query.isBlank() || la == null || ln == null) {
