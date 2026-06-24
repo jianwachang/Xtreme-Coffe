@@ -14,6 +14,7 @@ import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -24,9 +25,13 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
@@ -100,19 +105,19 @@ fun AppBottomBar(nav: NavController, selected: String) {
             selected = selected == "home",
             onClick = { if (selected != "home") nav.goFresh("home") },
             icon = { Icon(Icons.Filled.Home, contentDescription = null) },
-            label = { Text("Home", maxLines = 1, softWrap = false, fontSize = 10.sp) }
+            label = { AutoSizeLabel("Home") }
         )
         NavigationBarItem(
             selected = selected == "radar",
             onClick = { if (selected != "radar") nav.goFresh("radar") },
             icon = { Icon(Icons.Filled.TrackChanges, contentDescription = null) },
-            label = { Text("Radar", maxLines = 1, softWrap = false, fontSize = 10.sp) }
+            label = { AutoSizeLabel("Radar") }
         )
         NavigationBarItem(
             selected = selected == "leaderboard",
             onClick = { if (selected != "leaderboard") nav.navigate("leaderboard") },
             icon = { Icon(Icons.Filled.EmojiEvents, contentDescription = null) },
-            label = { Text("Classifica", maxLines = 1, softWrap = false, fontSize = 10.sp) }
+            label = { AutoSizeLabel("Classifica") }
         )
         NavigationBarItem(
             selected = selected == "notifications",
@@ -122,15 +127,43 @@ fun AppBottomBar(nav: NavController, selected: String) {
                     if (pending > 0) Badge { Text(if (pending > 9) "9+" else pending.toString()) }
                 }) { Icon(Icons.Filled.Notifications, contentDescription = null) }
             },
-            label = { Text("Notifiche", maxLines = 1, softWrap = false, fontSize = 10.sp) }
+            label = { AutoSizeLabel("Notifiche") }
         )
         NavigationBarItem(
             selected = selected == "account",
             onClick = { if (selected != "account") nav.navigate("account") },
             icon = { Icon(Icons.Filled.Person, contentDescription = null) },
-            label = { Text("Account", maxLines = 1, softWrap = false, fontSize = 10.sp) }
+            label = { AutoSizeLabel("Account") }
         )
     }
+}
+
+/**
+ * Etichetta che si ridimensiona da sola per stare SEMPRE su una riga.
+ * Parte da 12sp e rimpicciolisce (fino a 8sp) finché il testo non trabocca più.
+ * Usa le librerie attuali: misura il layout (onTextLayout) e riduce il font.
+ */
+@Composable
+private fun AutoSizeLabel(text: String) {
+    var fontSize by remember(text) { mutableStateOf(12f) }
+    var ready by remember(text) { mutableStateOf(false) }
+    Text(
+        text = text,
+        color = LocalContentColor.current,
+        textAlign = TextAlign.Center,
+        maxLines = 1,
+        softWrap = false,
+        fontSize = fontSize.sp,
+        lineHeight = 14.sp,
+        onTextLayout = { result ->
+            if (result.didOverflowWidth && fontSize > 8f) {
+                fontSize -= 0.5f
+            } else if (!ready) {
+                ready = true
+            }
+        },
+        modifier = Modifier.drawWithContent { if (ready) drawContent() }
+    )
 }
 
 /** Scaffold per le schede principali: titolo serif (senza freccia indietro) + barra inferiore. */
