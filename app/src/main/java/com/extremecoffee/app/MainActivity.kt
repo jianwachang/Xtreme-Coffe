@@ -154,6 +154,7 @@ fun ExtremeCoffeeApp(incomingEventId: String?) {
             composable("badges") { BadgesScreen(nav) }
             composable("recurring") { RecurringScreen(nav) }
             composable("leaderboard") { LeaderboardScreen(nav) }
+            composable("notifications") { NotificationsScreen(nav) }
             composable("circles") { CirclesScreen(nav) }
             composable("inviteFriends") { InviteFriendsScreen(nav) }
         }

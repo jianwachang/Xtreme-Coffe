@@ -6,8 +6,11 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.TrackChanges
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -19,9 +22,15 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import com.extremecoffee.app.data.CoffeeRepository
+import com.extremecoffee.app.data.Profile
 
 /** Pila per il tasto "avanti": viene riempita quando si preme "indietro". */
 object NavHistory { val forward = mutableStateListOf<String>() }
@@ -75,8 +84,14 @@ fun CoffeeScaffold(
 }
 
 /** Barra di navigazione inferiore condivisa tra le schede principali. */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBottomBar(nav: NavController, selected: String) {
+    val context = LocalContext.current
+    val myId = remember { Profile.id(context) }
+    val incoming by CoffeeRepository.incomingInvites(myId).collectAsState(initial = emptyList())
+    val pending = incoming.size
+
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
@@ -97,6 +112,16 @@ fun AppBottomBar(nav: NavController, selected: String) {
             onClick = { if (selected != "leaderboard") nav.navigate("leaderboard") },
             icon = { Icon(Icons.Filled.EmojiEvents, contentDescription = null) },
             label = { Text("Classifica") }
+        )
+        NavigationBarItem(
+            selected = selected == "notifications",
+            onClick = { if (selected != "notifications") nav.navigate("notifications") },
+            icon = {
+                BadgedBox(badge = {
+                    if (pending > 0) Badge { Text(if (pending > 9) "9+" else pending.toString()) }
+                }) { Icon(Icons.Filled.Notifications, contentDescription = null) }
+            },
+            label = { Text("Notifiche") }
         )
         NavigationBarItem(
             selected = selected == "account",

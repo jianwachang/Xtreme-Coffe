@@ -373,26 +373,39 @@ object CoffeeRepository {
     }
 
     private var incomingReg: ListenerRegistration? = null
-    /** "Hai ricevuto un Extreme Coffee": eventi lanciati da ALTRI, ancora attivi. */
-    fun incomingInvites(myId: String): Flow<List<CoffeeEvent>> {
-        if (incomingReg == null) {
-            runCatching {
-                incomingReg = db?.collection("events")
-                    ?.whereArrayContains("invitedIds", myId)
-                    ?.addSnapshotListener { snap, _ ->
-                        runCatching {
-                            val list = snap?.documents?.mapNotNull { it.toObject<CoffeeEvent>() }
-                            if (list != null) {
-                                invitedEventsState.value = list
-                                list.forEach { putEvent(it) }   // così InvitePopup/Tracking lo trovano via eventFlow
-                            }
+    /** Avvia (una sola volta) l'ascolto degli eventi in cui sono tra gli invitati. */
+    private fun ensureIncomingListener(myId: String) {
+        if (incomingReg != null) return
+        runCatching {
+            incomingReg = db?.collection("events")
+                ?.whereArrayContains("invitedIds", myId)
+                ?.addSnapshotListener { snap, _ ->
+                    runCatching {
+                        val list = snap?.documents?.mapNotNull { it.toObject<CoffeeEvent>() }
+                        if (list != null) {
+                            invitedEventsState.value = list
+                            list.forEach { putEvent(it) }   // così InvitePopup/Tracking lo trovano via eventFlow
                         }
                     }
-            }
+                }
         }
+    }
+
+    /** "Hai ricevuto un Extreme Coffee": eventi lanciati da ALTRI, ancora attivi. */
+    fun incomingInvites(myId: String): Flow<List<CoffeeEvent>> {
+        ensureIncomingListener(myId)
         return combine(invitedEventsState, declinedState) { list, declined ->
             val now = System.currentTimeMillis()
             list.filter { it.launcherId != myId && !it.cancelled && it.remainingMillis(now) > 0 && it.id !in declined }
+                .sortedByDescending { it.createdAt }
+        }
+    }
+
+    /** Centro notifiche: TUTTI gli Extreme Coffee ricevuti (anche scaduti/annullati), piu' recenti prima. */
+    fun allMyInvites(myId: String): Flow<List<CoffeeEvent>> {
+        ensureIncomingListener(myId)
+        return invitedEventsState.map { list ->
+            list.filter { it.launcherId != myId }
                 .sortedByDescending { it.createdAt }
         }
     }
