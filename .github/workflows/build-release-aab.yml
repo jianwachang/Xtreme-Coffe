@@ -1,0 +1,86 @@
+name: Build Release AAB
+
+# Compila l'App Bundle di release (NON firmato) e lo pubblica sul branch 'aab'.
+# La firma viene fatta a parte con la chiave di upload (che resta privata).
+# Parte a mano (Run workflow) o toccando tools/build_aab.txt.
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - "tools/build_aab.txt"
+      - ".github/workflows/build-release-aab.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Scarica il codice
+        uses: actions/checkout@v4
+
+      - name: Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Componenti SDK
+        run: |
+          yes | sdkmanager --licenses >/dev/null 2>&1 || true
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0" >/dev/null
+
+      - name: Chiave Maps (se presente come secret)
+        env:
+          MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+        run: |
+          if [ -n "$MAPS_API_KEY" ]; then
+            if grep -q '^MAPS_API_KEY=' gradle.properties; then
+              sed -i "s|^MAPS_API_KEY=.*|MAPS_API_KEY=${MAPS_API_KEY}|" gradle.properties
+            else
+              echo "MAPS_API_KEY=${MAPS_API_KEY}" >> gradle.properties
+            fi
+          fi
+
+      - name: Compila l'AAB di release (non firmato)
+        run: |
+          chmod +x ./gradlew
+          set -o pipefail
+          ./gradlew bundleRelease --stacktrace 2>&1 | tee /tmp/aab.log
+
+      - name: Mostra dove e' l'AAB
+        run: ls -la app/build/outputs/bundle/release/
+
+      - name: Pubblica l'AAB sul branch 'aab'
+        run: |
+          mkdir -p /tmp/aabout
+          cp app/build/outputs/bundle/release/app-release.aab /tmp/aabout/app-release.aab
+          cd /tmp/aabout
+          git init -q
+          git checkout -b aab
+          git config user.email "actions@github.com"
+          git config user.name "extreme-coffee-bot"
+          git add app-release.aab
+          git commit -q -m "AAB release build ${{ github.run_number }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" aab
+
+      - name: Se fallisce, salva il log su branch aablog
+        if: failure()
+        run: |
+          mkdir -p /tmp/al
+          cp /tmp/aab.log /tmp/al/aab.log 2>/dev/null || echo "nessun log" > /tmp/al/aab.log
+          cd /tmp/al
+          git init -q
+          git checkout -b aablog
+          git config user.email "actions@github.com"
+          git config user.name "log-bot"
+          git add aab.log
+          git commit -q -m "aab log ${{ github.run_number }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" aablog
