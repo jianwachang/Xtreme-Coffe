@@ -30,7 +30,7 @@ function androidConfig(expiresAt) {
   return cfg;
 }
 
-// --- Nuovo evento -> push a tutti tranne il lanciatore ---
+// --- Nuovo evento -> push SOLO agli invitati diretti (se gia' presenti alla creazione) ---
 exports.onNewEvent = onDocumentCreated("events/{eventId}", async (event) => {
   const snap = event.data;
   if (!snap) return;
@@ -49,11 +49,18 @@ exports.onNewEvent = onDocumentCreated("events/{eventId}", async (event) => {
   const expiresAt = createdAt + mins * 60000;
   if (expiresAt <= Date.now()) return; // evento già scaduto: non avvisare nessuno
 
+  // CERCHIA: niente broadcast a tutti. Si notifica solo chi e' gia' tra gli invitati diretti.
+  // Di norma alla creazione la lista e' vuota: gli inviti partono quando premi "Invita"
+  // (gestito da onInviteAdded). Questo copre l'eventuale caso di invitati gia' presenti.
+  const invited = Array.isArray(data.invitedIds) ? data.invitedIds.map(String) : [];
+  if (invited.length === 0) return;
+  const invitedSet = new Set(invited);
+
   const tokensSnap = await db.collection("tokens").get();
   const tokens = [];
   tokensSnap.forEach((d) => {
     const t = d.data();
-    if (d.id !== launcherId && t && t.token) tokens.push(t.token);
+    if (d.id !== launcherId && invitedSet.has(String(d.id)) && t && t.token) tokens.push(t.token);
   });
   if (tokens.length === 0) return;
 
@@ -162,6 +169,56 @@ exports.onEventCancelled = onDocumentUpdated("events/{eventId}", async (event) =
       expiresAt: String(expiresAt),
     },
     android: { priority: "high", ttl: Math.max(expiresAt - Date.now(), 60000) },
+    tokens,
+  };
+
+  const res = await getMessaging().sendEachForMulticast(message);
+  await pruneInvalid(res, tokens, tokensSnap);
+});
+
+// --- Invito diretto aggiunto (premuto "Invita") -> push SOLO al nuovo invitato ---
+// Scatta quando la lista invitedIds dell'evento cresce: notifica esclusivamente
+// gli id appena aggiunti, con il nome di chi invita e la schermata accetta/rifiuta.
+exports.onInviteAdded = onDocumentUpdated("events/{eventId}", async (event) => {
+  const before = event.data && event.data.before ? event.data.before.data() : null;
+  const after = event.data && event.data.after ? event.data.after.data() : null;
+  if (!after) return;
+  if (after.cancelled === true) return;            // non invitare a un evento annullato
+  if ((after.mode || "") === "AMICIZIA") return;   // AMICIZIA non usa inviti diretti
+
+  const beforeIds = new Set(
+    Array.isArray(before && before.invitedIds) ? before.invitedIds.map(String) : []
+  );
+  const afterIds = Array.isArray(after.invitedIds) ? after.invitedIds.map(String) : [];
+  const newIds = afterIds.filter((id) => !beforeIds.has(id));
+  if (newIds.length === 0) return;                 // nessun nuovo invitato: ignora
+
+  const launcherId = after.launcherId || "";
+  const mins = Number(after.minutes) || 15;
+  const createdAt = Number(after.createdAt) || Date.now();
+  const expiresAt = createdAt + mins * 60000;
+  if (expiresAt <= Date.now()) return;             // evento già scaduto
+
+  const newSet = new Set(newIds);
+  const tokensSnap = await db.collection("tokens").get();
+  const tokens = [];
+  tokensSnap.forEach((d) => {
+    const t = d.data();
+    if (d.id !== launcherId && newSet.has(String(d.id)) && t && t.token) tokens.push(t.token);
+  });
+  if (tokens.length === 0) return;
+
+  const message = {
+    notification: {
+      title: "\u2615 " + (after.launcherName || "Qualcuno") + " ti invita a un Extreme Coffee!",
+      body: (after.barName ? after.barName + " \u2022 " : "") +
+            "Hai " + mins + " minuti per arrivare.",
+    },
+    data: {
+      eventId: String(event.params.eventId),
+      expiresAt: String(expiresAt),
+    },
+    android: androidConfig(expiresAt),
     tokens,
   };
 
