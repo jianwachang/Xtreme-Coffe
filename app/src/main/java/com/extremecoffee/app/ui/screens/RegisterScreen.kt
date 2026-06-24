@@ -48,8 +48,9 @@ fun RegisterScreen(nav: NavController) {
     val scope = rememberCoroutineScope()
     val myId = remember { Profile.id(context) }
 
-    var nickname by remember { mutableStateOf("") }
-    var phone by remember { mutableStateOf("") }
+    val editMode = remember { Profile.isRegistered(context) }
+    var nickname by remember { mutableStateOf(if (editMode) Profile.name(context) else "") }
+    var phone by remember { mutableStateOf(if (editMode) Profile.phone(context) else "") }
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
     val normPhone = Phones.normalizeIt(phone)
@@ -103,12 +104,13 @@ fun RegisterScreen(nav: NavController) {
         )
         Spacer(Modifier.height(10.dp))
         Text(
-            "Crea il tuo profilo",
+            if (editMode) "Modifica profilo" else "Crea il tuo profilo",
             style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.primary
         )
         Text(
-            "Ti serve una sola volta. Scegli un nickname e metti il numero: " +
+            if (editMode) "Aggiorna il tuo nickname e il numero, poi salva le modifiche."
+            else "Ti serve una sola volta. Scegli un nickname e metti il numero: " +
                 "così gli amici ti riconoscono e ricevi gli inviti direttamente nell'app.",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -161,38 +163,53 @@ fun RegisterScreen(nav: NavController) {
         }
 
         Spacer(Modifier.height(24.dp))
+
+        val submit: () -> Unit = {
+            scope.launch {
+                loading = true; error = null
+                when (val r = CoffeeRepository.registerOnce(nickname, phone, myId)) {
+                    is RegisterResult.Success -> {
+                        Profile.setName(context, r.nickname)
+                        Profile.setPhone(context, r.phone)
+                        Profile.setRegistered(context, true)
+                        CoffeeRepository.registerMe(r.phone, myId, r.nickname)
+                        nav.goFresh("home")
+                    }
+                    RegisterResult.NicknameTaken ->
+                        error = "Questo nickname \u00e8 gi\u00e0 preso, scegline un altro."
+                    RegisterResult.InvalidNickname ->
+                        error = "Nickname non valido (3\u201320 caratteri: lettere, numeri, . _ -)."
+                    RegisterResult.InvalidPhone ->
+                        error = "Numero di telefono non valido."
+                    RegisterResult.Error ->
+                        error = "Qualcosa \u00e8 andato storto. Controlla la connessione e riprova."
+                }
+                loading = false
+            }
+        }
+
         Button(
             enabled = !loading && nickname.isNotBlank() && normPhone != null,
-            onClick = {
-                scope.launch {
-                    loading = true; error = null
-                    when (val r = CoffeeRepository.registerOnce(nickname, phone, myId)) {
-                        is RegisterResult.Success -> {
-                            Profile.setName(context, r.nickname)
-                            Profile.setPhone(context, r.phone)
-                            Profile.setRegistered(context, true)
-                            CoffeeRepository.registerMe(r.phone, myId, r.nickname)
-                            nav.goFresh("home")
-                        }
-                        RegisterResult.NicknameTaken ->
-                            error = "Questo nickname \u00e8 gi\u00e0 preso, scegline un altro."
-                        RegisterResult.InvalidNickname ->
-                            error = "Nickname non valido (3\u201320 caratteri: lettere, numeri, . _ -)."
-                        RegisterResult.InvalidPhone ->
-                            error = "Numero di telefono non valido."
-                        RegisterResult.Error ->
-                            error = "Qualcosa \u00e8 andato storto. Controlla la connessione e riprova."
-                    }
-                    loading = false
-                }
-            },
+            onClick = submit,
             modifier = Modifier.fillMaxWidth().height(54.dp),
             shape = MaterialTheme.shapes.large
         ) {
             if (loading) CircularProgressIndicator(
                 strokeWidth = 2.dp, modifier = Modifier.size(20.dp),
                 color = MaterialTheme.colorScheme.onPrimary
-            ) else Text("Crea profilo", fontWeight = FontWeight.Bold)
+            ) else Text(if (editMode) "Salva modifiche" else "Crea profilo", fontWeight = FontWeight.Bold)
+        }
+
+        if (editMode) {
+            Spacer(Modifier.height(12.dp))
+            OutlinedButton(
+                onClick = { nav.goFresh("home") },
+                enabled = !loading,
+                modifier = Modifier.fillMaxWidth().height(54.dp),
+                shape = MaterialTheme.shapes.large
+            ) {
+                Text("Annulla", fontWeight = FontWeight.SemiBold)
+            }
         }
 
     }
