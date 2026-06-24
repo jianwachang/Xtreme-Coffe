@@ -37,6 +37,7 @@ jobs:
       - name: Crea l'evento di prova
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/sa.json
+          GEOCODE_KEY: "AIzaSyBu9KWGYiMlY4i_3U_SrkhEKYP5cS-zQKk"
         run: node tools/seedTestCoffee.js 2>&1 | tee seed.log
 
       - name: Pubblica il risultato su branch seedlog
