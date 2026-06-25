@@ -1,5 +1,6 @@
 package com.extremecoffee.app.ui.screens
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
@@ -8,12 +9,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.extremecoffee.app.R
+import com.extremecoffee.app.data.LocaleManager
 import com.extremecoffee.app.ui.CoffeeScaffold
 
 /* ---------- helper di layout ---------- */
@@ -55,23 +60,40 @@ private fun NoteBox(text: String) {
     Spacer(Modifier.height(16.dp))
 }
 
-/* ---------- Lingua ---------- */
+/* ---------- Lingua (con switch reale) ---------- */
 
 @Composable
 fun LanguageScreen(nav: NavController) {
-    InfoScaffold(nav, "language", "Lingua") {
-        Para("Lingua attuale dell'app:")
-        Surface(shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.surfaceVariant,
-            shadowElevation = 2.dp, modifier = Modifier.fillMaxWidth()) {
-            Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
-                RadioButton(selected = true, onClick = {})
-                Spacer(Modifier.width(8.dp))
-                Text("Italiano", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold)
-            }
-        }
+    val context = LocalContext.current
+    val current = remember { LocaleManager.getLang(context) }
+
+    fun switchTo(lang: String) {
+        if (LocaleManager.getLang(context) == lang) return
+        LocaleManager.setLang(context, lang)
+        (context as? Activity)?.recreate()
+    }
+
+    InfoScaffold(nav, "language", stringResource(R.string.account_language)) {
+        Para(stringResource(R.string.lang_current))
+        LangOption(stringResource(R.string.lang_italian), current == "it") { switchTo("it") }
+        Spacer(Modifier.height(10.dp))
+        LangOption(stringResource(R.string.lang_english), current == "en") { switchTo("en") }
         Spacer(Modifier.height(16.dp))
-        NoteBox("Al momento Extreme Coffee è disponibile in italiano. Altre lingue (es. English) " +
-            "arriveranno in un prossimo aggiornamento.")
+        NoteBox(stringResource(R.string.lang_note))
+    }
+}
+
+@Composable
+private fun LangOption(label: String, selected: Boolean, onClick: () -> Unit) {
+    Surface(onClick = onClick, shape = MaterialTheme.shapes.large,
+        color = MaterialTheme.colorScheme.surfaceVariant, shadowElevation = 2.dp,
+        modifier = Modifier.fillMaxWidth()) {
+        Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(selected = selected, onClick = onClick)
+            Spacer(Modifier.width(8.dp))
+            Text(label, style = MaterialTheme.typography.bodyLarge,
+                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal)
+        }
     }
 }
 
@@ -80,16 +102,11 @@ fun LanguageScreen(nav: NavController) {
 @Composable
 fun PrivacyScreen(nav: NavController) {
     val context = LocalContext.current
-    InfoScaffold(nav, "privacy", "Privacy") {
-        Para("Extreme Coffee usa solo i dati necessari a farti incontrare gli amici per un caffè.")
-        H("Permessi usati")
-        Para(
-            "• Posizione: per mostrarti sulla mappa durante un Extreme Coffee e trovare i bar vicini.\n" +
-            "• Contatti: per riconoscere quali amici hanno già l'app e poterli invitare.\n" +
-            "• Fotocamera: per la foto profilo e il selfie finale.\n" +
-            "• Notifiche: per avvisarti quando ricevi un invito."
-        )
-        Para("Puoi concedere o revocare ogni permesso quando vuoi dalle impostazioni di sistema.")
+    InfoScaffold(nav, "privacy", stringResource(R.string.account_privacy)) {
+        Para(stringResource(R.string.privacy_intro))
+        H(stringResource(R.string.privacy_perms_h))
+        Para(stringResource(R.string.privacy_perms_body))
+        Para(stringResource(R.string.privacy_perms_note))
         Button(
             onClick = {
                 val i = Intent(
@@ -99,12 +116,11 @@ fun PrivacyScreen(nav: NavController) {
                 context.startActivity(i)
             },
             modifier = Modifier.fillMaxWidth()
-        ) { Text("Apri le impostazioni dell'app") }
+        ) { Text(stringResource(R.string.privacy_open_settings)) }
         Spacer(Modifier.height(18.dp))
-        H("I tuoi dati")
-        Para("Puoi eliminare in qualsiasi momento il tuo profilo e i dati associati da " +
-            "Account → \"Elimina dati e account\".")
-        Para("Per i dettagli completi su quali dati raccogliamo e perché, leggi l'Informativa sulla privacy.")
+        H(stringResource(R.string.privacy_data_h))
+        Para(stringResource(R.string.privacy_data_body))
+        Para(stringResource(R.string.privacy_data_more))
     }
 }
 
@@ -112,35 +128,16 @@ fun PrivacyScreen(nav: NavController) {
 
 @Composable
 fun TermsScreen(nav: NavController) {
-    InfoScaffold(nav, "terms", "Termini e condizioni") {
-        Para("Ultimo aggiornamento: giugno 2026")
-        Para("Usando Extreme Coffee accetti questi termini. Se non sei d'accordo, non utilizzare l'app.")
-
-        H("1. Il servizio")
-        Para("Extreme Coffee è un'app che ti permette di invitare amici a incontrarti per un caffè " +
-            "entro un breve intervallo di tempo, mostrando la posizione dei partecipanti durante l'evento.")
-
-        H("2. Uso corretto")
-        Para("Ti impegni a usare l'app in modo lecito e rispettoso, a non molestare altri utenti e a non " +
-            "inserire contenuti offensivi o ingannevoli. Sei responsabile delle attività svolte dal tuo account.")
-
-        H("3. Account")
-        Para("Per usare l'app fornisci un nickname e un numero di telefono. Sei responsabile della veridicità " +
-            "dei dati inseriti e della custodia del tuo dispositivo.")
-
-        H("4. Posizione e incontri")
-        Para("La condivisione della posizione avviene solo durante un Extreme Coffee attivo e con le persone " +
-            "coinvolte. Gli incontri avvengono sotto la tua responsabilità: usa buon senso e prudenza.")
-
-        H("5. Limitazione di responsabilità")
-        Para("L'app è fornita \"così com'è\". Non garantiamo che sia priva di errori o sempre disponibile e, " +
-            "nei limiti di legge, non siamo responsabili per danni derivanti dall'uso del servizio.")
-
-        H("6. Modifiche")
-        Para("Possiamo aggiornare questi termini; le modifiche saranno indicate dalla data di aggiornamento.")
-
-        NoteBox("Questo testo è un modello iniziale da far verificare a un professionista prima della " +
-            "pubblicazione. Non costituisce consulenza legale.")
+    InfoScaffold(nav, "terms", stringResource(R.string.account_terms)) {
+        Para(stringResource(R.string.terms_updated))
+        Para(stringResource(R.string.terms_intro))
+        H(stringResource(R.string.terms_1_h)); Para(stringResource(R.string.terms_1_b))
+        H(stringResource(R.string.terms_2_h)); Para(stringResource(R.string.terms_2_b))
+        H(stringResource(R.string.terms_3_h)); Para(stringResource(R.string.terms_3_b))
+        H(stringResource(R.string.terms_4_h)); Para(stringResource(R.string.terms_4_b))
+        H(stringResource(R.string.terms_5_h)); Para(stringResource(R.string.terms_5_b))
+        H(stringResource(R.string.terms_6_h)); Para(stringResource(R.string.terms_6_b))
+        NoteBox(stringResource(R.string.terms_note))
     }
 }
 
@@ -148,39 +145,15 @@ fun TermsScreen(nav: NavController) {
 
 @Composable
 fun PrivacyPolicyScreen(nav: NavController) {
-    InfoScaffold(nav, "privacyPolicy", "Informativa sulla privacy") {
-        Para("Ultimo aggiornamento: giugno 2026")
-        Para("Questa informativa spiega quali dati tratta Extreme Coffee e come.")
-
-        H("Dati che raccogliamo")
-        Para(
-            "• Profilo: nickname e numero di telefono, eventuale foto profilo.\n" +
-            "• Posizione: posizione approssimativa/precisa solo durante un Extreme Coffee attivo.\n" +
-            "• Contatti: usati sul dispositivo per riconoscere gli amici che hanno l'app.\n" +
-            "• Dati tecnici: identificativo del dispositivo e token per le notifiche."
-        )
-
-        H("Perché li usiamo")
-        Para("Per farti creare un profilo, inviare e ricevere inviti, mostrare i partecipanti sulla mappa " +
-            "durante un evento e inviarti le notifiche.")
-
-        H("Dove sono conservati")
-        Para("I dati sono gestiti tramite i servizi Google Firebase (database e notifiche). Alcune " +
-            "informazioni restano salvate solo sul tuo dispositivo.")
-
-        H("Condivisione")
-        Para("Non vendiamo i tuoi dati. Vengono condivisi solo con gli utenti coinvolti negli inviti che " +
-            "tu invii o accetti, e con i fornitori tecnici necessari al funzionamento dell'app.")
-
-        H("Conservazione e cancellazione")
-        Para("Puoi eliminare il profilo e i dati associati in qualsiasi momento da " +
-            "Account → \"Elimina dati e account\".")
-
-        H("Contatti")
-        Para("Per richieste sulla privacy puoi scrivere all'indirizzo di supporto indicato nella scheda " +
-            "dell'app sullo store.")
-
-        NoteBox("Questo testo è un modello iniziale da personalizzare e far verificare prima della " +
-            "pubblicazione sullo store. Non costituisce consulenza legale.")
+    InfoScaffold(nav, "privacyPolicy", stringResource(R.string.account_pp)) {
+        Para(stringResource(R.string.pp_updated))
+        Para(stringResource(R.string.pp_intro))
+        H(stringResource(R.string.pp_collect_h)); Para(stringResource(R.string.pp_collect_b))
+        H(stringResource(R.string.pp_why_h)); Para(stringResource(R.string.pp_why_b))
+        H(stringResource(R.string.pp_where_h)); Para(stringResource(R.string.pp_where_b))
+        H(stringResource(R.string.pp_share_h)); Para(stringResource(R.string.pp_share_b))
+        H(stringResource(R.string.pp_keep_h)); Para(stringResource(R.string.pp_keep_b))
+        H(stringResource(R.string.pp_contact_h)); Para(stringResource(R.string.pp_contact_b))
+        NoteBox(stringResource(R.string.pp_note))
     }
 }

@@ -34,7 +34,9 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.extremecoffee.app.R
 import com.extremecoffee.app.data.CoffeeRepository
 import com.extremecoffee.app.data.Profile
 
@@ -105,19 +107,19 @@ fun AppBottomBar(nav: NavController, selected: String) {
             selected = selected == "home",
             onClick = { if (selected != "home") nav.goFresh("home") },
             icon = { Icon(Icons.Filled.Home, contentDescription = null) },
-            label = { AutoSizeLabel("Home") }
+            label = { AutoSizeLabel(stringResource(R.string.nav_home)) }
         )
         NavigationBarItem(
             selected = selected == "radar",
             onClick = { if (selected != "radar") nav.goFresh("radar") },
             icon = { Icon(Icons.Filled.TrackChanges, contentDescription = null) },
-            label = { AutoSizeLabel("Radar") }
+            label = { AutoSizeLabel(stringResource(R.string.nav_radar)) }
         )
         NavigationBarItem(
             selected = selected == "leaderboard",
             onClick = { if (selected != "leaderboard") nav.navigate("leaderboard") },
             icon = { Icon(Icons.Filled.EmojiEvents, contentDescription = null) },
-            label = { AutoSizeLabel("Classifica") }
+            label = { AutoSizeLabel(stringResource(R.string.nav_leaderboard)) }
         )
         NavigationBarItem(
             selected = selected == "notifications",
@@ -127,13 +129,13 @@ fun AppBottomBar(nav: NavController, selected: String) {
                     if (pending > 0) Badge { Text(if (pending > 9) "9+" else pending.toString()) }
                 }) { Icon(Icons.Filled.Notifications, contentDescription = null) }
             },
-            label = { AutoSizeLabel("Notifiche") }
+            label = { AutoSizeLabel(stringResource(R.string.nav_notifications)) }
         )
         NavigationBarItem(
             selected = selected == "account",
             onClick = { if (selected != "account") nav.navigate("account") },
             icon = { Icon(Icons.Filled.Person, contentDescription = null) },
-            label = { AutoSizeLabel("Account") }
+            label = { AutoSizeLabel(stringResource(R.string.nav_account)) }
         )
     }
 }

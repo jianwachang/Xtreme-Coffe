@@ -33,9 +33,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.extremecoffee.app.R
 import com.extremecoffee.app.data.CoffeeRepository
 import com.extremecoffee.app.data.Phones
 import com.extremecoffee.app.data.Profile
@@ -61,9 +63,9 @@ fun AccountScreen(nav: NavController) {
                 Profile.setPhotoPath(context, saved)
                 Profile.setPhoto64(context, makeAvatarBase64(saved))
                 photoPath = saved; photoVersion++
-                Toast.makeText(context, "Foto profilo aggiornata", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.account_toast_photo_ok), Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(context, "Impossibile usare questa immagine", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.account_toast_photo_fail), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -72,9 +74,10 @@ fun AccountScreen(nav: NavController) {
     )
 
     val name = Profile.name(context)
+    val profileFallback = stringResource(R.string.account_profile)
     val phone = Phones.normalizeIt(Profile.phone(context)) ?: Profile.phone(context)
 
-    TabScaffold("Account", nav, "account") { mod ->
+    TabScaffold(stringResource(R.string.nav_account), nav, "account") { mod ->
         Column(mod.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp)) {
             // Intestazione profilo
             Surface(shape = MaterialTheme.shapes.large,
@@ -97,7 +100,7 @@ fun AccountScreen(nav: NavController) {
                     }
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
-                        Text(name.ifBlank { "Profilo" }, fontWeight = FontWeight.Bold,
+                        Text(name.ifBlank { profileFallback }, fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.titleMedium)
                         if (phone.isNotBlank())
                             Text(phone, style = MaterialTheme.typography.bodySmall,
@@ -107,30 +110,30 @@ fun AccountScreen(nav: NavController) {
             }
 
             Spacer(Modifier.height(20.dp))
-            AccountRow(Icons.Filled.PhotoCamera, "Cambia foto", "Aggiorna la tua immagine profilo") { editPhoto() }
-            AccountRow(Icons.Filled.Edit, "Modifica profilo", "Nickname e numero di telefono") { nav.navigate("register") }
-            AccountRow(Icons.AutoMirrored.Filled.ExitToApp, "Esci dall'app", "Chiudi Extreme Coffee") { showExit = true }
+            AccountRow(Icons.Filled.PhotoCamera, stringResource(R.string.account_change_photo), stringResource(R.string.account_change_photo_sub)) { editPhoto() }
+            AccountRow(Icons.Filled.Edit, stringResource(R.string.account_edit), stringResource(R.string.account_edit_sub)) { nav.navigate("register") }
+            AccountRow(Icons.AutoMirrored.Filled.ExitToApp, stringResource(R.string.account_exit), stringResource(R.string.account_exit_sub)) { showExit = true }
 
             Spacer(Modifier.height(18.dp))
-            Text("Informazioni e privacy", style = MaterialTheme.typography.titleSmall,
+            Text(stringResource(R.string.account_info_section), style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(start = 4.dp, bottom = 6.dp))
-            AccountRow(Icons.Filled.Language, "Lingua", "Lingua dell'app") { nav.navigate("language") }
-            AccountRow(Icons.Filled.Lock, "Privacy", "Permessi e gestione dei dati") { nav.navigate("privacy") }
-            AccountRow(Icons.Filled.Description, "Termini e condizioni", "Le regole d'uso del servizio") { nav.navigate("terms") }
-            AccountRow(Icons.Filled.Shield, "Informativa sulla privacy", "Come trattiamo i tuoi dati") { nav.navigate("privacyPolicy") }
+            AccountRow(Icons.Filled.Language, stringResource(R.string.account_language), stringResource(R.string.account_language_sub)) { nav.navigate("language") }
+            AccountRow(Icons.Filled.Lock, stringResource(R.string.account_privacy), stringResource(R.string.account_privacy_sub)) { nav.navigate("privacy") }
+            AccountRow(Icons.Filled.Description, stringResource(R.string.account_terms), stringResource(R.string.account_terms_sub)) { nav.navigate("terms") }
+            AccountRow(Icons.Filled.Shield, stringResource(R.string.account_pp), stringResource(R.string.account_pp_sub)) { nav.navigate("privacyPolicy") }
 
             Spacer(Modifier.height(10.dp))
-            AccountRow(Icons.Filled.Delete, "Elimina dati e account",
-                "Rimuove profilo, nickname e dati. Definitivo.", error = true) { showDelete = true }
+            AccountRow(Icons.Filled.Delete, stringResource(R.string.account_delete),
+                stringResource(R.string.account_delete_sub), error = true) { showDelete = true }
         }
     }
 
     if (showDelete) {
         AlertDialog(
             onDismissRequest = { showDelete = false },
-            title = { Text("Eliminare account e dati?") },
-            text = { Text("Verranno rimossi il tuo profilo, il nickname e i dati associati. L'azione \u00e8 definitiva.") },
+            title = { Text(stringResource(R.string.account_delete_title)) },
+            text = { Text(stringResource(R.string.account_delete_text)) },
             confirmButton = {
                 TextButton(onClick = {
                     showDelete = false
@@ -138,24 +141,24 @@ fun AccountScreen(nav: NavController) {
                         CoffeeRepository.deleteMyAccountAndData(context)
                         nav.goFresh("register")
                     }
-                }) { Text("Elimina", color = MaterialTheme.colorScheme.error) }
+                }) { Text(stringResource(R.string.common_delete), color = MaterialTheme.colorScheme.error) }
             },
-            dismissButton = { TextButton(onClick = { showDelete = false }) { Text("Annulla") } }
+            dismissButton = { TextButton(onClick = { showDelete = false }) { Text(stringResource(R.string.common_cancel)) } }
         )
     }
 
     if (showExit) {
         AlertDialog(
             onDismissRequest = { showExit = false },
-            title = { Text("Uscire dall'app?") },
-            text = { Text("Extreme Coffee verr\u00e0 chiusa. I tuoi dati restano salvati sul dispositivo.") },
+            title = { Text(stringResource(R.string.account_exit_title)) },
+            text = { Text(stringResource(R.string.account_exit_text)) },
             confirmButton = {
                 TextButton(onClick = {
                     showExit = false
                     (context as? Activity)?.finishAffinity()
-                }) { Text("Esci") }
+                }) { Text(stringResource(R.string.common_exit)) }
             },
-            dismissButton = { TextButton(onClick = { showExit = false }) { Text("Annulla") } }
+            dismissButton = { TextButton(onClick = { showExit = false }) { Text(stringResource(R.string.common_cancel)) } }
         )
     }
 }

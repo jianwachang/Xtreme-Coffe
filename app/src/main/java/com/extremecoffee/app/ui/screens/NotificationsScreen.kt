@@ -16,12 +16,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.extremecoffee.app.R
 import com.extremecoffee.app.data.CoffeeRepository
 import com.extremecoffee.app.data.Profile
 import com.extremecoffee.app.model.CoffeeEvent
@@ -35,7 +37,7 @@ fun NotificationsScreen(nav: NavController) {
     val myId = remember { Profile.id(context) }
     val invites by CoffeeRepository.allMyInvites(myId).collectAsState(initial = emptyList())
 
-    TabScaffold("Notifiche", nav, "notifications") { mod ->
+    TabScaffold(stringResource(R.string.nav_notifications), nav, "notifications") { mod ->
         if (invites.isEmpty()) {
             Box(mod.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -46,12 +48,12 @@ fun NotificationsScreen(nav: NavController) {
                     )
                     Spacer(Modifier.height(12.dp))
                     Text(
-                        "Nessuna notifica", style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
+                        stringResource(R.string.notif_empty_title),
+                        style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold
                     )
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        "Qui trovi gli Extreme Coffee a cui ti hanno invitato i tuoi amici.",
+                        stringResource(R.string.notif_empty_sub),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center
@@ -75,17 +77,33 @@ fun NotificationsScreen(nav: NavController) {
 private fun NotificationCard(e: CoffeeEvent, onOpen: () -> Unit) {
     val now = System.currentTimeMillis()
     val remaining = e.remainingMillis(now)
-    val status = when {
-        e.cancelled -> "Annullato"
-        remaining <= 0 -> "Scaduto"
-        else -> "Attivo"
+    val statusKey = when {
+        e.cancelled -> "cancelled"
+        remaining <= 0 -> "expired"
+        else -> "active"
     }
-    val active = status == "Attivo"
-    val statusColor = when (status) {
-        "Attivo" -> MaterialTheme.colorScheme.primary
-        "Annullato" -> MaterialTheme.colorScheme.error
+    val active = statusKey == "active"
+    val statusText = when (statusKey) {
+        "active" -> stringResource(R.string.status_active)
+        "cancelled" -> stringResource(R.string.status_cancelled)
+        else -> stringResource(R.string.status_expired)
+    }
+    val statusColor = when (statusKey) {
+        "active" -> MaterialTheme.colorScheme.primary
+        "cancelled" -> MaterialTheme.colorScheme.error
         else -> MaterialTheme.colorScheme.onSurfaceVariant
     }
+
+    val m = (now - e.createdAt) / 60000
+    val timeText = when {
+        m < 1 -> stringResource(R.string.time_now)
+        m < 60 -> stringResource(R.string.time_min, m.toInt())
+        m < 1440 -> stringResource(R.string.time_hour, (m / 60).toInt())
+        else -> stringResource(R.string.time_day, (m / 1440).toInt())
+    }
+
+    val someone = stringResource(R.string.notif_someone)
+    val inviterName = e.launcherName.ifBlank { someone }
 
     Surface(
         onClick = onOpen,
@@ -99,7 +117,7 @@ private fun NotificationCard(e: CoffeeEvent, onOpen: () -> Unit) {
             val av = remember(e.launcherPhoto) { decodeAvatar(e.launcherPhoto) }
             if (av != null) {
                 Image(
-                    av.asImageBitmap(), contentDescription = e.launcherName,
+                    av.asImageBitmap(), contentDescription = inviterName,
                     modifier = Modifier.size(44.dp).clip(CircleShape),
                     contentScale = ContentScale.Crop
                 )
@@ -113,7 +131,7 @@ private fun NotificationCard(e: CoffeeEvent, onOpen: () -> Unit) {
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
                 Text(
-                    "${e.launcherName.ifBlank { "Qualcuno" }} ti ha invitato",
+                    stringResource(R.string.notif_invited_you, inviterName),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 1, overflow = TextOverflow.Ellipsis
@@ -121,7 +139,7 @@ private fun NotificationCard(e: CoffeeEvent, onOpen: () -> Unit) {
                 Text(
                     buildString {
                         if (e.barName.isNotBlank()) append(e.barName + " \u2022 ")
-                        append(relativeTime(now - e.createdAt))
+                        append(timeText)
                     },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -130,19 +148,9 @@ private fun NotificationCard(e: CoffeeEvent, onOpen: () -> Unit) {
             }
             Spacer(Modifier.width(10.dp))
             Text(
-                status, style = MaterialTheme.typography.labelMedium,
+                statusText, style = MaterialTheme.typography.labelMedium,
                 color = statusColor, fontWeight = FontWeight.Bold
             )
         }
-    }
-}
-
-private fun relativeTime(diffMillis: Long): String {
-    val m = diffMillis / 60000
-    return when {
-        m < 1 -> "ora"
-        m < 60 -> "$m min fa"
-        m < 1440 -> "${m / 60} h fa"
-        else -> "${m / 1440} g fa"
     }
 }

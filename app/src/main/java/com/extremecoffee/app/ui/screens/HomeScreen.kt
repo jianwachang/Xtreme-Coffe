@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -58,6 +59,7 @@ private val HeroEnd = Color(0xFFC85F1C)
 fun HomeScreen(nav: NavController) {
     val context = LocalContext.current
     val name = remember { Profile.name(context) }
+    val nameFallback = stringResource(R.string.home_name_fallback)
     val myId = remember { Profile.id(context) }
     var photoPath by remember { mutableStateOf(Profile.photoPath(context)) }
     var photoVersion by remember { mutableStateOf(0) }
@@ -116,9 +118,9 @@ fun HomeScreen(nav: NavController) {
                 val active = myActive
                 val accepted = acceptedInvite
                 val bigText = when {
-                    active != null -> "Il tuo caffè\nè in corso"
-                    accepted != null -> "Sei atteso\na un caffè"
-                    else -> "Pronto per\nun caffè?"
+                    active != null -> stringResource(R.string.home_title_inprogress)
+                    accepted != null -> stringResource(R.string.home_title_awaited)
+                    else -> stringResource(R.string.home_title_ready)
                 }
                 Box(
                     Modifier.fillMaxWidth()
@@ -129,7 +131,7 @@ fun HomeScreen(nav: NavController) {
                     Image(painterResource(R.drawable.ic_coffee_marker), contentDescription = null,
                         modifier = Modifier.align(Alignment.TopEnd).padding(18.dp).size(80.dp))
                     Column(Modifier.padding(20.dp)) {
-                        Text("BUONGIORNO, ${name.trim().uppercase().ifBlank { "AMICO" }}",
+                        Text(stringResource(R.string.home_greeting, name.trim().uppercase().ifBlank { nameFallback }),
                             style = MaterialTheme.typography.labelMedium, color = Color(0xFFFFE6D2))
                         Spacer(Modifier.height(8.dp))
                         Text(bigText, style = MaterialTheme.typography.displaySmall, color = Color.White)
@@ -139,7 +141,7 @@ fun HomeScreen(nav: NavController) {
                                 Surface(onClick = { nav.goFresh("launched/${active.id}") },
                                     shape = MaterialTheme.shapes.extraLarge,
                                     color = Color.White, shadowElevation = 2.dp) {
-                                    Text("Vedi sulla mappa",
+                                    Text(stringResource(R.string.home_btn_viewmap),
                                         modifier = Modifier.padding(horizontal = 22.dp, vertical = 13.dp),
                                         color = HeroEnd, style = MaterialTheme.typography.labelLarge)
                                 }
@@ -150,7 +152,7 @@ fun HomeScreen(nav: NavController) {
                                     shape = MaterialTheme.shapes.extraLarge,
                                     color = Color.White.copy(alpha = 0.55f)
                                 ) {
-                                    Text("☕ Sei già in viaggio per un caffè",
+                                    Text(stringResource(R.string.home_btn_blocked),
                                         modifier = Modifier.padding(horizontal = 22.dp, vertical = 13.dp),
                                         color = HeroEnd.copy(alpha = 0.75f),
                                         style = MaterialTheme.typography.labelLarge,
@@ -158,7 +160,7 @@ fun HomeScreen(nav: NavController) {
                                 }
                                 Spacer(Modifier.height(8.dp))
                                 Text(
-                                    "Hai accettato un invito: potrai lanciare il tuo appena questo si conclude.",
+                                    stringResource(R.string.home_blocked_msg),
                                     style = MaterialTheme.typography.bodySmall, color = Color(0xFFFFE6D2)
                                 )
                             }
@@ -166,7 +168,7 @@ fun HomeScreen(nav: NavController) {
                                 Surface(onClick = { nav.goFresh("launch") },
                                     shape = MaterialTheme.shapes.extraLarge,
                                     color = Color.White, shadowElevation = 2.dp) {
-                                    Text("Lancia un Extreme Coffee",
+                                    Text(stringResource(R.string.home_btn_launch),
                                         modifier = Modifier.padding(horizontal = 22.dp, vertical = 13.dp),
                                         color = HeroEnd, style = MaterialTheme.typography.labelLarge)
                                 }
@@ -179,33 +181,33 @@ fun HomeScreen(nav: NavController) {
                 // ---- Stat cards ----
                 val s = myStats
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                    StatCard(Modifier.weight(1f), "STREAK", Icons.Filled.LocalFireDepartment,
-                        (s?.streakWeeks ?: 0).toString(), "settimane") { nav.navigate("badges") }
-                    StatCard(Modifier.weight(1f), "CAFFÈ", Icons.Filled.Coffee,
-                        (s?.total ?: 0).toString(), "totali") { nav.navigate("badges") }
+                    StatCard(Modifier.weight(1f), stringResource(R.string.home_stat_streak), Icons.Filled.LocalFireDepartment,
+                        (s?.streakWeeks ?: 0).toString(), stringResource(R.string.home_stat_weeks)) { nav.navigate("badges") }
+                    StatCard(Modifier.weight(1f), stringResource(R.string.home_stat_coffees), Icons.Filled.Coffee,
+                        (s?.total ?: 0).toString(), stringResource(R.string.home_stat_total)) { nav.navigate("badges") }
                 }
                 if (s?.atRisk == true) {
                     Spacer(Modifier.height(8.dp))
-                    Text("Questa settimana ancora nessun caffè: lancia un Extreme Coffee per non perdere lo streak.",
+                    Text(stringResource(R.string.home_atrisk),
                         style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Medium)
                 }
 
                 // ---- Esplora (sopra la piega) ----
                 Spacer(Modifier.height(18.dp))
-                Text("Esplora", style = MaterialTheme.typography.titleMedium,
+                Text(stringResource(R.string.home_explore), style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
                 Spacer(Modifier.height(10.dp))
-                ExploreRow(Icons.Filled.TrackChanges, "Radar amici", "Chi è in pausa caffè ora") { nav.goFresh("radar") }
+                ExploreRow(Icons.Filled.TrackChanges, stringResource(R.string.home_radar_title), stringResource(R.string.home_radar_sub)) { nav.goFresh("radar") }
                 Spacer(Modifier.height(10.dp))
-                ExploreRow(Icons.Filled.GroupAdd, "Invita gli amici", "Falli entrare nel giro") { nav.goFresh("inviteFriends") }
+                ExploreRow(Icons.Filled.GroupAdd, stringResource(R.string.home_invite_title), stringResource(R.string.home_invite_sub)) { nav.goFresh("inviteFriends") }
                 Spacer(Modifier.height(10.dp))
-                ExploreRow(Icons.Filled.Schedule, "Caffè ricorrenti", "Promemoria settimanali") { nav.navigate("recurring") }
+                ExploreRow(Icons.Filled.Schedule, stringResource(R.string.home_recurring_title), stringResource(R.string.home_recurring_sub)) { nav.navigate("recurring") }
 
                 // ---- Inviti in arrivo ----
                 if (incoming.isNotEmpty()) {
                     Spacer(Modifier.height(22.dp))
-                    Text("Inviti per te", style = MaterialTheme.typography.titleMedium,
+                    Text(stringResource(R.string.home_invites_for_you), style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
                     Spacer(Modifier.height(10.dp))
                     incoming.forEach { e ->
@@ -225,10 +227,10 @@ fun HomeScreen(nav: NavController) {
                                 }
                                 Spacer(Modifier.width(14.dp))
                                 Column(Modifier.weight(1f)) {
-                                    Text("${e.launcherName} ti invita",
+                                    Text(stringResource(R.string.home_invite_from, e.launcherName),
                                         color = MaterialTheme.colorScheme.onSecondaryContainer, fontWeight = FontWeight.Bold,
                                         style = MaterialTheme.typography.titleMedium)
-                                    Text("${e.barName} · ${e.remainingMillis() / 60_000} min rimasti",
+                                    Text(stringResource(R.string.home_invite_remaining, e.barName, (e.remainingMillis() / 60_000).toInt()),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.8f))
                                 }

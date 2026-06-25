@@ -1,4 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Extreme Coffee</string>
+
+    <!-- Barra di navigazione -->
+    <string name="nav_home">Home</string>
+    <string name="nav_radar">Radar</string>
+    <string name="nav_leaderboard">Classifica</string>
+    <string name="nav_notifications">Notifiche</string>
+    <string name="nav_account">Account</string>
+
+    <!-- Comuni -->
+    <string name="common_cancel">Annulla</string>
+    <string name="common_delete">Elimina</string>
+    <string name="common_exit">Esci</string>
+
+    <!-- Home -->
+    <string name="home_greeting">BUONGIORNO, %1$s</string>
+    <string name="home_name_fallback">AMICO</string>
+    <string name="home_title_ready">Pronto per\nun caffè?</string>
+    <string name="home_title_inprogress">Il tuo caffè\nè in corso</string>
+    <string name="home_title_awaited">Sei atteso\na un caffè</string>
+    <string name="home_btn_launch">Lancia un Extreme Coffee</string>
+    <string name="home_btn_viewmap">Vedi sulla mappa</string>
+    <string name="home_btn_blocked">☕ Sei già in viaggio per un caffè</string>
+    <string name="home_blocked_msg">Hai accettato un invito: potrai lanciare il tuo appena questo si conclude.</string>
+    <string name="home_stat_streak">STREAK</string>
+    <string name="home_stat_weeks">settimane</string>
+    <string name="home_stat_coffees">CAFFÈ</string>
+    <string name="home_stat_total">totali</string>
+    <string name="home_atrisk">Questa settimana ancora nessun caffè: lancia un Extreme Coffee per non perdere lo streak.</string>
+    <string name="home_explore">Esplora</string>
+    <string name="home_radar_title">Radar amici</string>
+    <string name="home_radar_sub">Chi è in pausa caffè ora</string>
+    <string name="home_invite_title">Invita gli amici</string>
+    <string name="home_invite_sub">Falli entrare nel giro</string>
+    <string name="home_recurring_title">Caffè ricorrenti</string>
+    <string name="home_recurring_sub">Promemoria settimanali</string>
+    <string name="home_invites_for_you">Inviti per te</string>
+    <string name="home_invite_from">%1$s ti invita</string>
+    <string name="home_invite_remaining">%1$s · %2$d min rimasti</string>
+
+    <!-- Account -->
+    <string name="account_profile">Profilo</string>
+    <string name="account_change_photo">Cambia foto</string>
+    <string name="account_change_photo_sub">Aggiorna la tua immagine profilo</string>
+    <string name="account_edit">Modifica profilo</string>
+    <string name="account_edit_sub">Nickname e numero di telefono</string>
+    <string name="account_exit">Esci dall\'app</string>
+    <string name="account_exit_sub">Chiudi Extreme Coffee</string>
+    <string name="account_info_section">Informazioni e privacy</string>
+    <string name="account_language">Lingua</string>
+    <string name="account_language_sub">Lingua dell\'app</string>
+    <string name="account_privacy">Privacy</string>
+    <string name="account_privacy_sub">Permessi e gestione dei dati</string>
+    <string name="account_terms">Termini e condizioni</string>
+    <string name="account_terms_sub">Le regole d\'uso del servizio</string>
+    <string name="account_pp">Informativa sulla privacy</string>
+    <string name="account_pp_sub">Come trattiamo i tuoi dati</string>
+    <string name="account_delete">Elimina dati e account</string>
+    <string name="account_delete_sub">Rimuove profilo, nickname e dati. Definitivo.</string>
+    <string name="account_toast_photo_ok">Foto profilo aggiornata</string>
+    <string name="account_toast_photo_fail">Impossibile usare questa immagine</string>
+    <string name="account_delete_title">Eliminare account e dati?</string>
+    <string name="account_delete_text">Verranno rimossi il tuo profilo, il nickname e i dati associati. L\'azione è definitiva.</string>
+    <string name="account_exit_title">Uscire dall\'app?</string>
+    <string name="account_exit_text">Extreme Coffee verrà chiusa. I tuoi dati restano salvati sul dispositivo.</string>
+
+    <!-- Notifiche -->
+    <string name="notif_empty_title">Nessuna notifica</string>
+    <string name="notif_empty_sub">Qui trovi gli Extreme Coffee a cui ti hanno invitato i tuoi amici.</string>
+    <string name="notif_invited_you">%1$s ti ha invitato</string>
+    <string name="notif_someone">Qualcuno</string>
+    <string name="status_active">Attivo</string>
+    <string name="status_expired">Scaduto</string>
+    <string name="status_cancelled">Annullato</string>
+    <string name="time_now">ora</string>
+    <string name="time_min">%1$d min fa</string>
+    <string name="time_hour">%1$d h fa</string>
+    <string name="time_day">%1$d g fa</string>
+
+    <!-- Lingua -->
+    <string name="lang_current">Scegli la lingua dell\'app:</string>
+    <string name="lang_italian">Italiano</string>
+    <string name="lang_english">English</string>
+    <string name="lang_note">L\'app verrà ricaricata nella lingua selezionata.</string>
+
+    <!-- Privacy (permessi) -->
+    <string name="privacy_intro">Extreme Coffee usa solo i dati necessari a farti incontrare gli amici per un caffè.</string>
+    <string name="privacy_perms_h">Permessi usati</string>
+    <string name="privacy_perms_body">• Posizione: per mostrarti sulla mappa durante un Extreme Coffee e trovare i bar vicini.\n• Contatti: per riconoscere quali amici hanno già l\'app e poterli invitare.\n• Fotocamera: per la foto profilo e il selfie finale.\n• Notifiche: per avvisarti quando ricevi un invito.</string>
+    <string name="privacy_perms_note">Puoi concedere o revocare ogni permesso quando vuoi dalle impostazioni di sistema.</string>
+    <string name="privacy_open_settings">Apri le impostazioni dell\'app</string>
+    <string name="privacy_data_h">I tuoi dati</string>
+    <string name="privacy_data_body">Puoi eliminare in qualsiasi momento il tuo profilo e i dati associati da Account → \"Elimina dati e account\".</string>
+    <string name="privacy_data_more">Per i dettagli completi su quali dati raccogliamo e perché, leggi l\'Informativa sulla privacy.</string>
+
+    <!-- Termini e condizioni -->
+    <string name="terms_updated">Ultimo aggiornamento: giugno 2026</string>
+    <string name="terms_intro">Usando Extreme Coffee accetti questi termini. Se non sei d\'accordo, non utilizzare l\'app.</string>
+    <string name="terms_1_h">1. Il servizio</string>
+    <string name="terms_1_b">Extreme Coffee è un\'app che ti permette di invitare amici a incontrarti per un caffè entro un breve intervallo di tempo, mostrando la posizione dei partecipanti durante l\'evento.</string>
+    <string name="terms_2_h">2. Uso corretto</string>
+    <string name="terms_2_b">Ti impegni a usare l\'app in modo lecito e rispettoso, a non molestare altri utenti e a non inserire contenuti offensivi o ingannevoli. Sei responsabile delle attività svolte dal tuo account.</string>
+    <string name="terms_3_h">3. Account</string>
+    <string name="terms_3_b">Per usare l\'app fornisci un nickname e un numero di telefono. Sei responsabile della veridicità dei dati inseriti e della custodia del tuo dispositivo.</string>
+    <string name="terms_4_h">4. Posizione e incontri</string>
+    <string name="terms_4_b">La condivisione della posizione avviene solo durante un Extreme Coffee attivo e con le persone coinvolte. Gli incontri avvengono sotto la tua responsabilità: usa buon senso e prudenza.</string>
+    <string name="terms_5_h">5. Limitazione di responsabilità</string>
+    <string name="terms_5_b">L\'app è fornita \"così com\'è\". Non garantiamo che sia priva di errori o sempre disponibile e, nei limiti di legge, non siamo responsabili per danni derivanti dall\'uso del servizio.</string>
+    <string name="terms_6_h">6. Modifiche</string>
+    <string name="terms_6_b">Possiamo aggiornare questi termini; le modifiche saranno indicate dalla data di aggiornamento.</string>
+    <string name="terms_note">Questo testo è un modello iniziale da far verificare a un professionista prima della pubblicazione. Non costituisce consulenza legale.</string>
+
+    <!-- Informativa privacy -->
+    <string name="pp_updated">Ultimo aggiornamento: giugno 2026</string>
+    <string name="pp_intro">Questa informativa spiega quali dati tratta Extreme Coffee e come.</string>
+    <string name="pp_collect_h">Dati che raccogliamo</string>
+    <string name="pp_collect_b">• Profilo: nickname e numero di telefono, eventuale foto profilo.\n• Posizione: posizione approssimativa/precisa solo durante un Extreme Coffee attivo.\n• Contatti: usati sul dispositivo per riconoscere gli amici che hanno l\'app.\n• Dati tecnici: identificativo del dispositivo e token per le notifiche.</string>
+    <string name="pp_why_h">Perché li usiamo</string>
+    <string name="pp_why_b">Per farti creare un profilo, inviare e ricevere inviti, mostrare i partecipanti sulla mappa durante un evento e inviarti le notifiche.</string>
+    <string name="pp_where_h">Dove sono conservati</string>
+    <string name="pp_where_b">I dati sono gestiti tramite i servizi Google Firebase (database e notifiche). Alcune informazioni restano salvate solo sul tuo dispositivo.</string>
+    <string name="pp_share_h">Condivisione</string>
+    <string name="pp_share_b">Non vendiamo i tuoi dati. Vengono condivisi solo con gli utenti coinvolti negli inviti che tu invii o accetti, e con i fornitori tecnici necessari al funzionamento dell\'app.</string>
+    <string name="pp_keep_h">Conservazione e cancellazione</string>
+    <string name="pp_keep_b">Puoi eliminare il profilo e i dati associati in qualsiasi momento da Account → \"Elimina dati e account\".</string>
+    <string name="pp_contact_h">Contatti</string>
+    <string name="pp_contact_b">Per richieste sulla privacy puoi scrivere all\'indirizzo di supporto indicato nella scheda dell\'app sullo store.</string>
+    <string name="pp_note">Questo testo è un modello iniziale da personalizzare e far verificare prima della pubblicazione sullo store. Non costituisce consulenza legale.</string>
 </resources>
