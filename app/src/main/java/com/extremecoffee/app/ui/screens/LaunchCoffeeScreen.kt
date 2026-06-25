@@ -140,11 +140,11 @@ fun LaunchCoffeeScreen(nav: NavController) {
                     modifier = Modifier.fillMaxSize(),
                     centerLat = startLat, centerLng = startLng, zoom = 14.0,
                     markers = if (barLat != null)
-                        listOf(GeoMarker(barLat!!, barLng!!, query.ifBlank { stringResource(R.string.launch_point_chosen) }, coffee = true))
+                        listOf(GeoMarker(barLat!!, barLng!!, query.ifBlank { context.getString(R.string.launch_point_chosen) }, coffee = true))
                     else emptyList(),
                     recenterLat = focusLat, recenterLng = focusLng,
                     showMyLocation = locPerm.status.isGranted,
-                    onMapTap = { lat, lng -> barLat = lat; barLng = lng; if (query.isBlank()) query = stringResource(R.string.launch_point_map) }
+                    onMapTap = { lat, lng -> barLat = lat; barLng = lng; if (query.isBlank()) query = context.getString(R.string.launch_point_map) }
                 )
             }
             Text(
@@ -194,7 +194,7 @@ fun LaunchCoffeeScreen(nav: NavController) {
                 onClick = {
                     val la = barLat; val ln = barLng
                     if (query.isBlank() || la == null || ln == null) {
-                        Toast.makeText(context, stringResource(R.string.launch_pick_place), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.launch_pick_place), Toast.LENGTH_SHORT).show()
                         return@Button
                     }
                     scope.launch {

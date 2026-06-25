@@ -32,6 +32,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun LeaderboardScreen(nav: NavController) {
     val context = LocalContext.current
+    val anonLabel = stringResource(R.string.anon)
     val perm = rememberPermissionState(android.Manifest.permission.READ_CONTACTS)
     val circles = remember { Circles.all(context) }
     var selectedCircleId by remember { mutableStateOf<String?>(null) }
@@ -43,7 +44,7 @@ fun LeaderboardScreen(nav: NavController) {
         if (circle == null && !perm.status.isGranted) { perm.launchPermissionRequest(); return@LaunchedEffect }
         entries = null
         val users = LinkedHashMap<String, String>()
-        users[Profile.id(context)] = Profile.name(context).ifBlank { stringResource(R.string.lb_you) }
+        users[Profile.id(context)] = Profile.name(context).ifBlank { context.getString(R.string.lb_you) }
         if (circle != null) {
             circle.members.forEach { if (it.id.isNotBlank()) users[it.id] = it.name }
         } else {
@@ -98,7 +99,7 @@ fun LeaderboardScreen(nav: NavController) {
                             modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
                             Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
                                 Text(medal, modifier = Modifier.width(40.dp), style = MaterialTheme.typography.titleMedium)
-                                Text(le.name.ifBlank { stringResource(R.string.anon) }, modifier = Modifier.weight(1f),
+                                Text(le.name.ifBlank { anonLabel }, modifier = Modifier.weight(1f),
                                     fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge)
                                 Text(value.toString(), fontWeight = FontWeight.Bold,
                                     style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)

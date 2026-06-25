@@ -30,6 +30,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun CirclesScreen(nav: NavController) {
     val context = LocalContext.current
+    val anonLabel = stringResource(R.string.anon)
     val perm = rememberPermissionState(android.Manifest.permission.READ_CONTACTS)
     var appContacts by remember { mutableStateOf<List<CircleMember>?>(null) }
     var circles by remember { mutableStateOf(Circles.all(context)) }
@@ -73,7 +74,7 @@ fun CirclesScreen(nav: NavController) {
                             Text(if (sel) "\u2611" else "\u2610",
                                 modifier = Modifier.padding(end = 10.dp),
                                 style = MaterialTheme.typography.titleMedium)
-                            Text(m.name.ifBlank { stringResource(R.string.anon) }, modifier = Modifier.weight(1f),
+                            Text(m.name.ifBlank { anonLabel }, modifier = Modifier.weight(1f),
                                 fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge)
                         }
                     }
