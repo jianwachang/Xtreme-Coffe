@@ -17,9 +17,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -106,6 +110,15 @@ fun AccountScreen(nav: NavController) {
             AccountRow(Icons.Filled.PhotoCamera, "Cambia foto", "Aggiorna la tua immagine profilo") { editPhoto() }
             AccountRow(Icons.Filled.Edit, "Modifica profilo", "Nickname e numero di telefono") { nav.navigate("register") }
             AccountRow(Icons.AutoMirrored.Filled.ExitToApp, "Esci dall'app", "Chiudi Extreme Coffee") { showExit = true }
+
+            Spacer(Modifier.height(18.dp))
+            Text("Informazioni e privacy", style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(start = 4.dp, bottom = 6.dp))
+            AccountRow(Icons.Filled.Language, "Lingua", "Lingua dell'app") { nav.navigate("language") }
+            AccountRow(Icons.Filled.Lock, "Privacy", "Permessi e gestione dei dati") { nav.navigate("privacy") }
+            AccountRow(Icons.Filled.Description, "Termini e condizioni", "Le regole d'uso del servizio") { nav.navigate("terms") }
+            AccountRow(Icons.Filled.Shield, "Informativa sulla privacy", "Come trattiamo i tuoi dati") { nav.navigate("privacyPolicy") }
 
             Spacer(Modifier.height(10.dp))
             AccountRow(Icons.Filled.Delete, "Elimina dati e account",

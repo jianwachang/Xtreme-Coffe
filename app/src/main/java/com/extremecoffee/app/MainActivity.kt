@@ -133,6 +133,10 @@ fun ExtremeCoffeeApp(incomingEventId: String?) {
             composable("register") { RegisterScreen(nav) }
             composable("home") { HomeScreen(nav) }
             composable("account") { AccountScreen(nav) }
+            composable("language") { LanguageScreen(nav) }
+            composable("privacy") { PrivacyScreen(nav) }
+            composable("terms") { TermsScreen(nav) }
+            composable("privacyPolicy") { PrivacyPolicyScreen(nav) }
             composable("launch") { LaunchCoffeeScreen(nav) }
             composable("inviteCircle/{eventId}") {
                 InviteCircleScreen(nav, it.arguments?.getString("eventId") ?: "")
