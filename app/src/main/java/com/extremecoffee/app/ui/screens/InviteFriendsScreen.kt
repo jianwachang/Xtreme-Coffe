@@ -3,6 +3,8 @@
 package com.extremecoffee.app.ui.screens
 
 import android.content.Intent
+import androidx.compose.ui.res.stringResource
+import com.extremecoffee.app.R
 import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -75,7 +77,7 @@ fun InviteFriendsScreen(nav: NavController) {
             context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/$num?text=$msg")))
             invited = invited + (normOf(c) ?: c.phone)
         } catch (e: Exception) {
-            Toast.makeText(context, "WhatsApp non disponibile", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.wa_unavailable), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -93,12 +95,12 @@ fun InviteFriendsScreen(nav: NavController) {
         contacts.count { normOf(it)?.let { n -> n in registered } == true }
     }
 
-    CoffeeScaffold("Invita i tuoi amici", nav, "inviteFriends") { mod ->
+    CoffeeScaffold(stringResource(R.string.if_title), nav, "inviteFriends") { mod ->
         Column(mod.fillMaxSize().padding(horizontal = 16.dp)) {
 
             Text(
-                "Chi ha già Extreme Coffee è segnato nell'elenco e non ha bisogno di invito. " +
-                    "A chi non ce l'ha puoi mandare il link per scaricarla su WhatsApp.",
+                stringResource(R.string.if_intro1) +
+                    stringResource(R.string.if_intro2),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(vertical = 10.dp)
@@ -110,11 +112,11 @@ fun InviteFriendsScreen(nav: NavController) {
                         modifier = Modifier.padding(bottom = 6.dp)) {
                         CircularProgressIndicator(strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text("Controllo chi ha già l'app…", style = MaterialTheme.typography.labelMedium)
+                        Text(stringResource(R.string.if_checking), style = MaterialTheme.typography.labelMedium)
                     }
                 } else if (contacts.isNotEmpty()) {
                     Text(
-                        "$appCount tuoi contatti hanno già Extreme Coffee",
+                        stringResource(R.string.if_count, appCount),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,
@@ -123,7 +125,7 @@ fun InviteFriendsScreen(nav: NavController) {
                 }
                 OutlinedTextField(
                     value = search, onValueChange = { search = it },
-                    label = { Text("Cerca un contatto") },
+                    label = { Text(stringResource(R.string.ic_search)) },
                     leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
                     singleLine = true, shape = MaterialTheme.shapes.medium,
                     modifier = Modifier.fillMaxWidth()
@@ -134,9 +136,9 @@ fun InviteFriendsScreen(nav: NavController) {
             when {
                 !perm.status.isGranted -> Box(Modifier.fillMaxWidth().padding(24.dp), Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Serve il permesso ai contatti per trovare i tuoi amici.")
+                        Text(stringResource(R.string.ic_perm))
                         Spacer(Modifier.height(12.dp))
-                        Button(onClick = { perm.launchPermissionRequest() }) { Text("Consenti contatti") }
+                        Button(onClick = { perm.launchPermissionRequest() }) { Text(stringResource(R.string.ic_perm_btn)) }
                     }
                 }
                 loading -> Box(Modifier.fillMaxWidth().padding(24.dp), Alignment.Center) { CircularProgressIndicator() }
@@ -158,7 +160,7 @@ fun InviteFriendsScreen(nav: NavController) {
 }
 
 /**
- * Riga contatto per "Invita i tuoi amici".
+ * Riga contatto per stringResource(R.string.if_title).
  * - Ha già l'app  -> etichetta informativa, NESSUN invito.
  * - Non ha l'app  -> pulsante WhatsApp per mandare il link.
  */
@@ -180,7 +182,7 @@ private fun FriendRow(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1, overflow = TextOverflow.Ellipsis)
             if (hasApp) {
-                Text("\u2615 Ha già l'app", style = MaterialTheme.typography.labelSmall,
+                Text(stringResource(R.string.if_has_app), style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
             }
         }
@@ -190,14 +192,14 @@ private fun FriendRow(
                 Icon(Icons.Filled.Check, contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary)
                 Spacer(Modifier.width(4.dp))
-                Text("Già iscritto", style = MaterialTheme.typography.labelMedium,
+                Text(stringResource(R.string.if_subscribed), style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.primary)
             }
             invited -> Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Filled.Check, contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary)
                 Spacer(Modifier.width(4.dp))
-                Text("Invitato", style = MaterialTheme.typography.labelMedium,
+                Text(stringResource(R.string.ic_invited), style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.primary)
             }
             else -> OutlinedButton(

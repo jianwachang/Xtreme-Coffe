@@ -1,6 +1,8 @@
 package com.extremecoffee.app.ui.screens
 
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.ui.res.stringResource
+import com.extremecoffee.app.R
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -41,7 +43,7 @@ fun LeaderboardScreen(nav: NavController) {
         if (circle == null && !perm.status.isGranted) { perm.launchPermissionRequest(); return@LaunchedEffect }
         entries = null
         val users = LinkedHashMap<String, String>()
-        users[Profile.id(context)] = Profile.name(context).ifBlank { "Tu" }
+        users[Profile.id(context)] = Profile.name(context).ifBlank { stringResource(R.string.lb_you) }
         if (circle != null) {
             circle.members.forEach { if (it.id.isNotBlank()) users[it.id] = it.name }
         } else {
@@ -53,20 +55,20 @@ fun LeaderboardScreen(nav: NavController) {
         entries = withContext(Dispatchers.IO) { CoffeeRepository.loadLeaderboard(users.map { it.key to it.value }) }
     }
 
-    TabScaffold("Classifica", nav, "leaderboard") { mod ->
+    TabScaffold(stringResource(R.string.nav_leaderboard), nav, "leaderboard") { mod ->
         Column(mod.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp)) {
             // selettore cerchia
             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                SelectChip("Tutti", selectedCircleId == null) { selectedCircleId = null }
+                SelectChip(stringResource(R.string.lb_all), selectedCircleId == null) { selectedCircleId = null }
                 circles.forEach { c -> SelectChip(c.name, selectedCircleId == c.id) { selectedCircleId = c.id } }
             }
             Spacer(Modifier.height(8.dp))
-            TextButton(onClick = { nav.navigate("circles") }) { Text("Gestisci cerchie \u203A") }
+            TextButton(onClick = { nav.navigate("circles") }) { Text(stringResource(R.string.lb_manage)) }
             Spacer(Modifier.height(8.dp))
 
             // selettore metrica
-            val labels = listOf("Totale", "Lanciati", "Partecipati")
+            val labels = listOf(stringResource(R.string.lb_total), stringResource(R.string.lb_launched), stringResource(R.string.lb_joined))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 labels.forEachIndexed { i, l -> SelectChip(l, metric == i, Modifier.weight(1f)) { metric = i } }
             }
@@ -75,11 +77,11 @@ fun LeaderboardScreen(nav: NavController) {
             val e = entries
             when {
                 selectedCircleId == null && !perm.status.isGranted -> Text(
-                    "Per la classifica generale servono i contatti (confronto solo chi ha l'app). In alternativa scegli una cerchia salvata.",
+                    stringResource(R.string.lb_need_contacts),
                     style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 e == null -> Row(verticalAlignment = Alignment.CenterVertically) {
                     CircularProgressIndicator(modifier = Modifier.size(20.dp))
-                    Spacer(Modifier.width(10.dp)); Text("Calcolo la classifica\u2026")
+                    Spacer(Modifier.width(10.dp)); Text(stringResource(R.string.lb_calc))
                 }
                 else -> {
                     val me = Profile.id(context)
@@ -96,7 +98,7 @@ fun LeaderboardScreen(nav: NavController) {
                             modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
                             Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
                                 Text(medal, modifier = Modifier.width(40.dp), style = MaterialTheme.typography.titleMedium)
-                                Text(le.name.ifBlank { "Anonimo" }, modifier = Modifier.weight(1f),
+                                Text(le.name.ifBlank { stringResource(R.string.anon) }, modifier = Modifier.weight(1f),
                                     fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge)
                                 Text(value.toString(), fontWeight = FontWeight.Bold,
                                     style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
@@ -105,7 +107,7 @@ fun LeaderboardScreen(nav: NavController) {
                     }
                     if (ranked.size <= 1) {
                         Spacer(Modifier.height(10.dp))
-                        Text("Aggiungi amici (o crea una cerchia) per popolare la classifica.",
+                        Text(stringResource(R.string.lb_empty),
                             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }

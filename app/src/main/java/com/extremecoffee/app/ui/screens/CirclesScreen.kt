@@ -1,6 +1,8 @@
 package com.extremecoffee.app.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.ui.res.stringResource
+import com.extremecoffee.app.R
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -44,22 +46,22 @@ fun CirclesScreen(nav: NavController) {
         } else perm.launchPermissionRequest()
     }
 
-    CoffeeScaffold("Le tue cerchie", nav, "circles") { mod ->
+    CoffeeScaffold(stringResource(R.string.cir_title), nav, "circles") { mod ->
         Column(mod.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp)) {
-            Text("Crea una cerchia", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.cir_create), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(8.dp))
             OutlinedTextField(value = name, onValueChange = { name = it.take(24) },
-                label = { Text("Nome (es. Colleghi)") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+                label = { Text(stringResource(R.string.cir_name)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
             Spacer(Modifier.height(12.dp))
-            Text("Membri (tuoi contatti con l'app)",
+            Text(stringResource(R.string.cir_members),
                 fontWeight = FontWeight.Bold, style = MaterialTheme.typography.labelLarge)
             Spacer(Modifier.height(8.dp))
             val contacts = appContacts
             when {
-                !perm.status.isGranted -> Text("Concedi l'accesso ai contatti per scegliere i membri.",
+                !perm.status.isGranted -> Text(stringResource(R.string.cir_perm),
                     style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                contacts == null -> Text("Carico i contatti\u2026", style = MaterialTheme.typography.bodySmall)
-                contacts.isEmpty() -> Text("Nessuno dei tuoi contatti ha ancora l'app.",
+                contacts == null -> Text(stringResource(R.string.cir_loading), style = MaterialTheme.typography.bodySmall)
+                contacts.isEmpty() -> Text(stringResource(R.string.cir_none_contacts),
                     style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 else -> contacts.forEach { m ->
                     val sel = selected.contains(m.id)
@@ -71,7 +73,7 @@ fun CirclesScreen(nav: NavController) {
                             Text(if (sel) "\u2611" else "\u2610",
                                 modifier = Modifier.padding(end = 10.dp),
                                 style = MaterialTheme.typography.titleMedium)
-                            Text(m.name.ifBlank { "Anonimo" }, modifier = Modifier.weight(1f),
+                            Text(m.name.ifBlank { stringResource(R.string.anon) }, modifier = Modifier.weight(1f),
                                 fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge)
                         }
                     }
@@ -83,13 +85,13 @@ fun CirclesScreen(nav: NavController) {
                     val members = (appContacts ?: emptyList()).filter { selected.contains(it.id) }
                     Circles.add(context, Circle(System.currentTimeMillis().toString(), name.trim(), members))
                     circles = Circles.all(context); name = ""; selected.clear()
-                }, modifier = Modifier.fillMaxWidth()) { Text("Crea cerchia") }
+                }, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.cir_create_btn)) }
 
             Spacer(Modifier.height(24.dp))
-            Text("Le tue cerchie", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.cir_title), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(8.dp))
             if (circles.isEmpty()) {
-                Text("Nessuna cerchia. Creane una qui sopra.",
+                Text(stringResource(R.string.cir_empty),
                     style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             } else {
                 circles.forEach { c ->
@@ -99,12 +101,12 @@ fun CirclesScreen(nav: NavController) {
                         Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
                             Column(Modifier.weight(1f)) {
                                 Text(c.name, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge)
-                                Text("${c.members.size} membri", style = MaterialTheme.typography.bodySmall,
+                                Text(stringResource(R.string.cir_members_count, c.members.size), style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                             TextButton(onClick = {
                                 Circles.remove(context, c.id); circles = Circles.all(context)
-                            }) { Text("Elimina") }
+                            }) { Text(stringResource(R.string.common_delete)) }
                         }
                     }
                 }

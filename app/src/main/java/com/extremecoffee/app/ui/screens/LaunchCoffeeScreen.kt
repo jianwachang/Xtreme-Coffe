@@ -3,6 +3,8 @@
 package com.extremecoffee.app.ui.screens
 
 import android.Manifest
+import androidx.compose.ui.res.stringResource
+import com.extremecoffee.app.R
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -95,16 +97,16 @@ fun LaunchCoffeeScreen(nav: NavController) {
     val focusLat = barLat ?: myLat
     val focusLng = barLng ?: myLng
 
-    CoffeeScaffold("Lancia un caffè", nav, "launch") { mod ->
+    CoffeeScaffold(stringResource(R.string.launch_title), nav, "launch") { mod ->
         Column(mod.fillMaxSize().padding(horizontal = 20.dp).verticalScroll(rememberScrollState())) {
             Spacer(Modifier.height(8.dp))
-            Text("Dove vi vedete?", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(R.string.launch_where), style = MaterialTheme.typography.titleLarge)
             Spacer(Modifier.height(10.dp))
 
             OutlinedTextField(
                 value = query,
                 onValueChange = { query = it },
-                label = { Text("Inserisci un bar o un indirizzo") },
+                label = { Text(stringResource(R.string.launch_addr_hint)) },
                 leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
                 trailingIcon = { if (loading) CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp) },
                 singleLine = true,
@@ -138,37 +140,37 @@ fun LaunchCoffeeScreen(nav: NavController) {
                     modifier = Modifier.fillMaxSize(),
                     centerLat = startLat, centerLng = startLng, zoom = 14.0,
                     markers = if (barLat != null)
-                        listOf(GeoMarker(barLat!!, barLng!!, query.ifBlank { "Punto scelto" }, coffee = true))
+                        listOf(GeoMarker(barLat!!, barLng!!, query.ifBlank { stringResource(R.string.launch_point_chosen) }, coffee = true))
                     else emptyList(),
                     recenterLat = focusLat, recenterLng = focusLng,
                     showMyLocation = locPerm.status.isGranted,
-                    onMapTap = { lat, lng -> barLat = lat; barLng = lng; if (query.isBlank()) query = "Punto sulla mappa" }
+                    onMapTap = { lat, lng -> barLat = lat; barLng = lng; if (query.isBlank()) query = stringResource(R.string.launch_point_map) }
                 )
             }
             Text(
-                if (barLat != null) "☕ Punto di ritrovo impostato"
-                else "Cerca l'indirizzo qui sopra, oppure tocca la mappa",
+                if (barLat != null) stringResource(R.string.launch_point_set)
+                else stringResource(R.string.launch_point_hint),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(top = 6.dp)
             )
 
             Spacer(Modifier.height(20.dp))
-            Text("Quanto tempo hanno?", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.launch_howlong), style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(8.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.horizontalScroll(rememberScrollState())) {
                 TIMES.forEach { t ->
-                    FilterChip(selected = minutes == t, onClick = { minutes = t }, label = { Text("$t min", maxLines = 1, softWrap = false) })
+                    FilterChip(selected = minutes == t, onClick = { minutes = t }, label = { Text(stringResource(R.string.launch_min, t), maxLines = 1, softWrap = false) })
                 }
             }
 
             Spacer(Modifier.height(20.dp))
-            Text("Modalità", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.launch_mode), style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(8.dp))
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                ModeOption("Cerchia ristretta", "Inviti i tuoi contatti", mode == "CERCHIA") { mode = "CERCHIA" }
-                ModeOption("Un caffè in amicizia", "Aperto a chi è nei paraggi", mode == "AMICIZIA") { mode = "AMICIZIA" }
+                ModeOption(stringResource(R.string.launch_mode_circle), stringResource(R.string.launch_mode_circle_sub), mode == "CERCHIA") { mode = "CERCHIA" }
+                ModeOption(stringResource(R.string.launch_mode_open), stringResource(R.string.launch_mode_open_sub), mode == "AMICIZIA") { mode = "AMICIZIA" }
             }
 
             Spacer(Modifier.height(28.dp))
@@ -179,7 +181,7 @@ fun LaunchCoffeeScreen(nav: NavController) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        "☕ Sei già in viaggio per un caffè. Potrai lanciare il tuo appena questo si conclude.",
+                        stringResource(R.string.launch_blocked),
                         modifier = Modifier.padding(16.dp),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
@@ -192,7 +194,7 @@ fun LaunchCoffeeScreen(nav: NavController) {
                 onClick = {
                     val la = barLat; val ln = barLng
                     if (query.isBlank() || la == null || ln == null) {
-                        Toast.makeText(context, "Scegli un posto (ricerca o tocco sulla mappa)", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, stringResource(R.string.launch_pick_place), Toast.LENGTH_SHORT).show()
                         return@Button
                     }
                     scope.launch {
@@ -208,13 +210,13 @@ fun LaunchCoffeeScreen(nav: NavController) {
                             if (mode == "CERCHIA") nav.goFresh("inviteCircle/$id")
                             else nav.goFresh("launched/$id")
                         } catch (e: Exception) {
-                            Toast.makeText(context, "Errore nel lancio: ${e.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, context.getString(R.string.launch_error, e.message ?: ""), Toast.LENGTH_LONG).show()
                         }
                     }
                 },
                 modifier = Modifier.fillMaxWidth().height(56.dp),
                 shape = MaterialTheme.shapes.large
-            ) { Text("Lancia Extreme Coffee · $minutes min", fontWeight = FontWeight.Bold, maxLines = 1, softWrap = false) }
+            ) { Text(stringResource(R.string.launch_cta, minutes), fontWeight = FontWeight.Bold, maxLines = 1, softWrap = false) }
             Spacer(Modifier.height(28.dp))
         }
     }

@@ -1,6 +1,8 @@
 package com.extremecoffee.app.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.ui.res.stringResource
+import com.extremecoffee.app.R
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.LinearProgressIndicator
@@ -27,7 +29,7 @@ fun BadgesScreen(nav: NavController) {
     val stats by produceState<MyStats?>(initialValue = null) {
         value = CoffeeRepository.loadMyStats(context)
     }
-    CoffeeScaffold("I tuoi traguardi", nav, "badges") { mod ->
+    CoffeeScaffold(stringResource(R.string.bdg_title), nav, "badges") { mod ->
         Column(
             mod.fillMaxSize()
                 .verticalScroll(rememberScrollState())
@@ -35,11 +37,11 @@ fun BadgesScreen(nav: NavController) {
         ) {
             val s = stats
             if (s == null) {
-                Text("Calcolo i tuoi traguardi\u2026", style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(R.string.bdg_calc), style = MaterialTheme.typography.bodyMedium)
             } else {
                 val badges = evaluateBadges(s)
                 val earned = badges.count { it.earned }
-                Text("$earned su ${badges.size} traguardi sbloccati",
+                Text(stringResource(R.string.bdg_count, earned, badges.size),
                     style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(16.dp))
                 badges.forEach { badge ->

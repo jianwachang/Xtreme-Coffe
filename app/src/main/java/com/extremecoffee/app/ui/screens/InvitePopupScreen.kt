@@ -12,11 +12,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.extremecoffee.app.R
 import com.extremecoffee.app.data.CoffeeRepository
 import com.extremecoffee.app.model.CoffeeEvent
 import com.extremecoffee.app.model.ParticipantLocation
@@ -38,7 +40,7 @@ fun InvitePopupScreen(nav: NavController, eventId: String) {
         while (true) { remaining = event?.remainingMillis() ?: 0L; delay(1_000) }
     }
 
-    CoffeeScaffold("Invito", nav, "invite/$eventId") { mod ->
+    CoffeeScaffold(stringResource(R.string.ip_title), nav, "invite/$eventId") { mod ->
         Column(
             mod.fillMaxSize().padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -51,7 +53,7 @@ fun InvitePopupScreen(nav: NavController, eventId: String) {
                 Text("\u274C", fontSize = 56.sp)
                 Spacer(Modifier.height(12.dp))
                 Text(
-                    "Questo Extreme Coffee \u00e8 stato annullato",
+                    stringResource(R.string.ip_cancelled),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.error
@@ -61,7 +63,7 @@ fun InvitePopupScreen(nav: NavController, eventId: String) {
                     onClick = { nav.goFresh("home") },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
                     shape = RoundedCornerShape(20.dp)
-                ) { Text("Torna alla home", fontWeight = FontWeight.Bold) }
+                ) { Text(stringResource(R.string.ip_back_home), fontWeight = FontWeight.Bold) }
                 return@Column
             }
 
@@ -78,7 +80,7 @@ fun InvitePopupScreen(nav: NavController, eventId: String) {
             }
             Spacer(Modifier.height(8.dp))
             Text(
-                "${e.launcherName} ha lanciato un\nEXTREME COFFEE!!",
+                stringResource(R.string.ip_launched, e.launcherName),
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Black, textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.primary
@@ -94,7 +96,7 @@ fun InvitePopupScreen(nav: NavController, eventId: String) {
                         else MaterialTheme.colorScheme.secondary
             )
             Text(
-                "Hai ancora $min minuti per avere un caff\u00e8 GRATIS da ${e.barName}!",
+                stringResource(R.string.ip_free, min, e.barName),
                 textAlign = TextAlign.Center, style = MaterialTheme.typography.bodyLarge
             )
             Spacer(Modifier.height(32.dp))
@@ -113,7 +115,7 @@ fun InvitePopupScreen(nav: NavController, eventId: String) {
                 enabled = remaining > 0,
                 modifier = Modifier.fillMaxWidth().height(60.dp),
                 shape = RoundedCornerShape(20.dp)
-            ) { Text("\u2705  STO ARRIVANDO!", fontSize = 18.sp, fontWeight = FontWeight.Bold) }
+            ) { Text(stringResource(R.string.ip_accept), fontSize = 18.sp, fontWeight = FontWeight.Bold) }
 
             Spacer(Modifier.height(12.dp))
             TextButton(onClick = {
@@ -123,10 +125,10 @@ fun InvitePopupScreen(nav: NavController, eventId: String) {
                     CoffeeRepository.sendResponse(e, Profile.id(context), Profile.name(context), "declined")
                 }
                 nav.goFresh("home")
-            }) { Text("Stavolta passo \uD83D\uDE34") }
+            }) { Text(stringResource(R.string.ip_pass)) }
 
             if (remaining <= 0) {
-                Text("\u23F0 Tempo scaduto... il caff\u00e8 gratis \u00e8 volato!",
+                Text(stringResource(R.string.ip_timeout),
                     color = MaterialTheme.colorScheme.error)
             }
         }

@@ -3,6 +3,7 @@
 package com.extremecoffee.app.ui.screens
 
 import android.Manifest
+import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -101,25 +102,25 @@ fun RadarScreen(nav: NavController) {
         label = "angle"
     )
 
-    CoffeeScaffold("Radar amicizie", nav, "radar") { mod ->
+    CoffeeScaffold(stringResource(R.string.rad_screen_title), nav, "radar") { mod ->
         Column(
             mod.fillMaxSize().background(Color(0xFF050B12)).padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(4.dp))
-            Text("\uD83D\uDCE1 RADAR AMICIZIE", style = MaterialTheme.typography.titleLarge,
+            Text(stringResource(R.string.rad_title), style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Black, color = Color(0xFF00E5FF))
             Text(
-                if (view == "locale") "${events.size} caff\u00e8 aperti entro ${fmtKm(radiusKm)} km"
-                else "${events.size} caff\u00e8 aperti in Italia",
+                if (view == "locale") stringResource(R.string.rad_open_local, events.size, fmtKm(radiusKm))
+                else stringResource(R.string.rad_open_italy, events.size),
                 color = Color(0xFF7BD8E8)
             )
             Spacer(Modifier.height(10.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 FilterChip(selected = view == "locale", onClick = { view = "locale" },
-                    label = { Text("Locale") })
+                    label = { Text(stringResource(R.string.rad_local)) })
                 FilterChip(selected = view == "nazionale", onClick = { view = "nazionale" },
-                    label = { Text("Nazionale") })
+                    label = { Text(stringResource(R.string.rad_national)) })
             }
             Spacer(Modifier.height(12.dp))
             if (view == "locale") {
@@ -218,7 +219,7 @@ fun RadarScreen(nav: NavController) {
             }
 
             Spacer(Modifier.height(18.dp))
-            Text("Raggio di ricerca: ${fmtKm(radiusKm)} km",
+            Text(stringResource(R.string.rad_radius, fmtKm(radiusKm)),
                 color = Color.White, fontWeight = FontWeight.Bold)
             Slider(
                 value = radiusKm, onValueChange = { radiusKm = it },
@@ -246,7 +247,7 @@ fun RadarScreen(nav: NavController) {
                                 e.id, e.launcherPhoto,
                                 state = rememberMarkerState(key = e.id, position = LatLng(e.barLat, e.barLng)),
                                 title = e.launcherName,
-                                snippet = "${e.barName} \u00b7 ${e.minutes} min",
+                                snippet = stringResource(R.string.rad_open_item, e.barName, e.minutes),
                                 onClick = { nav.goFresh("invite/${e.id}"); true }
                             ) {
                                 val avatar = remember(e.launcherPhoto) { decodeAvatar(e.launcherPhoto) }
@@ -270,13 +271,13 @@ fun RadarScreen(nav: NavController) {
                     }
                 }
                 Spacer(Modifier.height(8.dp))
-                Text("Tocca un caff\u00e8 sulla mappa per andarci.",
+                Text(stringResource(R.string.rad_tap),
                     color = Color(0xFF7BD8E8), style = MaterialTheme.typography.bodySmall)
             }
 
             if (events.isEmpty()) {
                 Spacer(Modifier.height(16.dp))
-                Text("Nessun caff\u00e8 aperto qui intorno per ora.",
+                Text(stringResource(R.string.rad_none),
                     color = Color(0xFF7BD8E8), style = MaterialTheme.typography.bodyMedium)
             }
         }

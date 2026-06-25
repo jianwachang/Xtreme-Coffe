@@ -3,6 +3,8 @@
 package com.extremecoffee.app.ui.screens
 
 import android.content.Intent
+import androidx.compose.ui.res.stringResource
+import com.extremecoffee.app.R
 import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -79,7 +81,7 @@ fun InviteCircleScreen(nav: NavController, eventId: String) {
             context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/$num?text=$msg")))
             invited = invited + (normOf(c) ?: c.phone)
         } catch (e: Exception) {
-            Toast.makeText(context, "WhatsApp non disponibile", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.wa_unavailable), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -87,7 +89,7 @@ fun InviteCircleScreen(nav: NavController, eventId: String) {
         scope.launch {
             CoffeeRepository.inviteUserToEvent(eventId, user.id)
             invited = invited + (normOf(c) ?: c.phone)
-            Toast.makeText(context, "Invito inviato a ${c.name}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.ic_sent, c.name), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -105,12 +107,12 @@ fun InviteCircleScreen(nav: NavController, eventId: String) {
         contacts.count { normOf(it)?.let { n -> registered.containsKey(n) } == true }
     }
 
-    CoffeeScaffold("Invita la cerchia", nav, "inviteCircle/$eventId") { mod ->
+    CoffeeScaffold(stringResource(R.string.ic_title), nav, "inviteCircle/$eventId") { mod ->
         Column(mod.fillMaxSize().padding(horizontal = 16.dp)) {
 
             Text(
-                "Chi ha già l'app riceve l'invito direttamente con una notifica. " +
-                    "A chi non ce l'ha mandi il link per scaricarla su WhatsApp.",
+                stringResource(R.string.ic_intro1) +
+                    stringResource(R.string.ic_intro2),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(vertical = 10.dp)
@@ -122,11 +124,11 @@ fun InviteCircleScreen(nav: NavController, eventId: String) {
                         modifier = Modifier.padding(bottom = 6.dp)) {
                         CircularProgressIndicator(strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text("Controllo chi ha l'app…", style = MaterialTheme.typography.labelMedium)
+                        Text(stringResource(R.string.ic_checking), style = MaterialTheme.typography.labelMedium)
                     }
                 } else if (contacts.isNotEmpty()) {
                     Text(
-                        "$appCount tuoi contatti hanno Extreme Coffee",
+                        stringResource(R.string.ic_count, appCount),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,
@@ -135,7 +137,7 @@ fun InviteCircleScreen(nav: NavController, eventId: String) {
                 }
                 OutlinedTextField(
                     value = search, onValueChange = { search = it },
-                    label = { Text("Cerca un contatto") },
+                    label = { Text(stringResource(R.string.ic_search)) },
                     leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
                     singleLine = true, shape = MaterialTheme.shapes.medium,
                     modifier = Modifier.fillMaxWidth()
@@ -146,9 +148,9 @@ fun InviteCircleScreen(nav: NavController, eventId: String) {
             when {
                 !perm.status.isGranted -> Box(Modifier.fillMaxWidth().padding(24.dp), Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Serve il permesso ai contatti per trovare i tuoi amici.")
+                        Text(stringResource(R.string.ic_perm))
                         Spacer(Modifier.height(12.dp))
-                        Button(onClick = { perm.launchPermissionRequest() }) { Text("Consenti contatti") }
+                        Button(onClick = { perm.launchPermissionRequest() }) { Text(stringResource(R.string.ic_perm_btn)) }
                     }
                 }
                 loading -> Box(Modifier.fillMaxWidth().padding(24.dp), Alignment.Center) { CircularProgressIndicator() }
@@ -171,7 +173,7 @@ fun InviteCircleScreen(nav: NavController, eventId: String) {
                 onClick = { nav.goFresh("launched/$eventId") },
                 modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp).height(52.dp),
                 shape = MaterialTheme.shapes.large
-            ) { Text("Vai allo stato del caffè →", fontWeight = FontWeight.Bold) }
+            ) { Text(stringResource(R.string.ic_goto_status), fontWeight = FontWeight.Bold) }
         }
     }
 }
@@ -196,7 +198,7 @@ private fun ContactRow(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1, overflow = TextOverflow.Ellipsis)
             if (hasApp) {
-                Text("\u2615 Ha l'app", style = MaterialTheme.typography.labelSmall,
+                Text(stringResource(R.string.ic_has_app), style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
             }
         }
@@ -206,14 +208,14 @@ private fun ContactRow(
                 Icon(Icons.Filled.Check, contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary)
                 Spacer(Modifier.width(4.dp))
-                Text("Invitato", style = MaterialTheme.typography.labelMedium,
+                Text(stringResource(R.string.ic_invited), style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.primary)
             }
         } else if (hasApp) {
             FilledTonalButton(
                 onClick = onInvitaApp,
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp)
-            ) { Text("Invita") }
+            ) { Text(stringResource(R.string.ic_invite)) }
         } else {
             OutlinedButton(
                 onClick = onWhatsapp,

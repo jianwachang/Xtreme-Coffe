@@ -3,6 +3,8 @@
 package com.extremecoffee.app.ui.screens
 
 import android.graphics.BitmapFactory
+import androidx.compose.ui.res.stringResource
+import com.extremecoffee.app.R
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -86,7 +88,7 @@ fun RegisterScreen(nav: NavController) {
                 val pp = photoPath
                 val bmp = remember(pp, photoVersion) { if (pp != null) BitmapFactory.decodeFile(pp) else null }
                 if (bmp != null) {
-                    Image(bmp.asImageBitmap(), contentDescription = "Foto profilo",
+                    Image(bmp.asImageBitmap(), contentDescription = stringResource(R.string.reg_photo_cd),
                         modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
                 } else {
                     Icon(Icons.Filled.Person, contentDescription = null,
@@ -96,7 +98,7 @@ fun RegisterScreen(nav: NavController) {
         }
         Spacer(Modifier.height(6.dp))
         Text(
-            if (photoPath != null) "Tocca per cambiare la foto" else "Tocca per aggiungere una foto (opzionale)",
+            if (photoPath != null) stringResource(R.string.reg_photo_change) else stringResource(R.string.reg_photo_add),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.fillMaxWidth(),
@@ -104,14 +106,14 @@ fun RegisterScreen(nav: NavController) {
         )
         Spacer(Modifier.height(10.dp))
         Text(
-            if (editMode) "Modifica profilo" else "Crea il tuo profilo",
+            if (editMode) stringResource(R.string.reg_title_edit) else stringResource(R.string.reg_title_new),
             style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.primary
         )
         Text(
-            if (editMode) "Aggiorna il tuo nickname e il numero, poi salva le modifiche."
-            else "Ti serve una sola volta. Scegli un nickname e metti il numero: " +
-                "così gli amici ti riconoscono e ricevi gli inviti direttamente nell'app.",
+            if (editMode) stringResource(R.string.reg_sub_edit)
+            else stringResource(R.string.reg_sub_new1) +
+                stringResource(R.string.reg_sub_new2),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -126,9 +128,9 @@ fun RegisterScreen(nav: NavController) {
         OutlinedTextField(
             value = nickname,
             onValueChange = { nickname = it; error = null },
-            label = { Text("Nickname (unico)") },
+            label = { Text(stringResource(R.string.reg_nick_label)) },
             leadingIcon = { Icon(Icons.Filled.Person, contentDescription = null) },
-            supportingText = { Text("Da 3 a 20 caratteri: lettere, numeri, . _ -") },
+            supportingText = { Text(stringResource(R.string.reg_nick_help)) },
             isError = error != null,
             singleLine = true,
             shape = MaterialTheme.shapes.medium,
@@ -140,13 +142,13 @@ fun RegisterScreen(nav: NavController) {
         OutlinedTextField(
             value = phone,
             onValueChange = { phone = it; error = null },
-            label = { Text("Numero di telefono") },
+            label = { Text(stringResource(R.string.reg_phone_label)) },
             leadingIcon = { Icon(Icons.Filled.Phone, contentDescription = null) },
             supportingText = {
                 Text(
-                    if (normPhone != null) "Riconosciuto come $normPhone"
-                    else "Il numero serve solo a farti trovare dai tuoi contatti che hanno l'app. " +
-                        "Non viene mostrato pubblicamente."
+                    if (normPhone != null) stringResource(R.string.reg_phone_recognised, normPhone)
+                    else stringResource(R.string.reg_phone_help1) +
+                        stringResource(R.string.reg_phone_help2)
                 )
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
@@ -176,13 +178,13 @@ fun RegisterScreen(nav: NavController) {
                         nav.goFresh("home")
                     }
                     RegisterResult.NicknameTaken ->
-                        error = "Questo nickname \u00e8 gi\u00e0 preso, scegline un altro."
+                        error = context.getString(R.string.reg_err_taken)
                     RegisterResult.InvalidNickname ->
-                        error = "Nickname non valido (3\u201320 caratteri: lettere, numeri, . _ -)."
+                        error = context.getString(R.string.reg_err_invalid_nick)
                     RegisterResult.InvalidPhone ->
-                        error = "Numero di telefono non valido."
+                        error = context.getString(R.string.reg_err_invalid_phone)
                     RegisterResult.Error ->
-                        error = "Qualcosa \u00e8 andato storto. Controlla la connessione e riprova."
+                        error = context.getString(R.string.reg_err_generic)
                 }
                 loading = false
             }
@@ -197,7 +199,7 @@ fun RegisterScreen(nav: NavController) {
             if (loading) CircularProgressIndicator(
                 strokeWidth = 2.dp, modifier = Modifier.size(20.dp),
                 color = MaterialTheme.colorScheme.onPrimary
-            ) else Text(if (editMode) "Salva modifiche" else "Crea profilo", fontWeight = FontWeight.Bold)
+            ) else Text(if (editMode) stringResource(R.string.reg_save) else stringResource(R.string.reg_create), fontWeight = FontWeight.Bold)
         }
 
         if (editMode) {
@@ -208,7 +210,7 @@ fun RegisterScreen(nav: NavController) {
                 modifier = Modifier.fillMaxWidth().height(54.dp),
                 shape = MaterialTheme.shapes.large
             ) {
-                Text("Annulla", fontWeight = FontWeight.SemiBold)
+                Text(stringResource(R.string.common_cancel), fontWeight = FontWeight.SemiBold)
             }
         }
 

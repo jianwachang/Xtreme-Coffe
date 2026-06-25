@@ -1,6 +1,8 @@
 package com.extremecoffee.app.ui.screens
 
 import android.Manifest
+import androidx.compose.ui.res.stringResource
+import com.extremecoffee.app.R
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -100,7 +102,7 @@ fun TrackingScreen(nav: NavController, eventId: String, isLauncher: Boolean) {
                         Text("\u2615 ${e.barName}", style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold)
                         Text(
-                            if (isLauncher) "${locations.size} amici in arrivo" else "Stai arrivando!",
+                            if (isLauncher) stringResource(R.string.tr_friends_incoming, locations.size) else stringResource(R.string.tr_arriving),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -124,12 +126,12 @@ fun TrackingScreen(nav: NavController, eventId: String, isLauncher: Boolean) {
                     onClick = { nav.goFresh("selfie/$eventId") },
                     modifier = Modifier.fillMaxWidth().height(52.dp),
                     shape = MaterialTheme.shapes.large
-                ) { Text("\uD83D\uDCF8 Scatta il Selfie con i tuoi amici!", fontWeight = FontWeight.Bold) }
+                ) { Text(stringResource(R.string.ls_selfie), fontWeight = FontWeight.Bold) }
                 Spacer(Modifier.height(4.dp))
                 TextButton(
                     onClick = { nav.goFresh("home") },
                     modifier = Modifier.fillMaxWidth()
-                ) { Text("Ritorna alla home") }
+                ) { Text(stringResource(R.string.ls_home)) }
             } else {
                 val arrivedNow = run {
                     val la = myLat; val ln = myLng
@@ -144,7 +146,7 @@ fun TrackingScreen(nav: NavController, eventId: String, isLauncher: Boolean) {
                     Button(
                         onClick = { nav.navigate("selfie/$eventId") },
                         modifier = Modifier.fillMaxWidth().height(52.dp)
-                    ) { Text("\uD83D\uDCF8 Sei arrivato! Scatta il Selfie Coffee", fontWeight = FontWeight.Bold) }
+                    ) { Text(stringResource(R.string.tr_arrived), fontWeight = FontWeight.Bold) }
                 }
             }
 

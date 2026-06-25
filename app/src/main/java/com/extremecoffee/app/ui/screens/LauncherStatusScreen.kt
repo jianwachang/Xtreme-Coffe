@@ -1,6 +1,8 @@
 package com.extremecoffee.app.ui.screens
 
 import android.Manifest
+import androidx.compose.ui.res.stringResource
+import com.extremecoffee.app.R
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -69,7 +71,7 @@ fun LauncherStatusScreen(nav: NavController, eventId: String) {
         }
     }
 
-    CoffeeScaffold("Extreme Coffee lanciato", nav, "launched/$eventId") { mod ->
+    CoffeeScaffold(stringResource(R.string.ls_title), nav, "launched/$eventId") { mod ->
         val e: CoffeeEvent? = event
         if (e == null) {
             Box(mod.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
@@ -96,12 +98,12 @@ fun LauncherStatusScreen(nav: NavController, eventId: String) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column(Modifier.weight(1f)) {
-                        Text("\u2615\uD83D\uDD25 Hai lanciato!", style = MaterialTheme.typography.titleMedium,
+                        Text(stringResource(R.string.ls_launched), style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.primary)
                         Text(e.barName, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
                         Text(
-                            if (finished) "Tempo scaduto"
-                            else "${locations.size} in arrivo \u00b7 hai $min min",
+                            if (finished) stringResource(R.string.ls_timeout)
+                            else stringResource(R.string.ls_incoming, locations.size, min),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -145,7 +147,7 @@ fun LauncherStatusScreen(nav: NavController, eventId: String) {
                         modifier = Modifier.align(Alignment.TopCenter).padding(top = 10.dp)
                     ) {
                         Text(
-                            "In attesa che qualcuno accetti\u2026",
+                            stringResource(R.string.ls_waiting),
                             Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
                             style = MaterialTheme.typography.bodySmall
                         )
@@ -161,27 +163,27 @@ fun LauncherStatusScreen(nav: NavController, eventId: String) {
                     onClick = { nav.goFresh("selfie/$eventId") },
                     modifier = Modifier.fillMaxWidth().height(54.dp),
                     shape = MaterialTheme.shapes.large
-                ) { Text("\uD83D\uDCF8 Scatta il Selfie con i tuoi amici!", fontWeight = FontWeight.Bold) }
+                ) { Text(stringResource(R.string.ls_selfie), fontWeight = FontWeight.Bold) }
 
                 Spacer(Modifier.height(10.dp))
                 FilledTonalButton(
                     onClick = { nav.goFresh("launch") },
                     modifier = Modifier.fillMaxWidth().height(50.dp),
                     shape = MaterialTheme.shapes.large
-                ) { Text("\uD83D\uDE80 Lancia un altro Extreme Coffee", fontWeight = FontWeight.Bold) }
+                ) { Text(stringResource(R.string.ls_relaunch), fontWeight = FontWeight.Bold) }
 
                 Spacer(Modifier.height(4.dp))
                 TextButton(
                     onClick = { nav.goFresh("home") },
                     modifier = Modifier.fillMaxWidth()
-                ) { Text("Ritorna alla home") }
+                ) { Text(stringResource(R.string.ls_home)) }
             } else {
                 if (e.mode == "CERCHIA") {
                     OutlinedButton(
                         onClick = { nav.goFresh("inviteCircle/$eventId") },
                         modifier = Modifier.fillMaxWidth().height(50.dp),
                         shape = MaterialTheme.shapes.large
-                    ) { Text("Invita la cerchia") }
+                    ) { Text(stringResource(R.string.ic_title)) }
                     Spacer(Modifier.height(10.dp))
                 }
 
@@ -192,7 +194,7 @@ fun LauncherStatusScreen(nav: NavController, eventId: String) {
                     shape = MaterialTheme.shapes.large
                 ) {
                     Text(
-                        "Nuovo lancio tra " + String.format("%02d:%02d", min, sec),
+                        stringResource(R.string.ls_new_in) + String.format("%02d:%02d", min, sec),
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -200,24 +202,24 @@ fun LauncherStatusScreen(nav: NavController, eventId: String) {
                 TextButton(
                     onClick = { showCancel = true },
                     modifier = Modifier.fillMaxWidth()
-                ) { Text("Annulla Extreme Coffee", color = MaterialTheme.colorScheme.error) }
+                ) { Text(stringResource(R.string.ls_cancel), color = MaterialTheme.colorScheme.error) }
             }
         }
 
         if (showCancel) {
             AlertDialog(
                 onDismissRequest = { showCancel = false },
-                title = { Text("Annullare l'Extreme Coffee?") },
-                text = { Text("Verr\u00e0 annullato e tornerai alla schermata principale. Vuoi procedere?") },
+                title = { Text(stringResource(R.string.ls_cancel_title)) },
+                text = { Text(stringResource(R.string.ls_cancel_text)) },
                 confirmButton = {
                     TextButton(onClick = {
                         showCancel = false
                         scope.launch { CoffeeRepository.cancelCoffee(eventId) }
                         nav.goFresh("home")
-                    }) { Text("S\u00ec, annulla", color = MaterialTheme.colorScheme.error) }
+                    }) { Text(stringResource(R.string.ls_cancel_yes), color = MaterialTheme.colorScheme.error) }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showCancel = false }) { Text("No, continua") }
+                    TextButton(onClick = { showCancel = false }) { Text(stringResource(R.string.ls_cancel_no)) }
                 }
             )
         }

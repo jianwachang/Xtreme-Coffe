@@ -3,6 +3,7 @@
 package com.extremecoffee.app.ui.screens
 
 import android.Manifest
+import androidx.compose.ui.res.stringResource
 import android.graphics.Bitmap
 import android.widget.Toast
 import androidx.camera.core.CameraSelector
@@ -43,6 +44,7 @@ import java.io.File
 @Composable
 fun SelfieCoffeeScreen(nav: NavController, eventId: String) {
     val context = LocalContext.current
+    val ctxBar = stringResource(R.string.sf_here)
     val lifecycleOwner = LocalLifecycleOwner.current
     val event by CoffeeRepository.eventFlow(eventId).collectAsState(initial = null)
 
@@ -59,7 +61,7 @@ fun SelfieCoffeeScreen(nav: NavController, eventId: String) {
         }
     }
 
-    CoffeeScaffold("Selfie Coffee", nav, "selfie/$eventId") { mod ->
+    CoffeeScaffold(stringResource(R.string.sf_title), nav, "selfie/$eventId") { mod ->
         Box(mod.fillMaxSize()) {
             val shot = captured
             when {
@@ -71,7 +73,7 @@ fun SelfieCoffeeScreen(nav: NavController, eventId: String) {
                     ) {
                         Image(
                             bitmap = shot.asImageBitmap(),
-                            contentDescription = "Selfie Coffee",
+                            contentDescription = stringResource(R.string.sf_title),
                             modifier = Modifier.weight(1f).fillMaxWidth().clip(RoundedCornerShape(16.dp)),
                             contentScale = ContentScale.Fit
                         )
@@ -81,33 +83,33 @@ fun SelfieCoffeeScreen(nav: NavController, eventId: String) {
                                 val ok = SelfieShare.shareInstagramStory(context, shot)
                                 if (!ok) {
                                     Toast.makeText(context,
-                                        "Instagram non trovato: uso la condivisione di sistema",
+                                        context.getString(R.string.sf_ig_notfound),
                                         Toast.LENGTH_SHORT).show()
                                     SelfieShare.shareSystem(context, shot)
                                 }
                             },
                             modifier = Modifier.fillMaxWidth().height(52.dp),
                             shape = RoundedCornerShape(14.dp)
-                        ) { Text("Storia Instagram", fontWeight = FontWeight.Bold) }
+                        ) { Text(stringResource(R.string.sf_ig_story), fontWeight = FontWeight.Bold) }
 
                         Spacer(Modifier.height(8.dp))
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             OutlinedButton(
                                 onClick = { SelfieShare.shareSystem(context, shot) },
                                 modifier = Modifier.weight(1f).height(50.dp)
-                            ) { Text("Condividi") }
+                            ) { Text(stringResource(R.string.sf_share)) }
                             OutlinedButton(
                                 onClick = {
                                     val ok = SelfieShare.saveToGallery(context, shot)
                                     Toast.makeText(context,
-                                        if (ok) "Salvato in galleria" else "Salvataggio non riuscito",
+                                        if (ok) context.getString(R.string.sf_saved) else context.getString(R.string.sf_save_fail),
                                         Toast.LENGTH_SHORT).show()
                                 },
                                 modifier = Modifier.weight(1f).height(50.dp)
-                            ) { Text("Salva") }
+                            ) { Text(stringResource(R.string.sf_save)) }
                         }
                         Spacer(Modifier.height(6.dp))
-                        TextButton(onClick = { captured = null }) { Text("Rifai lo scatto") }
+                        TextButton(onClick = { captured = null }) { Text(stringResource(R.string.sf_retake)) }
                     }
                 }
 
@@ -146,7 +148,7 @@ fun SelfieCoffeeScreen(nav: NavController, eventId: String) {
                             Spacer(Modifier.width(12.dp))
                             Column {
                                 Text("EXTREME COFFEE", color = Color.White, fontWeight = FontWeight.Black)
-                                Text("\u2615 ${event?.barName ?: "Ci siamo!"}",
+                                Text("\u2615 ${event?.barName ?: ctxBar}",
                                     color = Color(0xFFE8772E), fontWeight = FontWeight.SemiBold)
                             }
                         }
@@ -170,14 +172,14 @@ fun SelfieCoffeeScreen(nav: NavController, eventId: String) {
                                             captured = SelfieShare.frameFromFile(context, file, event, badgeText)
                                         }
                                         override fun onError(e: ImageCaptureException) {
-                                            Toast.makeText(context, "Scatto non riuscito", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(context, context.getString(R.string.sf_capture_fail), Toast.LENGTH_SHORT).show()
                                         }
                                     }
                                 )
                             },
                             shape = RoundedCornerShape(50),
                             modifier = Modifier.height(64.dp)
-                        ) { Text("\uD83D\uDCF8 Scatta il Selfie Coffee", fontWeight = FontWeight.Bold) }
+                        ) { Text(stringResource(R.string.sf_take), fontWeight = FontWeight.Bold) }
                     }
                 }
 
@@ -188,11 +190,11 @@ fun SelfieCoffeeScreen(nav: NavController, eventId: String) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        Text("Serve il permesso fotocamera per il Selfie Coffee.",
+                        Text(stringResource(R.string.sf_cam_perm),
                             textAlign = TextAlign.Center)
                         Spacer(Modifier.height(12.dp))
                         Button(onClick = { camPermission.launchPermissionRequest() }) {
-                            Text("Consenti fotocamera")
+                            Text(stringResource(R.string.sf_cam_btn))
                         }
                     }
                 }
