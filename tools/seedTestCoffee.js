@@ -7,7 +7,7 @@ const fs = require("fs");
 admin.initializeApp({ credential: admin.credential.applicationDefault() });
 const db = admin.firestore();
 
-const ADDRESS = process.env.SEED_ADDRESS || "Via Silvio Pellico 25, Montecatini Terme";
+const ADDRESS = process.env.SEED_ADDRESS || "Bar Magenta, Via Giosue Carducci 13, Milano";
 const FALLBACK = { lat: 43.8821, lng: 10.7716 }; // centro Montecatini Terme
 
 async function geocode(addr) {
