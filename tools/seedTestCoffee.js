@@ -7,7 +7,7 @@ const fs = require("fs");
 admin.initializeApp({ credential: admin.credential.applicationDefault() });
 const db = admin.firestore();
 
-const ADDRESS = process.env.SEED_ADDRESS || "Via Silvio Pellico 21, Montecatini Terme";
+const ADDRESS = process.env.SEED_ADDRESS || "Bar Camparino in Galleria, Piazza del Duomo, Milano";
 const FALLBACK = { lat: 43.8821, lng: 10.7716 }; // centro Montecatini Terme
 
 async function geocode(addr) {
@@ -66,8 +66,8 @@ async function geocode(addr) {
         barName: ADDRESS,
         barLat: lat, barLng: lng,
         minutes: minutes, createdAt: now,
-        mode: "CERCHIA", acceptedCount: 0,
-        invitedIds: [dario.id], launcherPhoto: "", cancelled: false,
+        mode: "AMICIZIA", acceptedCount: 0,
+        invitedIds: [], launcherPhoto: "", cancelled: false,
       });
       out.eventId = ref.id;
       out.expiresAt = now + minutes * 60000;
