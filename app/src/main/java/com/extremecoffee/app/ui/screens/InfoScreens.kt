@@ -131,12 +131,14 @@ fun TermsScreen(nav: NavController) {
     InfoScaffold(nav, "terms", stringResource(R.string.account_terms)) {
         Para(stringResource(R.string.terms_updated))
         Para(stringResource(R.string.terms_intro))
+        H(stringResource(R.string.terms_provider_h)); Para(stringResource(R.string.terms_provider_b))
         H(stringResource(R.string.terms_1_h)); Para(stringResource(R.string.terms_1_b))
         H(stringResource(R.string.terms_2_h)); Para(stringResource(R.string.terms_2_b))
         H(stringResource(R.string.terms_3_h)); Para(stringResource(R.string.terms_3_b))
         H(stringResource(R.string.terms_4_h)); Para(stringResource(R.string.terms_4_b))
         H(stringResource(R.string.terms_5_h)); Para(stringResource(R.string.terms_5_b))
         H(stringResource(R.string.terms_6_h)); Para(stringResource(R.string.terms_6_b))
+        H(stringResource(R.string.terms_law_h)); Para(stringResource(R.string.terms_law_b))
         NoteBox(stringResource(R.string.terms_note))
     }
 }
@@ -148,11 +150,16 @@ fun PrivacyPolicyScreen(nav: NavController) {
     InfoScaffold(nav, "privacyPolicy", stringResource(R.string.account_pp)) {
         Para(stringResource(R.string.pp_updated))
         Para(stringResource(R.string.pp_intro))
+        H(stringResource(R.string.pp_controller_h)); Para(stringResource(R.string.pp_controller_b))
         H(stringResource(R.string.pp_collect_h)); Para(stringResource(R.string.pp_collect_b))
         H(stringResource(R.string.pp_why_h)); Para(stringResource(R.string.pp_why_b))
+        H(stringResource(R.string.pp_legal_h)); Para(stringResource(R.string.pp_legal_b))
         H(stringResource(R.string.pp_where_h)); Para(stringResource(R.string.pp_where_b))
+        H(stringResource(R.string.pp_transfer_h)); Para(stringResource(R.string.pp_transfer_b))
         H(stringResource(R.string.pp_share_h)); Para(stringResource(R.string.pp_share_b))
         H(stringResource(R.string.pp_keep_h)); Para(stringResource(R.string.pp_keep_b))
+        H(stringResource(R.string.pp_rights_h)); Para(stringResource(R.string.pp_rights_b))
+        H(stringResource(R.string.pp_children_h)); Para(stringResource(R.string.pp_children_b))
         H(stringResource(R.string.pp_contact_h)); Para(stringResource(R.string.pp_contact_b))
         NoteBox(stringResource(R.string.pp_note))
     }

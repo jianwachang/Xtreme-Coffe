@@ -110,24 +110,24 @@
     <string name="terms_5_b">L\'app è fornita \"così com\'è\". Non garantiamo che sia priva di errori o sempre disponibile e, nei limiti di legge, non siamo responsabili per danni derivanti dall\'uso del servizio.</string>
     <string name="terms_6_h">6. Modifiche</string>
     <string name="terms_6_b">Possiamo aggiornare questi termini; le modifiche saranno indicate dalla data di aggiornamento.</string>
-    <string name="terms_note">Questo testo è un modello iniziale da far verificare a un professionista prima della pubblicazione. Non costituisce consulenza legale.</string>
+    <string name="terms_note">Documento personalizzato per Dario Condello. È un modello iniziale: fallo verificare a un professionista prima della pubblicazione. Non costituisce consulenza legale.</string>
 
     <!-- Informativa privacy -->
     <string name="pp_updated">Ultimo aggiornamento: giugno 2026</string>
-    <string name="pp_intro">Questa informativa spiega quali dati tratta Extreme Coffee e come.</string>
+    <string name="pp_intro">Questa informativa descrive come l\'app Extreme Coffee tratta i dati personali degli utenti, anche nell\'Unione Europea, ai sensi del Regolamento (UE) 2016/679 (GDPR).</string>
     <string name="pp_collect_h">Dati che raccogliamo</string>
     <string name="pp_collect_b">• Profilo: nickname e numero di telefono, eventuale foto profilo.\n• Posizione: posizione approssimativa/precisa solo durante un Extreme Coffee attivo.\n• Contatti: usati sul dispositivo per riconoscere gli amici che hanno l\'app.\n• Dati tecnici: identificativo del dispositivo e token per le notifiche.</string>
     <string name="pp_why_h">Perché li usiamo</string>
     <string name="pp_why_b">Per farti creare un profilo, inviare e ricevere inviti, mostrare i partecipanti sulla mappa durante un evento e inviarti le notifiche.</string>
     <string name="pp_where_h">Dove sono conservati</string>
-    <string name="pp_where_b">I dati sono gestiti tramite i servizi Google Firebase (database e notifiche). Alcune informazioni restano salvate solo sul tuo dispositivo.</string>
+    <string name="pp_where_b">I dati sono trattati tramite i servizi Google Firebase (Cloud Firestore, Cloud Messaging e Cloud Functions). Alcune informazioni restano salvate solo sul tuo dispositivo.</string>
     <string name="pp_share_h">Condivisione</string>
     <string name="pp_share_b">Non vendiamo i tuoi dati. Vengono condivisi solo con gli utenti coinvolti negli inviti che tu invii o accetti, e con i fornitori tecnici necessari al funzionamento dell\'app.</string>
     <string name="pp_keep_h">Conservazione e cancellazione</string>
-    <string name="pp_keep_b">Puoi eliminare il profilo e i dati associati in qualsiasi momento da Account → \"Elimina dati e account\".</string>
+    <string name="pp_keep_b">Conserviamo i dati per il tempo necessario a fornire il servizio. Puoi eliminare il profilo e i dati associati in qualsiasi momento da Account → \"Elimina dati e account\"; alla cancellazione i dati vengono rimossi.</string>
     <string name="pp_contact_h">Contatti</string>
-    <string name="pp_contact_b">Per richieste sulla privacy puoi scrivere all\'indirizzo di supporto indicato nella scheda dell\'app sullo store.</string>
-    <string name="pp_note">Questo testo è un modello iniziale da personalizzare e far verificare prima della pubblicazione sullo store. Non costituisce consulenza legale.</string>
+    <string name="pp_contact_b">Per qualsiasi richiesta sulla privacy puoi contattare il titolare all\'indirizzo unlimitedvisionltd@gmail.com.</string>
+    <string name="pp_note">Documento personalizzato per Dario Condello. È un modello: per la piena conformità legale è consigliata una verifica da parte di un professionista. Non costituisce consulenza legale.</string>
 
     <!-- Fase 2 -->
     <string name="wa_unavailable">WhatsApp non disponibile</string>
@@ -318,4 +318,19 @@
     <string name="recap_atrisk">\nLancia un Extreme Coffee per non perdere lo streak!</string>
     <string name="rad_km_min">0,1 km</string>
     <string name="rad_km_max">20 km</string>
+    <!-- Legale GDPR personalizzato -->
+    <string name="pp_controller_h">Titolare del trattamento</string>
+    <string name="pp_controller_b">Il titolare del trattamento è Dario Condello. Per qualsiasi richiesta relativa ai tuoi dati puoi scrivere a unlimitedvisionltd@gmail.com.</string>
+    <string name="pp_legal_h">Basi giuridiche</string>
+    <string name="pp_legal_b">Trattiamo i dati per: l\'esecuzione del servizio che richiedi (art. 6.1.b GDPR), come creare il profilo e inviare o ricevere inviti; il tuo consenso (art. 6.1.a) per l\'accesso a posizione, contatti e fotocamera e per l\'invio delle notifiche, che puoi revocare in ogni momento dalle impostazioni del dispositivo; il nostro legittimo interesse (art. 6.1.f) a garantire sicurezza e corretto funzionamento dell\'app.</string>
+    <string name="pp_transfer_h">Trasferimenti fuori dall\'UE</string>
+    <string name="pp_transfer_b">Alcuni fornitori (ad es. Google) possono trattare i dati anche al di fuori dell\'Unione Europea. In tali casi il trasferimento avviene sulla base di garanzie adeguate previste dal GDPR, come le Clausole Contrattuali Standard adottate dalla Commissione Europea.</string>
+    <string name="pp_rights_h">I tuoi diritti</string>
+    <string name="pp_rights_b">In qualità di interessato hai diritto di accedere ai tuoi dati e di ottenerne la rettifica, la cancellazione o la limitazione, di opporti al trattamento, di richiederne la portabilità e di revocare in ogni momento il consenso prestato. Per esercitare questi diritti scrivi a unlimitedvisionltd@gmail.com. Hai inoltre il diritto di proporre reclamo a un\'autorità di controllo: in Italia il Garante per la protezione dei dati personali (www.garanteprivacy.it).</string>
+    <string name="pp_children_h">Minori</string>
+    <string name="pp_children_b">L\'app non è destinata ai minori di 14 anni. Se vieni a conoscenza che un minore ci ha fornito dati senza il consenso di chi esercita la responsabilità genitoriale, contattaci e provvederemo alla cancellazione.</string>
+    <string name="terms_provider_h">Titolare del servizio</string>
+    <string name="terms_provider_b">Il servizio Extreme Coffee è fornito da Dario Condello. Contatto: unlimitedvisionltd@gmail.com.</string>
+    <string name="terms_law_h">Legge applicabile e foro</string>
+    <string name="terms_law_b">I presenti termini sono regolati dalla legge italiana. Se sei un consumatore residente nell\'Unione Europea, restano ferme le tutele inderogabili previste dalla legge del tuo Paese di residenza e la competenza del foro del consumatore.</string>
 </resources>

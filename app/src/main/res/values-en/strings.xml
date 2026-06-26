@@ -108,24 +108,24 @@
     <string name="terms_5_b">The app is provided \"as is\". We don\'t guarantee it is error-free or always available and, within the limits of the law, we are not liable for damages arising from use of the service.</string>
     <string name="terms_6_h">6. Changes</string>
     <string name="terms_6_b">We may update these terms; changes will be indicated by the update date.</string>
-    <string name="terms_note">This text is an initial template to be reviewed by a professional before publishing. It is not legal advice.</string>
+    <string name="terms_note">Document customised for Dario Condello. It is an initial template: have it reviewed by a professional before publishing. It does not constitute legal advice.</string>
 
     <!-- Privacy Policy -->
     <string name="pp_updated">Last updated: June 2026</string>
-    <string name="pp_intro">This policy explains what data Extreme Coffee processes and how.</string>
+    <string name="pp_intro">This policy describes how the Extreme Coffee app processes users\' personal data, including in the European Union, under Regulation (EU) 2016/679 (GDPR).</string>
     <string name="pp_collect_h">Data we collect</string>
     <string name="pp_collect_b">• Profile: nickname and phone number, optional profile photo.\n• Location: approximate/precise location only during an active Extreme Coffee.\n• Contacts: used on the device to recognise friends who have the app.\n• Technical data: device identifier and token for notifications.</string>
     <string name="pp_why_h">Why we use them</string>
     <string name="pp_why_b">To let you create a profile, send and receive invites, show participants on the map during an event and send you notifications.</string>
     <string name="pp_where_h">Where they are stored</string>
-    <string name="pp_where_b">Data is handled through Google Firebase services (database and notifications). Some information stays saved only on your device.</string>
+    <string name="pp_where_b">Data is processed through Google Firebase services (Cloud Firestore, Cloud Messaging and Cloud Functions). Some information stays saved only on your device.</string>
     <string name="pp_share_h">Sharing</string>
     <string name="pp_share_b">We don\'t sell your data. It is shared only with the users involved in the invites you send or accept, and with the technical providers needed to run the app.</string>
     <string name="pp_keep_h">Retention and deletion</string>
-    <string name="pp_keep_b">You can delete your profile and associated data anytime from Account → \"Delete account and data\".</string>
+    <string name="pp_keep_b">We keep data for as long as necessary to provide the service. You can delete your profile and associated data anytime from Account → \"Delete account and data\"; upon deletion the data is removed.</string>
     <string name="pp_contact_h">Contact</string>
-    <string name="pp_contact_b">For privacy requests you can write to the support address listed on the app\'s store page.</string>
-    <string name="pp_note">This text is an initial template to customise and have reviewed before publishing on the store. It is not legal advice.</string>
+    <string name="pp_contact_b">For any privacy request you can contact the controller at unlimitedvisionltd@gmail.com.</string>
+    <string name="pp_note">Document customised for Dario Condello. It is a template: for full legal compliance a review by a professional is recommended. It does not constitute legal advice.</string>
 
     <!-- Fase 2 -->
     <string name="wa_unavailable">WhatsApp not available</string>
@@ -316,4 +316,19 @@
     <string name="recap_atrisk">\nStart an Extreme Coffee to keep your streak!</string>
     <string name="rad_km_min">0.1 km</string>
     <string name="rad_km_max">20 km</string>
+    <!-- Legale GDPR personalizzato -->
+    <string name="pp_controller_h">Data controller</string>
+    <string name="pp_controller_b">The data controller is Dario Condello. For any request regarding your data you can write to unlimitedvisionltd@gmail.com.</string>
+    <string name="pp_legal_h">Legal bases</string>
+    <string name="pp_legal_b">We process data for: performance of the service you request (Art. 6(1)(b) GDPR), such as creating your profile and sending or receiving invites; your consent (Art. 6(1)(a)) for access to location, contacts and camera and for sending notifications, which you can withdraw at any time from your device settings; our legitimate interest (Art. 6(1)(f)) in ensuring the security and proper functioning of the app.</string>
+    <string name="pp_transfer_h">Transfers outside the EU</string>
+    <string name="pp_transfer_b">Some providers (e.g. Google) may process data outside the European Union. In such cases the transfer is based on appropriate safeguards under the GDPR, such as the Standard Contractual Clauses adopted by the European Commission.</string>
+    <string name="pp_rights_h">Your rights</string>
+    <string name="pp_rights_b">As a data subject you have the right to access your data and to obtain its rectification, erasure or restriction, to object to processing, to request its portability and to withdraw your consent at any time. To exercise these rights write to unlimitedvisionltd@gmail.com. You also have the right to lodge a complaint with a supervisory authority: in Italy, the Garante per la protezione dei dati personali (www.garanteprivacy.it).</string>
+    <string name="pp_children_h">Children</string>
+    <string name="pp_children_b">The app is not intended for children under 14. If you become aware that a child has provided us with data without the consent of the holder of parental responsibility, contact us and we will delete it.</string>
+    <string name="terms_provider_h">Service provider</string>
+    <string name="terms_provider_b">The Extreme Coffee service is provided by Dario Condello. Contact: unlimitedvisionltd@gmail.com.</string>
+    <string name="terms_law_h">Governing law and jurisdiction</string>
+    <string name="terms_law_b">These terms are governed by Italian law. If you are a consumer resident in the European Union, the mandatory protections of the law of your country of residence and the jurisdiction of the consumer\'s courts remain unaffected.</string>
 </resources>
