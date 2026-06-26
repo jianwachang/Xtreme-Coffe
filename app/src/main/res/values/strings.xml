@@ -333,4 +333,7 @@
     <string name="terms_provider_b">Il servizio Extreme Coffee è fornito da Dario Condello. Contatto: unlimitedvisionltd@gmail.com.</string>
     <string name="terms_law_h">Legge applicabile e foro</string>
     <string name="terms_law_b">I presenti termini sono regolati dalla legge italiana. Se sei un consumatore residente nell\'Unione Europea, restano ferme le tutele inderogabili previste dalla legge del tuo Paese di residenza e la competenza del foro del consumatore.</string>
+    <!-- Vincoli singolo lancio/accept -->
+    <string name="launch_active_block">Hai già un Extreme Coffee in corso: concludilo prima di lanciarne un altro.</string>
+    <string name="ip_busy">Hai già un Extreme Coffee in corso o accettato: non puoi accettarne un altro adesso.</string>
 </resources>

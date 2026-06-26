@@ -46,6 +46,7 @@ fun LaunchCoffeeScreen(nav: NavController) {
     val scope = rememberCoroutineScope()
     val myId = remember { Profile.id(context) }
     val acceptedInvite by CoffeeRepository.myAcceptedActiveEvent(myId).collectAsState(initial = null)
+    val myActive by CoffeeRepository.myActiveEvent(myId).collectAsState(initial = null)
 
     var query by remember { mutableStateOf("") }
     var suggestions by remember { mutableStateOf<List<PlacesService.Suggestion>>(emptyList()) }
@@ -174,14 +175,16 @@ fun LaunchCoffeeScreen(nav: NavController) {
             }
 
             Spacer(Modifier.height(28.dp))
-            if (acceptedInvite != null) {
+            val blockLaunch = myActive != null || acceptedInvite != null
+            if (blockLaunch) {
                 Surface(
                     shape = MaterialTheme.shapes.large,
                     color = MaterialTheme.colorScheme.secondaryContainer,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        stringResource(R.string.launch_blocked),
+                        if (myActive != null) stringResource(R.string.launch_active_block)
+                        else stringResource(R.string.launch_blocked),
                         modifier = Modifier.padding(16.dp),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
@@ -190,7 +193,7 @@ fun LaunchCoffeeScreen(nav: NavController) {
                 Spacer(Modifier.height(12.dp))
             }
             Button(
-                enabled = acceptedInvite == null,
+                enabled = !blockLaunch,
                 onClick = {
                     val la = barLat; val ln = barLng
                     if (query.isBlank() || la == null || ln == null) {

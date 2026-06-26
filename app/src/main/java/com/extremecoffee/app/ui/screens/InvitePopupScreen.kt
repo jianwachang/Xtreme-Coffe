@@ -33,6 +33,9 @@ import kotlinx.coroutines.launch
 fun InvitePopupScreen(nav: NavController, eventId: String) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val myId = remember { Profile.id(context) }
+    val myActive by CoffeeRepository.myActiveEvent(myId).collectAsState(initial = null)
+    val acceptedActive by CoffeeRepository.myAcceptedActiveEvent(myId).collectAsState(initial = null)
     val event by CoffeeRepository.eventFlow(eventId).collectAsState(initial = null)
     var remaining by remember { mutableStateOf(0L) }
 
@@ -101,6 +104,23 @@ fun InvitePopupScreen(nav: NavController, eventId: String) {
             )
             Spacer(Modifier.height(32.dp))
 
+            val busy = myActive != null || (acceptedActive?.let { it.id != eventId } ?: false)
+            if (busy) {
+                Surface(
+                    shape = RoundedCornerShape(16.dp),
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        stringResource(R.string.ip_busy),
+                        modifier = Modifier.padding(16.dp),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+                Spacer(Modifier.height(12.dp))
+            }
             Button(
                 onClick = {
                     scope.launch {
@@ -112,7 +132,7 @@ fun InvitePopupScreen(nav: NavController, eventId: String) {
                         nav.goFresh("tracking/$eventId/guest")
                     }
                 },
-                enabled = remaining > 0,
+                enabled = remaining > 0 && !busy,
                 modifier = Modifier.fillMaxWidth().height(60.dp),
                 shape = RoundedCornerShape(20.dp)
             ) { Text(stringResource(R.string.ip_accept), fontSize = 18.sp, fontWeight = FontWeight.Bold) }
