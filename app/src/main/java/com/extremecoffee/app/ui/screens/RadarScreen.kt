@@ -230,8 +230,8 @@ fun RadarScreen(nav: NavController) {
                 )
             )
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text("0,1 km", color = Color(0xFF7BD8E8), style = MaterialTheme.typography.bodySmall)
-                Text("20 km", color = Color(0xFF7BD8E8), style = MaterialTheme.typography.bodySmall)
+                Text(stringResource(R.string.rad_km_min), color = Color(0xFF7BD8E8), style = MaterialTheme.typography.bodySmall)
+                Text(stringResource(R.string.rad_km_max), color = Color(0xFF7BD8E8), style = MaterialTheme.typography.bodySmall)
             }
             } else {
                 // ---- VISTA NAZIONALE: mappa dell'Italia con tutti gli Extreme Coffee in amicizia ----

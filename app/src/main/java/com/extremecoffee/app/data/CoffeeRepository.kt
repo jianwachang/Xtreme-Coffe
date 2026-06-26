@@ -248,11 +248,11 @@ object CoffeeRepository {
     }
 
     /** Salva il token FCM del dispositivo per ricevere push anche ad app chiusa. */
-    fun saveFcmToken(deviceId: String, token: String, name: String) {
+    fun saveFcmToken(deviceId: String, token: String, name: String, lang: String = "it") {
         if (token.isBlank()) return
         runCatching {
             db?.collection("tokens")?.document(deviceId)?.set(
-                mapOf("token" to token, "name" to name,
+                mapOf("token" to token, "name" to name, "lang" to lang,
                       "updatedAt" to System.currentTimeMillis())
             )
         }

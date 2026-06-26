@@ -1,6 +1,7 @@
 package com.extremecoffee.app.data
 
 import com.extremecoffee.app.Notifier
+import com.extremecoffee.app.R
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -9,7 +10,7 @@ import com.google.firebase.messaging.RemoteMessage
 class PushService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
-        CoffeeRepository.saveFcmToken(Profile.id(applicationContext), token, Profile.name(applicationContext))
+        CoffeeRepository.saveFcmToken(Profile.id(applicationContext), token, Profile.name(applicationContext), LocaleManager.getLang(applicationContext))
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
@@ -18,13 +19,13 @@ class PushService : FirebaseMessagingService() {
         if (data["type"] == "cancelled") {
             val eventId = data["eventId"]
             if (!eventId.isNullOrBlank()) Notifier.cancelInvite(applicationContext, eventId)
-            val title = data["title"] ?: "\u274C Extreme Coffee annullato"
-            val body = data["body"] ?: "L'Extreme Coffee \u00e8 stato annullato."
+            val title = data["title"] ?: applicationContext.getString(R.string.push_cancelled_title)
+            val body = data["body"] ?: applicationContext.getString(R.string.push_cancelled_body)
             Notifier.showCancelled(applicationContext, title, body, eventId)
             return
         }
         val n = message.notification
-        val title = n?.title ?: data["title"] ?: "Extreme Coffee"
+        val title = n?.title ?: data["title"] ?: applicationContext.getString(R.string.push_generic_title)
         val body = n?.body ?: data["body"] ?: ""
         val expiresAt = data["expiresAt"]?.toLongOrNull()
         Notifier.showRaw(applicationContext, title, body, data["eventId"], expiresAt)

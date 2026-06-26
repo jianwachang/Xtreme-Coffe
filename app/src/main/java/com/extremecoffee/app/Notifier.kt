@@ -20,7 +20,7 @@ object Notifier {
         val nm = context.getSystemService(NotificationManager::class.java) ?: return
         if (nm.getNotificationChannel(CHANNEL) == null) {
             nm.createNotificationChannel(
-                NotificationChannel(CHANNEL, "Inviti Extreme Coffee", NotificationManager.IMPORTANCE_HIGH)
+                NotificationChannel(CHANNEL, context.getString(R.string.notif_channel), NotificationManager.IMPORTANCE_HIGH)
             )
         }
     }
@@ -48,11 +48,11 @@ object Notifier {
             context, notifId, intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        val text = if (label.isBlank()) "È l'ora del caffè: lancia un Extreme Coffee!"
-        else "È l'ora del caffè con $label: lancia un Extreme Coffee!"
+        val text = if (label.isBlank()) context.getString(R.string.push_reminder_body)
+        else context.getString(R.string.push_reminder_body_with, label)
         val notif = NotificationCompat.Builder(context, CHANNEL)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("Caffè ricorrente \u2615")
+            .setContentTitle(context.getString(R.string.push_reminder_title))
             .setContentText(text)
             .setStyle(NotificationCompat.BigTextStyle().bigText(text))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -128,8 +128,8 @@ object Notifier {
         )
         val notif = NotificationCompat.Builder(context, CHANNEL)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("\u2615 ${event.launcherName} ti ha invitato a un Extreme Coffee!")
-            .setContentText("Caff\u00e8 da ${event.barName} \u00b7 hai ${event.minutes} minuti")
+            .setContentTitle(context.getString(R.string.push_invite_title, event.launcherName))
+            .setContentText(context.getString(R.string.push_invite_body, event.barName, event.minutes))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setTimeoutAfter(remaining)             // sparisce da sola quando l'Extreme Coffee scade
@@ -174,10 +174,10 @@ object Notifier {
         if (remaining <= 0L) return
         ensureChannel(context)
         val declined = response.status == "declined"
-        val title = if (declined) "\uD83D\uDE34 ${response.fromName} stavolta passa"
-                    else "\u2705 ${response.fromName} sta arrivando!"
-        val text = if (declined) "Niente Extreme Coffee con ${response.fromName} stavolta."
-                   else "Preparati: ${response.fromName} \u00e8 in viaggio verso il bar."
+        val title = if (declined) context.getString(R.string.push_resp_decline_title, response.fromName)
+                    else context.getString(R.string.push_resp_accept_title, response.fromName)
+        val text = if (declined) context.getString(R.string.push_resp_decline_body, response.fromName)
+                   else context.getString(R.string.push_resp_accept_body, response.fromName)
         val notif = NotificationCompat.Builder(context, CHANNEL)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)

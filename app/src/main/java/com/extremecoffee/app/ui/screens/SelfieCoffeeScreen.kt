@@ -57,7 +57,7 @@ fun SelfieCoffeeScreen(nav: NavController, eventId: String) {
     LaunchedEffect(Unit) {
         runCatching {
             val s = CoffeeRepository.loadMyStats(context)
-            badgeText = topEarnedBadge(s)?.let { "${it.emoji} ${it.title}" }
+            badgeText = topEarnedBadge(s)?.let { "${it.emoji} ${context.getString(it.titleRes)}" }
         }
     }
 

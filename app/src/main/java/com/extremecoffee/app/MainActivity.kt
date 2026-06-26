@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
         RetentionScheduler.schedule(applicationContext)
         Reminders.rescheduleAll(applicationContext)
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-            CoffeeRepository.saveFcmToken(Profile.id(this), token, Profile.name(this))
+            CoffeeRepository.saveFcmToken(Profile.id(this), token, Profile.name(this), com.extremecoffee.app.data.LocaleManager.getLang(this))
         }
         val incomingEventId = intent.getStringExtra("eventId")
         setContent { ExtremeCoffeeApp(incomingEventId) }

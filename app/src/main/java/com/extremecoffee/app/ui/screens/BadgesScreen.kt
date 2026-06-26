@@ -69,7 +69,7 @@ private fun BadgeRow(badge: Badge) {
             Spacer(Modifier.width(14.dp))
             Column(Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(badge.title,
+                    Text(stringResource(badge.titleRes),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.titleSmall,
                         modifier = Modifier.alpha(if (badge.earned) 1f else 0.6f))
@@ -78,7 +78,7 @@ private fun BadgeRow(badge: Badge) {
                         Text("\u2713", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
                     }
                 }
-                Text(badge.description,
+                Text(stringResource(badge.descRes),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant)
                 if (!badge.earned) {

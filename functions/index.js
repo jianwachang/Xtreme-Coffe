@@ -1,12 +1,7 @@
 /**
- * Extreme Coffee - Cloud Functions (FCM)
- * Inviano le notifiche push anche ad app CHIUSA:
- *  - nuovo evento   -> avvisa tutti gli altri dispositivi con l'app
- *  - nuova risposta -> avvisa chi ha lanciato il caffè
- *
- * Le notifiche portano la scadenza dell'Extreme Coffee (expiresAt) e un ttl:
- *  - ttl: se il dispositivo è offline e torna online DOPO la scadenza, FCM non recapita più l'invito.
- *  - expiresAt: l'app, quando costruisce la notifica, la fa sparire da sola alla scadenza.
+ * Extreme Coffee - Cloud Functions (FCM) con notifiche localizzate (it/en).
+ * La lingua di ogni destinatario e' salvata sul documento del token (campo "lang").
+ * I token vengono raggruppati per lingua e ogni gruppo riceve il testo tradotto.
  */
 const { onDocumentCreated, onDocumentUpdated } = require("firebase-functions/v2/firestore");
 const { setGlobalOptions } = require("firebase-functions/v2");
@@ -20,69 +15,101 @@ setGlobalOptions({ maxInstances: 10 });
 
 const CHANNEL = "extreme_coffee_invites";
 
-// Costruisce la config Android con priorità alta + ttl fino alla scadenza (in ms).
 function androidConfig(expiresAt) {
   const cfg = { priority: "high", notification: { channelId: CHANNEL } };
-  if (expiresAt) {
-    const ttl = Math.max(expiresAt - Date.now(), 0);
-    cfg.ttl = ttl; // millisecondi
-  }
+  if (expiresAt) cfg.ttl = Math.max(expiresAt - Date.now(), 0);
   return cfg;
 }
 
-// --- Nuovo evento -> push SOLO agli invitati diretti (se gia' presenti alla creazione) ---
+// "en" solo se esplicitamente inglese, altrimenti italiano (default e token vecchi).
+function langOf(t) { return t && t.lang === "en" ? "en" : "it"; }
+
+// ---- Testi localizzati ----
+const T = {
+  inviteTitle: {
+    it: (n) => "\u2615 " + n + " ti invita a un Extreme Coffee!",
+    en: (n) => "\u2615 " + n + " invited you to an Extreme Coffee!",
+  },
+  inviteBody: {
+    it: (bar, mins) => (bar ? bar + " \u2022 " : "") + "Hai " + mins + " minuti per arrivare.",
+    en: (bar, mins) => (bar ? bar + " \u2022 " : "") + "You have " + mins + " minutes to arrive.",
+  },
+  respTitle: {
+    it: (declined, n) => declined ? "\uD83D\uDE34 " + n + " stavolta passa" : "\u2705 " + n + " sta arrivando!",
+    en: (declined, n) => declined ? "\uD83D\uDE34 " + n + " passes this time" : "\u2705 " + n + " is on the way!",
+  },
+  respBody: {
+    it: (declined, n) => declined ? "Niente Extreme Coffee con " + n + " stavolta." : "Preparati: " + n + " \u00e8 in viaggio verso il bar.",
+    en: (declined, n) => declined ? "No Extreme Coffee with " + n + " this time." : "Get ready: " + n + " is heading to the caf\u00e9.",
+  },
+  cancelTitle: {
+    it: "\u274C Extreme Coffee annullato",
+    en: "\u274C Extreme Coffee cancelled",
+  },
+  cancelBody: {
+    it: (n, bar) => n + " ha annullato l'Extreme Coffee" + (bar ? " da " + bar : "") + ".",
+    en: (n, bar) => n + " cancelled the Extreme Coffee" + (bar ? " at " + bar : "") + ".",
+  },
+};
+
+// Invia una notifica "notification" localizzata, raggruppando i destinatari per lingua.
+// recipients: [{ token, lang }]; titles/bodies: { it, en }.
+async function sendNotifByLang(recipients, titles, bodies, dataObj, expiresAt, tokensSnap) {
+  const groups = { it: [], en: [] };
+  recipients.forEach((r) => { (groups[r.lang] || groups.it).push(r.token); });
+  for (const lang of ["it", "en"]) {
+    const toks = groups[lang];
+    if (!toks.length) continue;
+    const message = {
+      notification: { title: titles[lang], body: bodies[lang] },
+      data: dataObj,
+      android: androidConfig(expiresAt),
+      tokens: toks,
+    };
+    const res = await getMessaging().sendEachForMulticast(message);
+    await pruneInvalid(res, toks, tokensSnap);
+  }
+}
+
+// --- Nuovo evento -> push SOLO agli invitati diretti gia' presenti alla creazione ---
 exports.onNewEvent = onDocumentCreated("events/{eventId}", async (event) => {
   const snap = event.data;
   if (!snap) return;
   const data = snap.data() || {};
   const launcherId = data.launcherId || "";
-
-  // Eventi di simulazione: niente broadcast automatico (avvisiamo noi i destinatari mirati).
   if (data.simulated === true) return;
-
-  // AMICIZIA: nessuna notifica broadcast. L'evento si scopre dal radar;
-  // il lanciatore verra' avvisato solo quando qualcuno tocca il caffe' e conferma di andare (onNewResponse).
   if ((data.mode || "") === "AMICIZIA") return;
 
   const mins = Number(data.minutes) || 15;
   const createdAt = Number(data.createdAt) || Date.now();
   const expiresAt = createdAt + mins * 60000;
-  if (expiresAt <= Date.now()) return; // evento già scaduto: non avvisare nessuno
+  if (expiresAt <= Date.now()) return;
 
-  // CERCHIA: niente broadcast a tutti. Si notifica solo chi e' gia' tra gli invitati diretti.
-  // Di norma alla creazione la lista e' vuota: gli inviti partono quando premi "Invita"
-  // (gestito da onInviteAdded). Questo copre l'eventuale caso di invitati gia' presenti.
   const invited = Array.isArray(data.invitedIds) ? data.invitedIds.map(String) : [];
   if (invited.length === 0) return;
   const invitedSet = new Set(invited);
 
   const tokensSnap = await db.collection("tokens").get();
-  const tokens = [];
+  const recipients = [];
   tokensSnap.forEach((d) => {
     const t = d.data();
-    if (d.id !== launcherId && invitedSet.has(String(d.id)) && t && t.token) tokens.push(t.token);
+    if (d.id !== launcherId && invitedSet.has(String(d.id)) && t && t.token)
+      recipients.push({ token: t.token, lang: langOf(t) });
   });
-  if (tokens.length === 0) return;
+  if (recipients.length === 0) return;
 
-  const message = {
-    notification: {
-      title: "\u2615 " + (data.launcherName || "Qualcuno") + " ti invita a un Extreme Coffee!",
-      body: (data.barName ? data.barName + " \u2022 " : "") +
-            "Hai " + mins + " minuti per arrivare.",
-    },
-    data: {
-      eventId: String(event.params.eventId),
-      expiresAt: String(expiresAt),
-    },
-    android: androidConfig(expiresAt),
-    tokens,
-  };
-
-  const res = await getMessaging().sendEachForMulticast(message);
-  await pruneInvalid(res, tokens, tokensSnap);
+  const name = data.launcherName || "Qualcuno";
+  const bar = data.barName || "";
+  await sendNotifByLang(
+    recipients,
+    { it: T.inviteTitle.it(name), en: T.inviteTitle.en(name) },
+    { it: T.inviteBody.it(bar, mins), en: T.inviteBody.en(bar, mins) },
+    { eventId: String(event.params.eventId), expiresAt: String(expiresAt) },
+    expiresAt, tokensSnap
+  );
 });
 
-// --- Nuova risposta (accetta/rifiuta) -> push al lanciatore ---
+// --- Nuova risposta (accetta/rifiuta) -> push al lanciatore (nella SUA lingua) ---
 exports.onNewResponse = onDocumentCreated("responses/{responseId}", async (event) => {
   const snap = event.data;
   if (!snap) return;
@@ -91,10 +118,11 @@ exports.onNewResponse = onDocumentCreated("responses/{responseId}", async (event
   if (!launcherId) return;
 
   const tokenDoc = await db.collection("tokens").doc(launcherId).get();
-  const token = tokenDoc.exists ? (tokenDoc.data() || {}).token : null;
+  const tdata = tokenDoc.exists ? (tokenDoc.data() || {}) : null;
+  const token = tdata ? tdata.token : null;
   if (!token) return;
+  const lang = langOf(tdata);
 
-  // Recupera l'evento per legare la notifica alla scadenza del caffè
   let expiresAt = 0;
   if (r.eventId) {
     const evSnap = await db.collection("events").doc(String(r.eventId)).get();
@@ -107,41 +135,29 @@ exports.onNewResponse = onDocumentCreated("responses/{responseId}", async (event
   }
 
   const declined = r.status === "declined";
+  const n = r.fromName || "Qualcuno";
   const message = {
     notification: {
-      title: declined
-        ? "\uD83D\uDE34 " + (r.fromName || "Qualcuno") + " stavolta passa"
-        : "\u2705 " + (r.fromName || "Qualcuno") + " sta arrivando!",
-      body: declined
-        ? "Niente Extreme Coffee con " + (r.fromName || "lui") + " stavolta."
-        : "Preparati: " + (r.fromName || "qualcuno") + " \u00e8 in viaggio verso il bar.",
+      title: T.respTitle[lang](declined, n),
+      body: T.respBody[lang](declined, n),
     },
-    data: {
-      eventId: String(r.eventId || ""),
-      expiresAt: String(expiresAt || ""),
-    },
+    data: { eventId: String(r.eventId || ""), expiresAt: String(expiresAt || "") },
     android: androidConfig(expiresAt || null),
     token,
   };
-
   await getMessaging().send(message).catch(() => {});
 });
 
-// --- Evento annullato -> avvisa SOLO gli invitati diretti (CERCHIA) ---
-// Push "data-only": l'app, anche in background, rimuove la vecchia notifica d'invito
-// e mostra "Extreme Coffee annullato". Per l'AMICIZIA non ci sono invitati diretti:
-// l'evento sparisce comunque dal radar perché le viste filtrano gli annullati.
+// --- Evento annullato -> avvisa SOLO gli invitati diretti (data-only, localizzato) ---
 exports.onEventCancelled = onDocumentUpdated("events/{eventId}", async (event) => {
   const before = event.data && event.data.before ? event.data.before.data() : null;
   const after = event.data && event.data.after ? event.data.after.data() : null;
   if (!after) return;
-
   const wasCancelled = !!(before && before.cancelled === true);
-  const nowCancelled = after.cancelled === true;
-  if (wasCancelled || !nowCancelled) return; // reagisci solo alla transizione -> annullato
+  if (wasCancelled || after.cancelled !== true) return;
 
   const invited = Array.isArray(after.invitedIds) ? after.invitedIds.map(String) : [];
-  if (invited.length === 0) return; // nessun invitato diretto da avvisare
+  if (invited.length === 0) return;
 
   const mins = Number(after.minutes) || 15;
   const createdAt = Number(after.createdAt) || Date.now();
@@ -149,84 +165,77 @@ exports.onEventCancelled = onDocumentUpdated("events/{eventId}", async (event) =
 
   const tokensSnap = await db.collection("tokens").get();
   const invitedSet = new Set(invited);
-  const tokens = [];
+  const groups = { it: [], en: [] };
   tokensSnap.forEach((d) => {
     const t = d.data();
-    if (invitedSet.has(String(d.id)) && t && t.token) tokens.push(t.token);
+    if (invitedSet.has(String(d.id)) && t && t.token)
+      (groups[langOf(t)] || groups.it).push(t.token);
   });
-  if (tokens.length === 0) return;
 
-  const title = "\u274C Extreme Coffee annullato";
-  const body = (after.launcherName || "Qualcuno") + " ha annullato l'Extreme Coffee" +
-               (after.barName ? " da " + after.barName : "") + ".";
-
-  const message = {
-    data: {
-      type: "cancelled",
-      eventId: String(event.params.eventId),
-      title: title,
-      body: body,
-      expiresAt: String(expiresAt),
-    },
-    android: { priority: "high", ttl: Math.max(expiresAt - Date.now(), 60000) },
-    tokens,
-  };
-
-  const res = await getMessaging().sendEachForMulticast(message);
-  await pruneInvalid(res, tokens, tokensSnap);
+  const name = after.launcherName || "Qualcuno";
+  const bar = after.barName || "";
+  for (const lang of ["it", "en"]) {
+    const toks = groups[lang];
+    if (!toks.length) continue;
+    const message = {
+      data: {
+        type: "cancelled",
+        eventId: String(event.params.eventId),
+        title: T.cancelTitle[lang],
+        body: T.cancelBody[lang](name, bar),
+        expiresAt: String(expiresAt),
+      },
+      android: { priority: "high", ttl: Math.max(expiresAt - Date.now(), 60000) },
+      tokens: toks,
+    };
+    const res = await getMessaging().sendEachForMulticast(message);
+    await pruneInvalid(res, toks, tokensSnap);
+  }
 });
 
-// --- Invito diretto aggiunto (premuto "Invita") -> push SOLO al nuovo invitato ---
-// Scatta quando la lista invitedIds dell'evento cresce: notifica esclusivamente
-// gli id appena aggiunti, con il nome di chi invita e la schermata accetta/rifiuta.
+// --- Invito diretto aggiunto ("Invita") -> push SOLO ai nuovi invitati (localizzato) ---
 exports.onInviteAdded = onDocumentUpdated("events/{eventId}", async (event) => {
   const before = event.data && event.data.before ? event.data.before.data() : null;
   const after = event.data && event.data.after ? event.data.after.data() : null;
   if (!after) return;
-  if (after.cancelled === true) return;            // non invitare a un evento annullato
-  if ((after.mode || "") === "AMICIZIA") return;   // AMICIZIA non usa inviti diretti
+  if (after.cancelled === true) return;
+  if ((after.mode || "") === "AMICIZIA") return;
 
   const beforeIds = new Set(
     Array.isArray(before && before.invitedIds) ? before.invitedIds.map(String) : []
   );
   const afterIds = Array.isArray(after.invitedIds) ? after.invitedIds.map(String) : [];
   const newIds = afterIds.filter((id) => !beforeIds.has(id));
-  if (newIds.length === 0) return;                 // nessun nuovo invitato: ignora
+  if (newIds.length === 0) return;
 
   const launcherId = after.launcherId || "";
   const mins = Number(after.minutes) || 15;
   const createdAt = Number(after.createdAt) || Date.now();
   const expiresAt = createdAt + mins * 60000;
-  if (expiresAt <= Date.now()) return;             // evento già scaduto
+  if (expiresAt <= Date.now()) return;
 
   const newSet = new Set(newIds);
   const tokensSnap = await db.collection("tokens").get();
-  const tokens = [];
+  const recipients = [];
   tokensSnap.forEach((d) => {
     const t = d.data();
-    if (d.id !== launcherId && newSet.has(String(d.id)) && t && t.token) tokens.push(t.token);
+    if (d.id !== launcherId && newSet.has(String(d.id)) && t && t.token)
+      recipients.push({ token: t.token, lang: langOf(t) });
   });
-  if (tokens.length === 0) return;
+  if (recipients.length === 0) return;
 
-  const message = {
-    notification: {
-      title: "\u2615 " + (after.launcherName || "Qualcuno") + " ti invita a un Extreme Coffee!",
-      body: (after.barName ? after.barName + " \u2022 " : "") +
-            "Hai " + mins + " minuti per arrivare.",
-    },
-    data: {
-      eventId: String(event.params.eventId),
-      expiresAt: String(expiresAt),
-    },
-    android: androidConfig(expiresAt),
-    tokens,
-  };
-
-  const res = await getMessaging().sendEachForMulticast(message);
-  await pruneInvalid(res, tokens, tokensSnap);
+  const name = after.launcherName || "Qualcuno";
+  const bar = after.barName || "";
+  await sendNotifByLang(
+    recipients,
+    { it: T.inviteTitle.it(name), en: T.inviteTitle.en(name) },
+    { it: T.inviteBody.it(bar, mins), en: T.inviteBody.en(bar, mins) },
+    { eventId: String(event.params.eventId), expiresAt: String(expiresAt) },
+    expiresAt, tokensSnap
+  );
 });
 
-// Rimuove dal registro i token non più validi (app disinstallata, ecc.)
+// Rimuove dal registro i token non piu' validi
 async function pruneInvalid(res, tokens, tokensSnap) {
   if (!res || !res.responses) return;
   const dead = new Set();
@@ -234,9 +243,7 @@ async function pruneInvalid(res, tokens, tokensSnap) {
     if (!r.success) {
       const code = r.error && r.error.code;
       if (code === "messaging/registration-token-not-registered" ||
-          code === "messaging/invalid-argument") {
-        dead.add(tokens[i]);
-      }
+          code === "messaging/invalid-argument") dead.add(tokens[i]);
     }
   });
   if (dead.size === 0) return;
