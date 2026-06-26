@@ -2,7 +2,12 @@
 
 package com.extremecoffee.app.ui.screens
 
+import android.net.Uri
+import android.widget.Toast
 import android.graphics.BitmapFactory
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -44,6 +49,8 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import com.extremecoffee.app.R
+import com.extremecoffee.app.ui.saveProfilePhoto
+import com.extremecoffee.app.ui.makeAvatarBase64
 import com.extremecoffee.app.data.CoffeeRepository
 import com.extremecoffee.app.data.Phones
 import com.extremecoffee.app.data.Profile
@@ -63,6 +70,19 @@ fun HomeScreen(nav: NavController) {
     val myId = remember { Profile.id(context) }
     var photoPath by remember { mutableStateOf(Profile.photoPath(context)) }
     var photoVersion by remember { mutableStateOf(0) }
+    val pickProfilePhoto = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+        if (uri != null) {
+            val saved = saveProfilePhoto(context, uri)
+            if (saved != null) {
+                Profile.setPhotoPath(context, saved)
+                Profile.setPhoto64(context, makeAvatarBase64(saved))
+                photoPath = saved; photoVersion++
+                Toast.makeText(context, context.getString(R.string.account_toast_photo_ok), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, context.getString(R.string.account_toast_photo_fail), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val obs = LifecycleEventObserver { _, e ->
@@ -98,10 +118,10 @@ fun HomeScreen(nav: NavController) {
                     Text("Extreme Coffee", style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.weight(1f))
                     val bmp = remember(photoPath, photoVersion) { if (photoPath != null) BitmapFactory.decodeFile(photoPath) else null }
-                    Surface(onClick = { nav.navigate("account") }, shape = CircleShape,
+                    Surface(onClick = { pickProfilePhoto.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }, shape = CircleShape,
                         color = MaterialTheme.colorScheme.primary, modifier = Modifier.size(44.dp)) {
                         if (bmp != null) {
-                            Image(bmp.asImageBitmap(), contentDescription = "Profilo",
+                            Image(bmp.asImageBitmap(), contentDescription = stringResource(R.string.account_profile),
                                 modifier = Modifier.fillMaxSize().clip(CircleShape), contentScale = ContentScale.Crop)
                         } else {
                             Box(contentAlignment = Alignment.Center) {
