@@ -335,4 +335,5 @@
     <string name="launch_active_block">You already have an Extreme Coffee in progress: finish it before starting another.</string>
     <string name="ip_busy">You already have an Extreme Coffee in progress or accepted: you can\'t accept another right now.</string>
     <string name="status_declined">Declined</string>
+    <string name="tr_navigate">Navigate with Google Maps</string>
 </resources>

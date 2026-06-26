@@ -1,6 +1,8 @@
 package com.extremecoffee.app.ui.screens
 
 import android.Manifest
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.ui.res.stringResource
 import com.extremecoffee.app.R
 import androidx.compose.foundation.layout.*
@@ -14,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.extremecoffee.app.data.CoffeeRepository
+import com.extremecoffee.app.data.DirectionsService
 import com.extremecoffee.app.data.locationFlow
 import com.extremecoffee.app.data.Profile
 import com.extremecoffee.app.model.ParticipantLocation
@@ -22,6 +25,7 @@ import com.extremecoffee.app.ui.GeoLine
 import com.extremecoffee.app.ui.GeoMarker
 import com.extremecoffee.app.ui.AppMap
 import com.extremecoffee.app.ui.goFresh
+import com.google.android.gms.maps.model.LatLng
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -150,20 +154,66 @@ fun TrackingScreen(nav: NavController, eventId: String, isLauncher: Boolean) {
                 }
             }
 
+            // Origini per i percorsi: il lanciatore vede TUTTI gli accettanti, l'ospite solo se stesso.
+            val myId = remember { Profile.id(context) }
+            val origins = if (isLauncher) locations else locations.filter { it.userId == myId }
+
+            // Pulsante: chi ha accettato apre il proprio percorso su Google Maps (navigazione vera).
+            if (!isLauncher && remaining > 0) {
+                Spacer(Modifier.height(12.dp))
+                OutlinedButton(
+                    onClick = {
+                        val uri = Uri.parse("google.navigation:q=${e.barLat},${e.barLng}&mode=d")
+                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                            .setPackage("com.google.android.apps.maps")
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        try {
+                            context.startActivity(intent)
+                        } catch (ex: Exception) {
+                            val web = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=${e.barLat},${e.barLng}&travelmode=driving")
+                            context.startActivity(Intent(Intent.ACTION_VIEW, web).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth().height(48.dp)
+                ) { Text(stringResource(R.string.tr_navigate), fontWeight = FontWeight.Bold) }
+            }
+
             Spacer(Modifier.height(16.dp))
 
             // --- AREA MAPPA DEDICATA (riempie lo spazio rimanente, separata) ---
             val markers = buildList {
                 add(GeoMarker(e.barLat, e.barLng, "${e.barName} \u2615", coffee = true))
-                locations.forEach { add(GeoMarker(it.lat, it.lng, it.name, photo = it.photo)) }
+                (if (isLauncher) locations else origins).forEach {
+                    add(GeoMarker(it.lat, it.lng, it.name, photo = it.photo))
+                }
             }
-            val lines = locations.map { GeoLine(it.lat, it.lng, e.barLat, e.barLng) }
+
+            // Percorsi su strada (Directions API). Si aggiornano al movimento e ogni 180s.
+            var routes by remember { mutableStateOf<List<List<LatLng>>>(emptyList()) }
+            val routeSig = origins.joinToString("|") {
+                "${it.userId}:${(it.lat * 1000).toInt()},${(it.lng * 1000).toInt()}"
+            } + "/${e.barLat},${e.barLng}"
+            LaunchedEffect(routeSig) {
+                while (true) {
+                    val acc = mutableListOf<List<LatLng>>()
+                    origins.forEach { o ->
+                        DirectionsService.route(context, o.lat, o.lng, e.barLat, e.barLng, "driving")
+                            ?.let { if (it.size >= 2) acc.add(it) }
+                    }
+                    routes = acc
+                    delay(180_000)
+                }
+            }
+            // Se le strade non sono disponibili (Directions non abilitata), fallback alla retta.
+            val straight = origins.map { GeoLine(it.lat, it.lng, e.barLat, e.barLng) }
 
             Box(Modifier.fillMaxSize().clip(MaterialTheme.shapes.large)) {
                 AppMap(
                     modifier = Modifier.fillMaxSize(),
                     centerLat = e.barLat, centerLng = e.barLng, zoom = 15.0,
-                    markers = markers, lines = lines
+                    markers = markers,
+                    lines = if (routes.isEmpty()) straight else emptyList(),
+                    polylines = routes
                 )
             }
         }
