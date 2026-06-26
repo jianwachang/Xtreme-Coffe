@@ -336,4 +336,5 @@
     <!-- Vincoli singolo lancio/accept -->
     <string name="launch_active_block">Hai già un Extreme Coffee in corso: concludilo prima di lanciarne un altro.</string>
     <string name="ip_busy">Hai già un Extreme Coffee in corso o accettato: non puoi accettarne un altro adesso.</string>
+    <string name="status_declined">Rifiutato</string>
 </resources>

@@ -36,6 +36,7 @@ fun NotificationsScreen(nav: NavController) {
     val context = LocalContext.current
     val myId = remember { Profile.id(context) }
     val invites by CoffeeRepository.allMyInvites(myId).collectAsState(initial = emptyList())
+    val declined by CoffeeRepository.declinedFlow().collectAsState()
 
     TabScaffold(stringResource(R.string.nav_notifications), nav, "notifications") { mod ->
         if (invites.isEmpty()) {
@@ -66,7 +67,7 @@ fun NotificationsScreen(nav: NavController) {
                 contentPadding = PaddingValues(vertical = 12.dp)
             ) {
                 items(invites) { e ->
-                    NotificationCard(e) { nav.goFresh("invite/${e.id}") }
+                    NotificationCard(e, e.id in declined) { nav.goFresh("invite/${e.id}") }
                 }
             }
         }
@@ -74,10 +75,11 @@ fun NotificationsScreen(nav: NavController) {
 }
 
 @Composable
-private fun NotificationCard(e: CoffeeEvent, onOpen: () -> Unit) {
+private fun NotificationCard(e: CoffeeEvent, declined: Boolean, onOpen: () -> Unit) {
     val now = System.currentTimeMillis()
     val remaining = e.remainingMillis(now)
     val statusKey = when {
+        declined -> "declined"
         e.cancelled -> "cancelled"
         remaining <= 0 -> "expired"
         else -> "active"
@@ -86,11 +88,13 @@ private fun NotificationCard(e: CoffeeEvent, onOpen: () -> Unit) {
     val statusText = when (statusKey) {
         "active" -> stringResource(R.string.status_active)
         "cancelled" -> stringResource(R.string.status_cancelled)
+        "declined" -> stringResource(R.string.status_declined)
         else -> stringResource(R.string.status_expired)
     }
     val statusColor = when (statusKey) {
         "active" -> MaterialTheme.colorScheme.primary
         "cancelled" -> MaterialTheme.colorScheme.error
+        "declined" -> MaterialTheme.colorScheme.error
         else -> MaterialTheme.colorScheme.onSurfaceVariant
     }
 

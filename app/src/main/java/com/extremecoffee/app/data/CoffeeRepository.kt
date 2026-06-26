@@ -52,6 +52,7 @@ object CoffeeRepository {
     private val declinedState = MutableStateFlow<Set<String>>(emptySet())
     fun setDeclined(ids: Set<String>) { declinedState.value = ids }
     fun addDeclined(id: String) { declinedState.value = declinedState.value + id }
+    fun declinedFlow(): kotlinx.coroutines.flow.StateFlow<Set<String>> = declinedState
 
     // Invito ACCETTATO e ancora in corso (per bloccare il lancio di un nuovo caffè)
     private val joinedState = MutableStateFlow<String?>(null)
@@ -427,8 +428,8 @@ object CoffeeRepository {
     /** L'invito che ho ACCETTATO ed e' ancora in corso (non scaduto/annullato). Null se nessuno. */
     fun myAcceptedActiveEvent(myId: String): Flow<CoffeeEvent?> {
         ensureIncomingListener(myId)
-        return combine(invitedEventsState, joinedState) { list, joined ->
-            if (joined == null) null
+        return combine(invitedEventsState, joinedState, declinedState) { list, joined, declined ->
+            if (joined == null || joined in declined) null
             else list.find {
                 it.id == joined && it.launcherId != myId && !it.cancelled && it.remainingMillis() > 0
             }

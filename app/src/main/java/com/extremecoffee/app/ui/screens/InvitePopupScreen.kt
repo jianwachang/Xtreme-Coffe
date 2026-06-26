@@ -142,6 +142,7 @@ fun InvitePopupScreen(nav: NavController, eventId: String) {
                 scope.launch {
                     CoffeeRepository.declineLocally(e.id)
                     Profile.addDeclined(context, e.id)
+                    if (Profile.joinedEvent(context) == e.id) CoffeeRepository.clearJoined(context)
                     CoffeeRepository.sendResponse(e, Profile.id(context), Profile.name(context), "declined")
                 }
                 nav.goFresh("home")
