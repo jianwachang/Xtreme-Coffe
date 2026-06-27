@@ -7,7 +7,7 @@ object Config {
     // Punta alla scheda Play Store dell'app (conforme alle policy: niente APK esterni).
     // Override possibile da Firestore: config/app -> campo "downloadUrl".
     const val DOWNLOAD_URL =
-        "https://play.google.com/store/apps/details?id=com.extremecoffee.app"
+        "https://play.google.com/store/apps/details?id=com.extremecoffee.myapp"
 
     fun inviteMessage(launcher: String, url: String = DOWNLOAD_URL): String =
         "$launcher ti sta invitando a prendere un caffè insieme \u2615\uD83D\uDD25\n" +
