@@ -6,15 +6,14 @@ plugins {
 
 android {
     namespace = "com.extremecoffee.app"
-    ndkVersion = "26.1.10909125"
     compileSdk = 35
 
     defaultConfig {
         applicationId = "com.extremecoffee.myapp"
         minSdk = 26
         targetSdk = 35
-        versionCode = 4
-        versionName = "1.2.1"
+        versionCode = 5
+        versionName = "1.2.2"
         manifestPlaceholders["MAPS_API_KEY"] =
             (project.findProperty("MAPS_API_KEY") as? String) ?: ""
     }
@@ -36,9 +35,6 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            ndk {
-                debugSymbolLevel = "FULL"
-            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
