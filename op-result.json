@@ -1,0 +1,9 @@
+{
+  "ok": true,
+  "appId": "1:116301472653:android:22be599c9a6ba3edea93c4",
+  "newPackage": "com.extremecoffee.myapp",
+  "packages": [
+    "com.extremecoffee.app",
+    "com.extremecoffee.myapp"
+  ]
+}
