@@ -336,4 +336,8 @@
     <string name="ip_busy">You already have an Extreme Coffee in progress or accepted: you can\'t accept another right now.</string>
     <string name="status_declined">Declined</string>
     <string name="tr_navigate">Navigate with Google Maps</string>
+    <string name="if_filter_all">All</string>
+    <string name="if_filter_app">Have the app · %1$d</string>
+    <string name="if_filter_invite">To invite · %1$d</string>
+    <string name="if_empty_filter">No contacts in this category</string>
 </resources>
