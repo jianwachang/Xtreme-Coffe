@@ -47,20 +47,51 @@ class MainActivity : ComponentActivity() {
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
             CoffeeRepository.saveFcmToken(Profile.id(this), token, Profile.name(this), com.extremecoffee.app.data.LocaleManager.getLang(this))
         }
-        val incomingEventId = intent.getStringExtra("eventId")
-        setContent { ExtremeCoffeeApp(incomingEventId) }
+        val initialRoute = routeFromIntent(intent)
+        setContent { ExtremeCoffeeApp(initialRoute) }
+    }
+
+    override fun onNewIntent(intent: android.content.Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        NavTarget.set(routeFromIntent(intent))
     }
 }
 
+/** Estrae la rotta di destinazione da una notifica (nav_route, con fallback legacy "eventId"). */
+private fun routeFromIntent(intent: android.content.Intent?): String? {
+    if (intent == null) return null
+    intent.getStringExtra("nav_route")?.let { if (it.isNotBlank()) return it }
+    intent.getStringExtra("eventId")?.let { if (it.isNotBlank()) return "invite/$it" }
+    return null
+}
+
+/** Canale per navigare quando si tocca una notifica ad app GIÀ aperta. */
+object NavTarget {
+    val route = kotlinx.coroutines.flow.MutableStateFlow<String?>(null)
+    fun set(r: String?) { if (!r.isNullOrBlank()) route.value = r }
+    fun consume() { route.value = null }
+}
+
 @Composable
-fun ExtremeCoffeeApp(incomingEventId: String?) {
+fun ExtremeCoffeeApp(initialRoute: String?) {
     val context = LocalContext.current
     val nav = rememberNavController()
     val registered = remember { Profile.isRegistered(context) }
     val start = when {
         !registered -> "register"
-        incomingEventId != null -> "invite/$incomingEventId"
+        initialRoute != null -> initialRoute
         else -> "home"
+    }
+
+    // Tocco di una notifica ad app GIÀ aperta: naviga alla sezione coerente.
+    val warmTarget by NavTarget.route.collectAsState()
+    LaunchedEffect(warmTarget, registered) {
+        val t = warmTarget
+        if (t != null && registered) {
+            nav.navigate(t) { launchSingleTop = true }
+            NavTarget.consume()
+        }
     }
 
     // Permesso notifiche (Android 13+)

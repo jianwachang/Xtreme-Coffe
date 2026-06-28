@@ -62,7 +62,7 @@ async function sendNotifByLang(recipients, titles, bodies, dataObj, expiresAt, t
     if (!toks.length) continue;
     const message = {
       notification: { title: titles[lang], body: bodies[lang] },
-      data: dataObj,
+      data: { ...dataObj, nav_route: dataObj && dataObj.eventId ? "invite/" + dataObj.eventId : "" },
       android: androidConfig(expiresAt),
       tokens: toks,
     };
@@ -141,7 +141,7 @@ exports.onNewResponse = onDocumentCreated("responses/{responseId}", async (event
       title: T.respTitle[lang](declined, n),
       body: T.respBody[lang](declined, n),
     },
-    data: { eventId: String(r.eventId || ""), expiresAt: String(expiresAt || "") },
+    data: { eventId: String(r.eventId || ""), expiresAt: String(expiresAt || ""), nav_route: r.eventId ? "launched/" + String(r.eventId) : "" },
     android: androidConfig(expiresAt || null),
     token,
   };
@@ -184,6 +184,7 @@ exports.onEventCancelled = onDocumentUpdated("events/{eventId}", async (event) =
         title: T.cancelTitle[lang],
         body: T.cancelBody[lang](name, bar),
         expiresAt: String(expiresAt),
+        nav_route: "notifications",
       },
       android: { priority: "high", ttl: Math.max(expiresAt - Date.now(), 60000) },
       tokens: toks,

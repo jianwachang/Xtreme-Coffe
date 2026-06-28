@@ -30,6 +30,18 @@ object Notifier {
             ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==
             PackageManager.PERMISSION_GRANTED
 
+    /** PendingIntent che apre l'app nella sezione [route] (deep-link via MainActivity). */
+    private fun contentPI(context: Context, requestCode: Int, route: String): PendingIntent {
+        val intent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra("nav_route", route)
+        }
+        return PendingIntent.getActivity(
+            context, requestCode, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+    }
+
     /** Rimuove la notifica di un singolo invito (evento annullato, rifiutato o scaduto). */
     fun cancelInvite(context: Context, eventId: String) {
         ContextCompat.getSystemService(context, NotificationManager::class.java)
@@ -41,13 +53,7 @@ object Notifier {
     fun showReminder(context: Context, label: String, notifId: Int) {
         if (!hasPerm(context)) return
         ensureChannel(context)
-        val intent = Intent(context, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-        }
-        val pi = PendingIntent.getActivity(
-            context, notifId, intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
+        val pi = contentPI(context, notifId, "home")
         val text = if (label.isBlank()) context.getString(R.string.push_reminder_body)
         else context.getString(R.string.push_reminder_body_with, label)
         val notif = NotificationCompat.Builder(context, CHANNEL)
@@ -70,13 +76,7 @@ object Notifier {
     fun showRecap(context: Context, title: String, body: String) {
         if (!hasPerm(context)) return
         ensureChannel(context)
-        val intent = Intent(context, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-        }
-        val pi = PendingIntent.getActivity(
-            context, "recap".hashCode(), intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
+        val pi = contentPI(context, "recap".hashCode(), "home")
         val notif = NotificationCompat.Builder(context, CHANNEL)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
@@ -94,13 +94,7 @@ object Notifier {
     fun showCancelled(context: Context, title: String, body: String, eventId: String?) {
         if (!hasPerm(context)) return
         ensureChannel(context)
-        val intent = Intent(context, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-        }
-        val pi = PendingIntent.getActivity(
-            context, ("cancel_" + (eventId ?: "")).hashCode(), intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
+        val pi = contentPI(context, ("cancel_" + (eventId ?: "")).hashCode(), "notifications")
         val notif = NotificationCompat.Builder(context, CHANNEL)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
@@ -118,14 +112,7 @@ object Notifier {
         val remaining = event.remainingMillis()
         if (remaining <= 0L) return                 // già scaduto: non mostrare nulla
         ensureChannel(context)
-        val intent = Intent(context, MainActivity::class.java).apply {
-            putExtra("eventId", event.id)
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-        }
-        val pi = PendingIntent.getActivity(
-            context, event.id.hashCode(), intent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
+        val pi = contentPI(context, event.id.hashCode(), "invite/${event.id}")
         val notif = NotificationCompat.Builder(context, CHANNEL)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(context.getString(R.string.push_invite_title, event.launcherName))
@@ -140,20 +127,15 @@ object Notifier {
     }
 
     /** Notifica generica (usata dal push in primo piano). Se [expiresAt] è noto, scade da sola. */
-    fun showRaw(context: Context, title: String, body: String, eventId: String?, expiresAt: Long? = null) {
+    fun showRaw(context: Context, title: String, body: String, eventId: String?, expiresAt: Long? = null, route: String? = null) {
         if (!hasPerm(context)) return
         val now = System.currentTimeMillis()
         val remaining = expiresAt?.let { it - now }
         if (remaining != null && remaining <= 0L) return   // arrivato dopo la scadenza: ignora
         ensureChannel(context)
-        val intent = Intent(context, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-            if (!eventId.isNullOrBlank()) putExtra("eventId", eventId)
-        }
-        val pi = PendingIntent.getActivity(
-            context, (eventId ?: title).hashCode(), intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
+        val finalRoute = route?.takeIf { it.isNotBlank() }
+            ?: if (!eventId.isNullOrBlank()) "invite/$eventId" else "notifications"
+        val pi = contentPI(context, (eventId ?: title).hashCode(), finalRoute)
         val b = NotificationCompat.Builder(context, CHANNEL)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
@@ -185,6 +167,7 @@ object Notifier {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setTimeoutAfter(remaining)
+            .setContentIntent(contentPI(context, ("${response.eventId}_${response.fromId}").hashCode(), "launched/${response.eventId}"))
             .build()
         ContextCompat.getSystemService(context, NotificationManager::class.java)
             ?.notify(("${response.eventId}_${response.fromId}").hashCode(), notif)

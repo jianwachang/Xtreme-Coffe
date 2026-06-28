@@ -28,6 +28,6 @@ class PushService : FirebaseMessagingService() {
         val title = n?.title ?: data["title"] ?: applicationContext.getString(R.string.push_generic_title)
         val body = n?.body ?: data["body"] ?: ""
         val expiresAt = data["expiresAt"]?.toLongOrNull()
-        Notifier.showRaw(applicationContext, title, body, data["eventId"], expiresAt)
+        Notifier.showRaw(applicationContext, title, body, data["eventId"], expiresAt, data["nav_route"])
     }
 }
