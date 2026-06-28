@@ -12,8 +12,8 @@ android {
         applicationId = "com.extremecoffee.myapp"
         minSdk = 26
         targetSdk = 35
-        versionCode = 5
-        versionName = "1.2.2"
+        versionCode = 6
+        versionName = "1.2.3"
         manifestPlaceholders["MAPS_API_KEY"] =
             (project.findProperty("MAPS_API_KEY") as? String) ?: ""
     }
