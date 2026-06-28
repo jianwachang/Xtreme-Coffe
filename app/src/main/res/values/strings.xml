@@ -339,7 +339,7 @@
     <string name="status_declined">Rifiutato</string>
     <string name="tr_navigate">Naviga su Google Maps</string>
     <string name="if_filter_all">Tutti</string>
-    <string name="if_filter_app">Hanno l'app · %1$d</string>
+    <string name="if_filter_app">Hanno l\'app · %1$d</string>
     <string name="if_filter_invite">Da invitare · %1$d</string>
     <string name="if_empty_filter">Nessun contatto in questa categoria</string>
 </resources>
