@@ -126,6 +126,39 @@ h1,h2,h3{font-family:var(--fd);margin:0;line-height:1.04;letter-spacing:-.02em}
 .selfie .cam .ava+.ava{margin-left:-14px}
 .selfie .badge{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);font-family:var(--fm);font-size:.6rem;letter-spacing:.14em;color:var(--cream);background:rgba(27,14,7,.7);padding:6px 12px;border-radius:999px;white-space:nowrap}
 
+/* --- schermata "Extreme Coffee lanciato" (hero, riproduzione app) --- */
+.labar{display:flex;align-items:center;gap:8px;padding:14px 12px 8px}
+.labar .bk{color:var(--espresso);font-size:1.3rem;font-weight:800}
+.labar .ltitle{flex:1;font-family:var(--fd);font-weight:800;font-size:1rem;line-height:1.04;color:var(--espresso)}
+.labar .fwd{color:#CBBFB0;font-size:1.15rem;font-weight:800}
+.labar .hm{color:#6E5540;font-size:1rem}
+.lcard{margin:2px 12px 0;background:#ECE7F5;border-radius:16px;padding:12px 14px;display:flex;justify-content:space-between;align-items:flex-start;box-shadow:0 6px 14px rgba(40,20,10,.08)}
+.lcard .lc-h{font-family:var(--fd);font-weight:800;font-size:.9rem;color:var(--orange-d)}
+.lcard .lc-place{font-weight:700;font-size:.82rem;color:var(--espresso);margin-top:2px}
+.lcard .lc-sub{font-size:.7rem;color:var(--muted);margin-top:3px}
+.lcard .lc-lab{font-family:var(--fm);font-size:.56rem;letter-spacing:.14em;color:var(--muted);text-align:right}
+.lcard .lc-time{font-family:var(--fm);font-weight:700;font-size:1.55rem;color:var(--orange-d);text-align:right;line-height:1;margin-top:2px}
+.lmap{flex:1;position:relative;margin:10px 12px 0;border-radius:16px;overflow:hidden;background:#ECE1CE}
+.lmap svg{position:absolute;inset:0;width:100%;height:100%}
+.lmap .pin{position:absolute;right:30px;top:34px;width:42px;height:42px;border-radius:50%;background:#FFFDF9;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(0,0,0,.22);border:2px solid #241309}
+.lmap .pin .cuplogo{width:34px;height:34px}
+.lmap .dotav{position:absolute;width:24px;height:24px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.62rem;font-weight:700;box-shadow:0 4px 8px rgba(0,0,0,.25)}
+.invited{position:absolute;top:8px;left:8px;background:rgba(255,253,249,.95);border-radius:12px;padding:8px 10px;box-shadow:0 6px 14px rgba(40,20,10,.16);width:134px}
+.invited .inv-h{font-family:var(--fd);font-weight:800;font-size:.66rem;color:var(--orange-d);margin-bottom:4px}
+.invited .inv-row{display:flex;justify-content:space-between;align-items:center;gap:6px;margin:2px 0}
+.invited .nm{font-size:.64rem;font-weight:700;color:var(--espresso);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.invited .st{font-size:.55rem;font-weight:800;white-space:nowrap}
+.invited .st.on{color:var(--orange-d)}
+.invited .st.mut{color:var(--muted)}
+.invited .inv-wait{font-size:.57rem;color:var(--muted);margin-top:4px}
+.invited .inv-sum{font-size:.57rem;color:var(--muted)}
+.recenter{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.18);color:#6E5540;font-size:.95rem}
+.lbtns{padding:10px 12px 12px;display:flex;flex-direction:column;gap:7px}
+.lb-outline{text-align:center;background:transparent;border:1.5px solid var(--line);color:var(--orange-d);font-weight:800;border-radius:14px;padding:10px;font-size:.86rem}
+.lb-disabled{text-align:center;background:#DED5C8;color:#9C9082;font-weight:800;border-radius:14px;padding:11px;font-size:.86rem}
+.lb-danger{text-align:center;color:#B23A2E;font-weight:800;font-size:.84rem;padding:2px}
+
+
 /* SECTIONS (chiare) */
 section{padding:92px 0}
 .s-cream{background:var(--cream)}
@@ -215,21 +248,47 @@ html.js .rv.in{opacity:1;transform:none}
   <div class="stage rv in">
     <div class="phone front"><div class="notch"></div><div class="screen">
 <div class="app">
-  <div class="abar"><span><span class="bk">‹</span> Bar Magenta</span><span class="pillsm" id="cd">08:42</span></div>
-  <div class="map">
-    <svg viewBox="0 0 250 360" preserveAspectRatio="none">
-      <rect width="250" height="360" fill="#ECE1CE"/>
-      <g stroke="#DECDB4" stroke-width="2" fill="none"><path d="M-10 90 H260 M-10 200 H260 M70 -10 V380 M165 -10 V380"/></g>
-      <path id="rt" d="M36 320 C 60 250, 120 250, 150 200 S 205 110, 200 70" fill="none" stroke="#E8772E" stroke-width="6" stroke-linecap="round"/>
-      <circle r="6" fill="#1B0E07"><animateMotion dur="5s" repeatCount="indefinite" rotate="auto"><mpath href="#rt"/></animateMotion></circle>
-    </svg>
-    <div class="pin">☕</div>
-    <div class="dotav" style="background:#7A5230;left:48px;bottom:48px">M</div>
-    <div class="dotav" style="background:#C85F1C;left:120px;top:150px">S</div>
+  <div class="labar">
+    <span class="bk">&#8249;</span>
+    <div class="ltitle">Extreme Coffee lanciato</div>
+    <span class="fwd">&#8250;</span>
+    <span class="hm">&#8962;</span>
   </div>
-  <div class="tdrawer">
-    <div class="trow"><b>In arrivo · 3</b><div class="avs"><div class="ava" style="background:#E8772E">G</div><div class="ava" style="background:#7A5230">M</div><div class="ava" style="background:#C85F1C">S</div></div></div>
-    <button class="abtn">🧭 Naviga su Google Maps</button>
+  <div class="lcard">
+    <div>
+      <div class="lc-h">&#9749;&#128293; Hai lanciato!</div>
+      <div class="lc-place">Pisa, PI, Italia</div>
+      <div class="lc-sub">2 in arrivo &#183; hai 4 min</div>
+    </div>
+    <div>
+      <div class="lc-lab">TEMPO</div>
+      <div class="lc-time" id="cd">04:13</div>
+    </div>
+  </div>
+  <div class="lmap">
+    <svg viewBox="0 0 250 300" preserveAspectRatio="none">
+      <rect width="250" height="300" fill="#ECE1CE"/>
+      <g stroke="#DECDB4" stroke-width="2" fill="none"><path d="M-10 80 H260 M-10 180 H260 M80 -10 V320 M170 -10 V320"/></g>
+      <path id="rtl" d="M40 270 C 70 210, 120 210, 150 160 S 205 80, 202 56" fill="none" stroke="#E8772E" stroke-width="6" stroke-linecap="round"/>
+      <circle r="6" fill="#1B0E07"><animateMotion dur="5s" repeatCount="indefinite" rotate="auto"><mpath href="#rtl"/></animateMotion></circle>
+    </svg>
+    <div class="pin"><span class="cuplogo"></span></div>
+    <div class="dotav" style="background:#7A5230;left:36px;bottom:24px">M</div>
+    <div class="dotav" style="background:#C85F1C;left:120px;top:120px">S</div>
+    <div class="invited">
+      <div class="inv-h">Invitati</div>
+      <div class="inv-row"><span class="nm">Giulia</span><span class="st on">In arrivo</span></div>
+      <div class="inv-row"><span class="nm">Marco</span><span class="st on">In arrivo</span></div>
+      <div class="inv-row"><span class="nm">Sara</span><span class="st mut">Ha rifiutato</span></div>
+      <div class="inv-wait">In attesa &#183; 1</div>
+      <div class="inv-sum">Accettati 2/4</div>
+    </div>
+    <div class="recenter">&#9678;</div>
+  </div>
+  <div class="lbtns">
+    <div class="lb-outline">Invita la cerchia</div>
+    <div class="lb-disabled">Nuovo lancio tra <span id="cd2">04:13</span></div>
+    <div class="lb-danger">Annulla Extreme Coffee</div>
   </div>
 </div></div></div>
     <div class="phone back"><div class="screen">
@@ -347,8 +406,8 @@ document.documentElement.classList.add('js');
 if(!('IntersectionObserver' in window)){els.forEach(e=>e.classList.add('in'));return;}
 var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}})},{threshold:.12});
 els.forEach(function(e){if(!e.classList.contains('in'))io.observe(e);});})();
-(function(){var t=8*60+42;function fmt(x){var m=Math.floor(x/60),s=x%60;return (m<10?'0':'')+m+':'+(s<10?'0':'')+s;}
-setInterval(function(){t--;if(t<0)t=9*60+30;var a=document.getElementById('cd'),b=document.getElementById('cd2');if(a)a.textContent=fmt(t);if(b)b.textContent=fmt(t);},1000);})();
+(function(){var t=4*60+13;function fmt(x){var m=Math.floor(x/60),s=x%60;return (m<10?'0':'')+m+':'+(s<10?'0':'')+s;}
+setInterval(function(){t--;if(t<0)t=4*60+30;var a=document.getElementById('cd'),b=document.getElementById('cd2');if(a)a.textContent=fmt(t);if(b)b.textContent=fmt(t);},1000);})();
 </script>
 </body>
 </html>
