@@ -63,19 +63,40 @@ fun InviteFriendsScreen(nav: NavController) {
         } else perm.launchPermissionRequest()
     }
 
-    // Aggiornamento di "chi ha l'app": la PRIMA volta (nessuna cache) lo segnaliamo all'utente;
-    // dalla seconda in poi la lista è già pronta dalla cache e l'aggiornamento è silenzioso.
+    // Aggiornamento "chi ha l'app" OTTIMIZZATO (poco impattante):
+    //  - primo giro o ri-controllo periodico (max ogni 3h) -> verifica completa (prende chi ha installato di recente)
+    //  - solo contatti NUOVI in rubrica -> verifico soltanto quelli (query minima)
+    //  - niente di nuovo e cache fresca -> nessuna chiamata di rete
+    // Il conteggio/filtri si aggiornano comunque; nessuno spinner (tranne il primissimo giro).
     LaunchedEffect(contacts) {
-        if (contacts.isNotEmpty()) {
-            val firstTime = !Profile.regChecked(context, "phones")
-            if (firstTime) checkingFirst = true
-            val phones = contacts.mapNotNull { Phones.normalizeIt(it.phone) ?: Phones.normalizeIt(it.raw) }
-            val fresh = withContext(Dispatchers.IO) { CoffeeRepository.findRegisteredPhones(phones) }
-            registered = fresh
-            Profile.setCachedRegisteredPhones(context, fresh)
-            Profile.setRegChecked(context, "phones")
-            checkingFirst = false
+        if (contacts.isEmpty()) return@LaunchedEffect
+        val allPhones = contacts.mapNotNull { Phones.normalizeIt(it.phone) ?: Phones.normalizeIt(it.raw) }.toSet()
+        val firstTime = !Profile.regChecked(context, "phones")
+        val now = System.currentTimeMillis()
+        val stale = now - Profile.regRefreshedAt(context, "phones") >= 3L * 60 * 60 * 1000
+        val newPhones = allPhones - Profile.checkedPhones(context, "phones")
+
+        val fullCheck = firstTime || stale
+        val toQuery = when {
+            fullCheck -> allPhones
+            newPhones.isNotEmpty() -> newPhones
+            else -> emptySet()
         }
+        if (toQuery.isEmpty()) return@LaunchedEffect   // cache già aggiornata: nessuna rete
+
+        if (firstTime) checkingFirst = true
+        val found = withContext(Dispatchers.IO) { CoffeeRepository.findRegisteredPhones(toQuery.toList()) }
+        val updated = if (fullCheck) {
+            Profile.setRegRefreshedAt(context, "phones", now)
+            found                                       // autoritativo tra i contatti attuali
+        } else {
+            registered.intersect(allPhones) + found     // cache (ancora in rubrica) + nuovi trovati
+        }
+        registered = updated
+        Profile.setCachedRegisteredPhones(context, updated)
+        Profile.setCheckedPhones(context, "phones", allPhones)
+        Profile.setRegChecked(context, "phones")
+        checkingFirst = false
     }
 
     fun normOf(c: Contact): String? = Phones.normalizeIt(c.phone) ?: Phones.normalizeIt(c.raw)

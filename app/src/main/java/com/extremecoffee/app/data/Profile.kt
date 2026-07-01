@@ -163,6 +163,25 @@ object Profile {
             .edit().putBoolean("chk_$key", true).apply()
     }
 
+    /** Insieme dei numeri già verificati (per capire quali sono NUOVI e vanno interrogati). */
+    fun checkedPhones(context: Context, key: String): Set<String> =
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .getStringSet("chkph_$key", emptySet())?.toSet() ?: emptySet()
+
+    fun setCheckedPhones(context: Context, key: String, phones: Set<String>) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putStringSet("chkph_$key", HashSet(phones)).apply()
+    }
+
+    /** Timestamp dell'ultimo ri-controllo COMPLETO (per throttlare chi ha installato di recente). */
+    fun regRefreshedAt(context: Context, key: String): Long =
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getLong("refat_$key", 0L)
+
+    fun setRegRefreshedAt(context: Context, key: String, ts: Long) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putLong("refat_$key", ts).apply()
+    }
+
     /** Cancella tutti i dati locali (profilo, foto, flag). Usato per "Elimina account". */
     fun clearAll(context: Context) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().clear().apply()

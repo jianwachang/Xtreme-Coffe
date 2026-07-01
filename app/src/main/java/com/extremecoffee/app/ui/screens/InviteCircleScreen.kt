@@ -67,18 +67,37 @@ fun InviteCircleScreen(nav: NavController, eventId: String) {
         } else perm.launchPermissionRequest()
     }
 
-    // Prima volta (nessuna cache): segnaliamo il controllo; poi è istantaneo e silenzioso.
+    // Aggiornamento "chi ha l'app" OTTIMIZZATO (come Invita amici): completo max ogni 3h,
+    // altrimenti solo i contatti nuovi, altrimenti nessuna rete. Conteggio sempre aggiornato.
     LaunchedEffect(contacts) {
-        if (contacts.isNotEmpty()) {
-            val firstTime = !Profile.regChecked(context, "users")
-            if (firstTime) checkingFirst = true
-            val phones = contacts.mapNotNull { Phones.normalizeIt(it.phone) ?: Phones.normalizeIt(it.raw) }
-            val fresh = withContext(Dispatchers.IO) { CoffeeRepository.findRegistered(phones) }
-            registered = fresh
-            Profile.setCachedRegisteredUsers(context, fresh)
-            Profile.setRegChecked(context, "users")
-            checkingFirst = false
+        if (contacts.isEmpty()) return@LaunchedEffect
+        val allPhones = contacts.mapNotNull { Phones.normalizeIt(it.phone) ?: Phones.normalizeIt(it.raw) }.toSet()
+        val firstTime = !Profile.regChecked(context, "users")
+        val now = System.currentTimeMillis()
+        val stale = now - Profile.regRefreshedAt(context, "users") >= 3L * 60 * 60 * 1000
+        val newPhones = allPhones - Profile.checkedPhones(context, "users")
+
+        val fullCheck = firstTime || stale
+        val toQuery = when {
+            fullCheck -> allPhones
+            newPhones.isNotEmpty() -> newPhones
+            else -> emptySet()
         }
+        if (toQuery.isEmpty()) return@LaunchedEffect
+
+        if (firstTime) checkingFirst = true
+        val found = withContext(Dispatchers.IO) { CoffeeRepository.findRegistered(toQuery.toList()) }
+        val updated = if (fullCheck) {
+            Profile.setRegRefreshedAt(context, "users", now)
+            found
+        } else {
+            registered.filterKeys { it in allPhones } + found
+        }
+        registered = updated
+        Profile.setCachedRegisteredUsers(context, updated)
+        Profile.setCheckedPhones(context, "users", allPhones)
+        Profile.setRegChecked(context, "users")
+        checkingFirst = false
     }
 
     fun normOf(c: Contact): String? = Phones.normalizeIt(c.phone) ?: Phones.normalizeIt(c.raw)
