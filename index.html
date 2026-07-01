@@ -143,15 +143,14 @@ h1,h2,h3{font-family:var(--fd);margin:0;line-height:1.04;letter-spacing:-.02em}
 .lmap .pin{position:absolute;right:30px;top:34px;width:42px;height:42px;border-radius:50%;background:#FFFDF9;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(0,0,0,.22);border:2px solid #241309}
 .lmap .pin .cuplogo{width:34px;height:34px}
 .lmap .dotav{position:absolute;width:24px;height:24px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.62rem;font-weight:700;box-shadow:0 4px 8px rgba(0,0,0,.25)}
-.invited{position:absolute;top:8px;left:8px;background:rgba(255,253,249,.95);border-radius:12px;padding:8px 10px;box-shadow:0 6px 14px rgba(40,20,10,.16);width:134px}
-.invited .inv-h{font-family:var(--fd);font-weight:800;font-size:.66rem;color:var(--orange-d);margin-bottom:4px}
-.invited .inv-row{display:flex;justify-content:space-between;align-items:center;gap:6px;margin:2px 0}
-.invited .nm{font-size:.64rem;font-weight:700;color:var(--espresso);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.invited .st{font-size:.55rem;font-weight:800;white-space:nowrap}
+.invited{position:absolute;top:7px;left:7px;background:rgba(255,253,249,.95);border-radius:10px;padding:6px 8px;box-shadow:0 5px 12px rgba(40,20,10,.16);width:104px}
+.invited .inv-h{font-family:var(--fd);font-weight:800;font-size:.58rem;color:var(--orange-d);margin-bottom:2px}
+.invited .inv-row{display:flex;justify-content:space-between;align-items:center;gap:5px;margin:1px 0}
+.invited .nm{font-size:.56rem;font-weight:700;color:var(--espresso);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.invited .st{font-size:.48rem;font-weight:800;white-space:nowrap}
 .invited .st.on{color:var(--orange-d)}
 .invited .st.mut{color:var(--muted)}
-.invited .inv-wait{font-size:.57rem;color:var(--muted);margin-top:4px}
-.invited .inv-sum{font-size:.57rem;color:var(--muted)}
+.invited .inv-sum{font-size:.5rem;color:var(--muted);margin-top:2px}
 .recenter{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.18);color:#6E5540;font-size:.95rem}
 .lbtns{padding:10px 12px 12px;display:flex;flex-direction:column;gap:7px}
 .lb-outline{text-align:center;background:transparent;border:1.5px solid var(--line);color:var(--orange-d);font-weight:800;border-radius:14px;padding:10px;font-size:.86rem}
@@ -257,7 +256,7 @@ html.js .rv.in{opacity:1;transform:none}
   <div class="lcard">
     <div>
       <div class="lc-h">&#9749;&#128293; Hai lanciato!</div>
-      <div class="lc-place">Pisa, PI, Italia</div>
+      <div class="lc-place">Napoli, NA, Italia</div>
       <div class="lc-sub">2 in arrivo &#183; hai 4 min</div>
     </div>
     <div>
@@ -267,20 +266,35 @@ html.js .rv.in{opacity:1;transform:none}
   </div>
   <div class="lmap">
     <svg viewBox="0 0 250 300" preserveAspectRatio="none">
-      <rect width="250" height="300" fill="#ECE1CE"/>
-      <g stroke="#DECDB4" stroke-width="2" fill="none"><path d="M-10 80 H260 M-10 180 H260 M80 -10 V320 M170 -10 V320"/></g>
-      <path id="rtl" d="M40 270 C 70 210, 120 210, 150 160 S 205 80, 202 56" fill="none" stroke="#E8772E" stroke-width="6" stroke-linecap="round"/>
+      <rect width="250" height="300" fill="#EAE7E0"/>
+      <!-- Golfo di Napoli -->
+      <path d="M0 236 Q 70 218 140 240 Q 200 256 250 234 L250 300 L0 300 Z" fill="#A9D6F0"/>
+      <path d="M0 236 Q 70 218 140 240 Q 200 256 250 234" fill="none" stroke="#8FC7E8" stroke-width="2"/>
+      <!-- area verde -->
+      <rect x="16" y="16" width="46" height="40" rx="11" fill="#CBEAAF"/>
+      <!-- strade: casing grigio + bianco -->
+      <g stroke="#D9D5CD" stroke-width="9" fill="none" stroke-linecap="round">
+        <path d="M-10 70 H260"/><path d="M92 -10 V240"/><path d="M-10 150 Q 120 132 260 172"/><path d="M210 -10 V236"/>
+      </g>
+      <g stroke="#FFFFFF" stroke-width="6" fill="none" stroke-linecap="round">
+        <path d="M-10 70 H260"/><path d="M92 -10 V240"/><path d="M-10 150 Q 120 132 260 172"/><path d="M210 -10 V236"/>
+      </g>
+      <!-- arteria principale (gialla) -->
+      <path d="M-10 108 Q 130 94 260 120" stroke="#F6D46B" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <!-- etichette stile Maps -->
+      <text x="24" y="120" font-family="Inter,sans-serif" font-size="10" fill="#9AA0A6">Napoli</text>
+      <text x="150" y="258" font-family="Inter,sans-serif" font-size="8" fill="#5F97BA">Golfo di Napoli</text>
+      <!-- percorso su strada (spostato a destra, libero dall'overlay) -->
+      <path id="rtl" d="M138 216 C 158 178, 150 132, 178 108 S 196 80, 192 62" fill="none" stroke="#E8772E" stroke-width="6" stroke-linecap="round"/>
       <circle r="6" fill="#1B0E07"><animateMotion dur="5s" repeatCount="indefinite" rotate="auto"><mpath href="#rtl"/></animateMotion></circle>
     </svg>
     <div class="pin"><span class="cuplogo"></span></div>
-    <div class="dotav" style="background:#7A5230;left:36px;bottom:24px">M</div>
-    <div class="dotav" style="background:#C85F1C;left:120px;top:120px">S</div>
+    <div class="dotav" style="background:#7A5230;left:54%;top:70%">M</div>
+    <div class="dotav" style="background:#C85F1C;left:64%;top:45%">S</div>
     <div class="invited">
       <div class="inv-h">Invitati</div>
       <div class="inv-row"><span class="nm">Giulia</span><span class="st on">In arrivo</span></div>
       <div class="inv-row"><span class="nm">Marco</span><span class="st on">In arrivo</span></div>
-      <div class="inv-row"><span class="nm">Sara</span><span class="st mut">Ha rifiutato</span></div>
-      <div class="inv-wait">In attesa &#183; 1</div>
       <div class="inv-sum">Accettati 2/4</div>
     </div>
     <div class="recenter">&#9678;</div>
