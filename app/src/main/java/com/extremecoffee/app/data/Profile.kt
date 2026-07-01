@@ -134,6 +134,25 @@ object Profile {
             .edit().putString("regUsersCache", raw).apply()
     }
 
+    /** Cache locale della lista contatti (nome/telefono/raw): la schermata Invita amici
+     *  si apre subito con l'ultimo elenco noto, poi si aggiorna in background. */
+    fun cachedContacts(context: Context): List<Contact> {
+        val raw = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .getString("contactsCache", "") ?: ""
+        if (raw.isBlank()) return emptyList()
+        return raw.split("\n").mapNotNull { line ->
+            val p = line.split("\t")
+            if (p.size >= 3) Contact(p[0], p[1], p[2]) else null
+        }
+    }
+
+    fun setCachedContacts(context: Context, list: List<Contact>) {
+        fun clean(s: String) = s.replace('\t', ' ').replace('\n', ' ')
+        val raw = list.joinToString("\n") { c -> clean(c.name) + "\t" + clean(c.phone) + "\t" + clean(c.raw) }
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putString("contactsCache", raw).apply()
+    }
+
     /** Cancella tutti i dati locali (profilo, foto, flag). Usato per "Elimina account". */
     fun clearAll(context: Context) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().clear().apply()

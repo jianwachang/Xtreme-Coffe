@@ -45,7 +45,7 @@ fun InviteFriendsScreen(nav: NavController) {
     val context = LocalContext.current
     val perm = rememberPermissionState(android.Manifest.permission.READ_CONTACTS)
 
-    var contacts by remember { mutableStateOf<List<Contact>>(emptyList()) }
+    var contacts by remember { mutableStateOf(Profile.cachedContacts(context)) }
     var registered by remember { mutableStateOf(Profile.cachedRegisteredPhones(context)) }
     var invited by remember { mutableStateOf<Set<String>>(emptySet()) }
     var loading by remember { mutableStateOf(false) }
@@ -54,8 +54,10 @@ fun InviteFriendsScreen(nav: NavController) {
 
     LaunchedEffect(perm.status.isGranted) {
         if (perm.status.isGranted) {
-            loading = true
-            contacts = withContext(Dispatchers.IO) { readContacts(context) }
+            if (contacts.isEmpty()) loading = true   // spinner SOLO se non ho nulla in cache
+            val fresh = withContext(Dispatchers.IO) { readContacts(context) }
+            contacts = fresh
+            Profile.setCachedContacts(context, fresh)
             loading = false
         } else perm.launchPermissionRequest()
     }
@@ -176,7 +178,7 @@ fun InviteFriendsScreen(nav: NavController) {
                         Button(onClick = { perm.launchPermissionRequest() }) { Text(stringResource(R.string.ic_perm_btn)) }
                     }
                 }
-                loading -> Box(Modifier.fillMaxWidth().padding(24.dp), Alignment.Center) { CircularProgressIndicator() }
+                loading && contacts.isEmpty() -> Box(Modifier.fillMaxWidth().padding(24.dp), Alignment.Center) { CircularProgressIndicator() }
                 filtered.isEmpty() -> Box(Modifier.fillMaxWidth().weight(1f).padding(24.dp), Alignment.Center) {
                     Text(stringResource(R.string.if_empty_filter),
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
