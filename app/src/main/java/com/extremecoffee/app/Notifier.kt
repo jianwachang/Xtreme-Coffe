@@ -48,6 +48,12 @@ object Notifier {
             ?.cancel(eventId.hashCode())
     }
 
+    /** Rimuove la notifica di risposta (accetta/rifiuta) di uno specifico invitato. */
+    fun cancelResponse(context: Context, eventId: String) {
+        ContextCompat.getSystemService(context, NotificationManager::class.java)
+            ?.cancel(eventId.hashCode())
+    }
+
     /** Rimuove TUTTE le notifiche dell'app. Usato alla riapertura per non lasciare avvisi di caffè scaduti. */
     /** Notifica del promemoria ricorrente. Tap = apre l'app. */
     fun showReminder(context: Context, label: String, notifId: Int) {
@@ -167,9 +173,9 @@ object Notifier {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setTimeoutAfter(remaining)
-            .setContentIntent(contentPI(context, ("${response.eventId}_${response.fromId}").hashCode(), "launched/${response.eventId}"))
+            .setContentIntent(contentPI(context, response.eventId.hashCode(), "launched/${response.eventId}"))
             .build()
         ContextCompat.getSystemService(context, NotificationManager::class.java)
-            ?.notify(("${response.eventId}_${response.fromId}").hashCode(), notif)
+            ?.notify(response.eventId.hashCode(), notif)
     }
 }

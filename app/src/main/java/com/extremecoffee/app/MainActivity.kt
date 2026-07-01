@@ -142,24 +142,43 @@ fun ExtremeCoffeeApp(initialRoute: String?) {
         if (!ph.isNullOrBlank()) CoffeeRepository.registerMe(ph, myId, Profile.name(context))
     }
 
-    // Notifiche per CHI HA LANCIATO: risposte accetta/rifiuta degli invitati
+    // Notifiche per CHI HA LANCIATO: risposte accetta/rifiuta degli invitati.
+    // Ciclo di vita = durata dell'Extreme Coffee: si notifica SOLO per eventi ancora in corso,
+    // NON si ricreano mai notifiche vecchie alla riapertura (soglia persistente su updatedAt),
+    // e quelle di eventi finiti/annullati vengono rimosse subito.
     val responses by CoffeeRepository.responsesForMe(myId).collectAsState(initial = emptyList())
-    val notifiedResp = remember { mutableStateListOf<String>() }
-    var respSeeded by remember { mutableStateOf(false) }
     LaunchedEffect(responses) {
-        if (!respSeeded) {
-            responses.forEach { notifiedResp.add("${it.eventId}_${it.fromId}_${it.status}") }
-            respSeeded = true
-        } else {
-            responses.forEach { r ->
-                val k = "${r.eventId}_${r.fromId}_${r.status}"
-                if (notifiedResp.add(k)) {
-                    val ev = CoffeeRepository.eventById(r.eventId)
-                    val exp = ev?.let { it.createdAt + it.minutes * 60_000L }
-                    Notifier.showResponse(context, r, exp)
-                }
+        if (responses.isEmpty()) return@LaunchedEffect
+        val now = System.currentTimeMillis()
+
+        // 1) Rete di sicurezza: togli le notifiche di risposta di eventi non più attivi
+        //    (scaduti o annullati). Così una vecchia "rifiutato" non resta appesa alla riapertura.
+        responses.forEach { r ->
+            val ev = CoffeeRepository.eventById(r.eventId)
+            if (ev == null || ev.cancelled || ev.remainingMillis(now) <= 0L) {
+                Notifier.cancelResponse(context, r.eventId)
             }
         }
+
+        // 2) Soglia persistente: al primissimo avvio segno il timestamp massimo senza notificare
+        //    nulla di storico; nelle aperture successive niente di ciò che è già stato visto ricompare.
+        val lastSeen = Profile.lastRespSeen(context)
+        val maxTs = responses.maxOf { it.updatedAt }
+        if (lastSeen == 0L) {
+            Profile.setLastRespSeen(context, maxTs)
+            return@LaunchedEffect
+        }
+
+        // 3) Notifico SOLO le risposte davvero nuove e SOLO se il caffè è ancora in corso.
+        responses.filter { it.updatedAt > lastSeen }
+            .sortedBy { it.updatedAt }
+            .forEach { r ->
+                val ev = CoffeeRepository.eventById(r.eventId)
+                if (ev != null && !ev.cancelled && ev.remainingMillis(now) > 0L) {
+                    Notifier.showResponse(context, r, ev.createdAt + ev.minutes * 60_000L)
+                }
+            }
+        if (maxTs > lastSeen) Profile.setLastRespSeen(context, maxTs)
     }
 
     ExtremeCoffeeTheme {

@@ -94,6 +94,15 @@ object Profile {
             .edit().putInt("lastRecapWeek", week).apply()
     }
 
+    /** Timestamp (updatedAt) dell'ultima risposta già "vista": evita di ri-notificare le vecchie alla riapertura. */
+    fun lastRespSeen(context: Context): Long =
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getLong("lastRespSeen", 0L)
+
+    fun setLastRespSeen(context: Context, ts: Long) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putLong("lastRespSeen", ts).apply()
+    }
+
     /** Cancella tutti i dati locali (profilo, foto, flag). Usato per "Elimina account". */
     fun clearAll(context: Context) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().clear().apply()
