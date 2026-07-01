@@ -46,10 +46,9 @@ fun InviteFriendsScreen(nav: NavController) {
     val perm = rememberPermissionState(android.Manifest.permission.READ_CONTACTS)
 
     var contacts by remember { mutableStateOf<List<Contact>>(emptyList()) }
-    var registered by remember { mutableStateOf<Set<String>>(emptySet()) }
+    var registered by remember { mutableStateOf(Profile.cachedRegisteredPhones(context)) }
     var invited by remember { mutableStateOf<Set<String>>(emptySet()) }
     var loading by remember { mutableStateOf(false) }
-    var checking by remember { mutableStateOf(false) }
     var search by remember { mutableStateOf("") }
     val downloadUrl by CoffeeRepository.downloadUrl().collectAsState()
 
@@ -61,13 +60,14 @@ fun InviteFriendsScreen(nav: NavController) {
         } else perm.launchPermissionRequest()
     }
 
-    // Quali contatti hanno già l'app (registro "users")
+    // Aggiornamento silenzioso: la lista si vede SUBITO dalla cache; qui rinfreschiamo
+    // chi ha l'app e riscriviamo la cache, senza mostrare nessuno spinner.
     LaunchedEffect(contacts) {
         if (contacts.isNotEmpty()) {
-            checking = true
             val phones = contacts.mapNotNull { Phones.normalizeIt(it.phone) ?: Phones.normalizeIt(it.raw) }
-            registered = withContext(Dispatchers.IO) { CoffeeRepository.findRegisteredPhones(phones) }
-            checking = false
+            val fresh = withContext(Dispatchers.IO) { CoffeeRepository.findRegisteredPhones(phones) }
+            registered = fresh
+            Profile.setCachedRegisteredPhones(context, fresh)
         }
     }
 
@@ -124,14 +124,7 @@ fun InviteFriendsScreen(nav: NavController) {
             )
 
             if (perm.status.isGranted) {
-                if (checking) {
-                    Row(verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(bottom = 6.dp)) {
-                        CircularProgressIndicator(strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
-                        Spacer(Modifier.width(8.dp))
-                        Text(stringResource(R.string.if_checking), style = MaterialTheme.typography.labelMedium)
-                    }
-                } else if (contacts.isNotEmpty()) {
+                if (contacts.isNotEmpty()) {
                     Text(
                         stringResource(R.string.if_count, appCount),
                         style = MaterialTheme.typography.labelLarge,

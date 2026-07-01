@@ -1,6 +1,7 @@
 package com.extremecoffee.app.data
 
 import android.content.Context
+import com.extremecoffee.app.model.AppUser
 import java.util.UUID
 
 /** Identità locale del telefono: un id stabile + un nome modificabile dall'utente. */
@@ -101,6 +102,36 @@ object Profile {
     fun setLastRespSeen(context: Context, ts: Long) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             .edit().putLong("lastRespSeen", ts).apply()
+    }
+
+    /** Cache locale: numeri (normalizzati) dei contatti che HANNO l'app.
+     *  Serve per mostrare subito la schermata "Invita amici" senza ricalcolare via rete a ogni apertura. */
+    fun cachedRegisteredPhones(context: Context): Set<String> =
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .getStringSet("regPhonesCache", emptySet())?.toSet() ?: emptySet()
+
+    fun setCachedRegisteredPhones(context: Context, phones: Set<String>) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putStringSet("regPhonesCache", HashSet(phones)).apply()
+    }
+
+    /** Cache locale: mappa numero -> utente app (con id), per l'invito in-app della cerchia. */
+    fun cachedRegisteredUsers(context: Context): Map<String, AppUser> {
+        val raw = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .getString("regUsersCache", "") ?: ""
+        if (raw.isBlank()) return emptyMap()
+        return raw.split("\n").mapNotNull { line ->
+            val p = line.split("\t")
+            if (p.size >= 3 && p[0].isNotBlank()) p[0] to AppUser(p[1], p[2], p[0]) else null
+        }.toMap()
+    }
+
+    fun setCachedRegisteredUsers(context: Context, map: Map<String, AppUser>) {
+        val raw = map.entries.joinToString("\n") { (phone, u) ->
+            phone + "\t" + u.id + "\t" + u.name.replace('\t', ' ').replace('\n', ' ')
+        }
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putString("regUsersCache", raw).apply()
     }
 
     /** Cancella tutti i dati locali (profilo, foto, flag). Usato per "Elimina account". */
