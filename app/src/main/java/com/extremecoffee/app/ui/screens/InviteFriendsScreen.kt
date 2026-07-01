@@ -49,6 +49,7 @@ fun InviteFriendsScreen(nav: NavController) {
     var registered by remember { mutableStateOf(Profile.cachedRegisteredPhones(context)) }
     var invited by remember { mutableStateOf<Set<String>>(emptySet()) }
     var loading by remember { mutableStateOf(false) }
+    var checkingFirst by remember { mutableStateOf(false) }
     var search by remember { mutableStateOf("") }
     val downloadUrl by CoffeeRepository.downloadUrl().collectAsState()
 
@@ -62,14 +63,18 @@ fun InviteFriendsScreen(nav: NavController) {
         } else perm.launchPermissionRequest()
     }
 
-    // Aggiornamento silenzioso: la lista si vede SUBITO dalla cache; qui rinfreschiamo
-    // chi ha l'app e riscriviamo la cache, senza mostrare nessuno spinner.
+    // Aggiornamento di "chi ha l'app": la PRIMA volta (nessuna cache) lo segnaliamo all'utente;
+    // dalla seconda in poi la lista è già pronta dalla cache e l'aggiornamento è silenzioso.
     LaunchedEffect(contacts) {
         if (contacts.isNotEmpty()) {
+            val firstTime = !Profile.regChecked(context, "phones")
+            if (firstTime) checkingFirst = true
             val phones = contacts.mapNotNull { Phones.normalizeIt(it.phone) ?: Phones.normalizeIt(it.raw) }
             val fresh = withContext(Dispatchers.IO) { CoffeeRepository.findRegisteredPhones(phones) }
             registered = fresh
             Profile.setCachedRegisteredPhones(context, fresh)
+            Profile.setRegChecked(context, "phones")
+            checkingFirst = false
         }
     }
 
@@ -127,6 +132,16 @@ fun InviteFriendsScreen(nav: NavController) {
 
             if (perm.status.isGranted) {
                 if (contacts.isNotEmpty()) {
+                    if (checkingFirst) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(vertical = 6.dp)
+                        ) {
+                            CircularProgressIndicator(strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
+                            Spacer(Modifier.width(8.dp))
+                            Text(stringResource(R.string.if_checking), style = MaterialTheme.typography.labelMedium)
+                        }
+                    } else {
                     Text(
                         stringResource(R.string.if_count, appCount),
                         style = MaterialTheme.typography.labelLarge,
@@ -158,6 +173,7 @@ fun InviteFriendsScreen(nav: NavController) {
                             onClick = { filter = "invite" },
                             label = { Text(stringResource(R.string.if_filter_invite, inviteCount)) }
                         )
+                    }
                     }
                 }
                 OutlinedTextField(

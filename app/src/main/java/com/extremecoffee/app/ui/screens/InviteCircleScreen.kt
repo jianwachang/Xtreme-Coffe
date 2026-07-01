@@ -53,6 +53,7 @@ fun InviteCircleScreen(nav: NavController, eventId: String) {
     var registered by remember { mutableStateOf(Profile.cachedRegisteredUsers(context)) }
     var invited by remember { mutableStateOf<Set<String>>(emptySet()) }
     var loading by remember { mutableStateOf(false) }
+    var checkingFirst by remember { mutableStateOf(false) }
     var search by remember { mutableStateOf("") }
     val downloadUrl by CoffeeRepository.downloadUrl().collectAsState()
 
@@ -66,14 +67,17 @@ fun InviteCircleScreen(nav: NavController, eventId: String) {
         } else perm.launchPermissionRequest()
     }
 
-    // Aggiornamento silenzioso: la lista appare SUBITO dalla cache; qui rinfreschiamo
-    // chi ha l'app (con id, per l'invito in-app) e riscriviamo la cache, senza spinner.
+    // Prima volta (nessuna cache): segnaliamo il controllo; poi è istantaneo e silenzioso.
     LaunchedEffect(contacts) {
         if (contacts.isNotEmpty()) {
+            val firstTime = !Profile.regChecked(context, "users")
+            if (firstTime) checkingFirst = true
             val phones = contacts.mapNotNull { Phones.normalizeIt(it.phone) ?: Phones.normalizeIt(it.raw) }
             val fresh = withContext(Dispatchers.IO) { CoffeeRepository.findRegistered(phones) }
             registered = fresh
             Profile.setCachedRegisteredUsers(context, fresh)
+            Profile.setRegChecked(context, "users")
+            checkingFirst = false
         }
     }
 
@@ -139,6 +143,16 @@ fun InviteCircleScreen(nav: NavController, eventId: String) {
 
             if (perm.status.isGranted) {
                 if (contacts.isNotEmpty()) {
+                    if (checkingFirst) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(vertical = 6.dp)
+                        ) {
+                            CircularProgressIndicator(strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
+                            Spacer(Modifier.width(8.dp))
+                            Text(stringResource(R.string.ic_checking), style = MaterialTheme.typography.labelMedium)
+                        }
+                    } else {
                     Text(
                         stringResource(R.string.ic_count, appCount),
                         style = MaterialTheme.typography.labelLarge,
@@ -170,6 +184,7 @@ fun InviteCircleScreen(nav: NavController, eventId: String) {
                             onClick = { filter = "invite" },
                             label = { Text(stringResource(R.string.if_filter_invite, inviteCount)) }
                         )
+                    }
                     }
                 }
                 OutlinedTextField(

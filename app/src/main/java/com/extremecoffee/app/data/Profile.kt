@@ -153,6 +153,16 @@ object Profile {
             .edit().putString("contactsCache", raw).apply()
     }
 
+    /** Flag: la ricerca "chi ha l'app" è già stata fatta almeno una volta (per la data cache).
+     *  Serve a mostrare l'indicatore di caricamento SOLO la primissima volta. */
+    fun regChecked(context: Context, key: String): Boolean =
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean("chk_$key", false)
+
+    fun setRegChecked(context: Context, key: String) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putBoolean("chk_$key", true).apply()
+    }
+
     /** Cancella tutti i dati locali (profilo, foto, flag). Usato per "Elimina account". */
     fun clearAll(context: Context) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().clear().apply()
