@@ -342,4 +342,12 @@
     <string name="if_filter_app">Hanno l\'app · %1$d</string>
     <string name="if_filter_invite">Da invitare · %1$d</string>
     <string name="if_empty_filter">Nessun contatto in questa categoria</string>
+    <!-- Elenco invitati/accettati nella schermata di stato del lancio -->
+    <string name="ls_participants">Invitati</string>
+    <string name="ls_p_accepted">Accettato</string>
+    <string name="ls_p_incoming">In arrivo</string>
+    <string name="ls_p_arrived">Arrivato</string>
+    <string name="ls_p_declined">Ha rifiutato</string>
+    <string name="ls_p_waiting">In attesa · %1$d</string>
+    <string name="ls_p_summary">Accettati %1$d/%2$d</string>
 </resources>

@@ -340,4 +340,12 @@
     <string name="if_filter_app">Have the app · %1$d</string>
     <string name="if_filter_invite">To invite · %1$d</string>
     <string name="if_empty_filter">No contacts in this category</string>
+    <!-- Invited/accepted list on the launcher status screen -->
+    <string name="ls_participants">Invited</string>
+    <string name="ls_p_accepted">Accepted</string>
+    <string name="ls_p_incoming">On the way</string>
+    <string name="ls_p_arrived">Arrived</string>
+    <string name="ls_p_declined">Declined</string>
+    <string name="ls_p_waiting">Waiting · %1$d</string>
+    <string name="ls_p_summary">Accepted %1$d/%2$d</string>
 </resources>
