@@ -7,8 +7,11 @@ import androidx.compose.ui.res.stringResource
 import com.extremecoffee.app.R
 import android.net.Uri
 import android.widget.Toast
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
@@ -93,18 +96,32 @@ fun InviteCircleScreen(nav: NavController, eventId: String) {
         }
     }
 
-    val filtered = remember(contacts, search) {
-        if (search.isBlank()) contacts
-        else {
-            val digits = search.filter { it.isDigit() }
-            contacts.filter {
-                it.name.contains(search, ignoreCase = true) ||
-                    (digits.isNotEmpty() && it.phone.contains(digits))
+    fun hasAppOf(c: Contact): Boolean = normOf(c)?.let { it in registered } == true
+
+    var filter by remember { mutableStateOf("all") } // "all" | "app" | "invite"
+
+    val appCount = remember(contacts, registered) { contacts.count { hasAppOf(it) } }
+    val inviteCount = remember(contacts, registered) { contacts.size - appCount }
+
+    val filtered = remember(contacts, registered, search, filter) {
+        val digits = search.filter { it.isDigit() }
+        contacts
+            .filter { c ->
+                search.isBlank() ||
+                    c.name.contains(search, ignoreCase = true) ||
+                    (digits.isNotEmpty() && c.phone.contains(digits))
             }
-        }
-    }
-    val appCount = remember(contacts, registered) {
-        contacts.count { normOf(it)?.let { n -> registered.containsKey(n) } == true }
+            .filter { c ->
+                when (filter) {
+                    "app" -> hasAppOf(c)
+                    "invite" -> !hasAppOf(c)
+                    else -> true
+                }
+            }
+            // chi ha già l'app va in cima; poi ordine alfabetico
+            .sortedWith(
+                compareByDescending<Contact> { hasAppOf(it) }.thenBy { it.name.lowercase() }
+            )
     }
 
     CoffeeScaffold(stringResource(R.string.ic_title), nav, "inviteCircle/$eventId") { mod ->
@@ -132,8 +149,33 @@ fun InviteCircleScreen(nav: NavController, eventId: String) {
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 6.dp)
+                        modifier = Modifier
+                            .clickable { filter = "app" }
+                            .padding(bottom = 6.dp)
                     )
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState())
+                            .padding(bottom = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        FilterChip(
+                            selected = filter == "all",
+                            onClick = { filter = "all" },
+                            label = { Text(stringResource(R.string.if_filter_all)) }
+                        )
+                        FilterChip(
+                            selected = filter == "app",
+                            onClick = { filter = "app" },
+                            label = { Text(stringResource(R.string.if_filter_app, appCount)) }
+                        )
+                        FilterChip(
+                            selected = filter == "invite",
+                            onClick = { filter = "invite" },
+                            label = { Text(stringResource(R.string.if_filter_invite, inviteCount)) }
+                        )
+                    }
                 }
                 OutlinedTextField(
                     value = search, onValueChange = { search = it },
@@ -154,6 +196,10 @@ fun InviteCircleScreen(nav: NavController, eventId: String) {
                     }
                 }
                 loading -> Box(Modifier.fillMaxWidth().padding(24.dp), Alignment.Center) { CircularProgressIndicator() }
+                filtered.isEmpty() -> Box(Modifier.fillMaxWidth().weight(1f).padding(24.dp), Alignment.Center) {
+                    Text(stringResource(R.string.if_empty_filter),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
                 else -> LazyColumn(Modifier.weight(1f)) {
                     items(filtered) { c ->
                         val user = normOf(c)?.let { registered[it] }
