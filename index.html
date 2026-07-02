@@ -176,6 +176,24 @@ h1,h2,h3{font-family:var(--fd);margin:0;line-height:1.04;letter-spacing:-.02em}
 .scrow .scbtn.o{flex:1;background:transparent;border:1.5px solid var(--line);color:var(--orange-d)}
 .scbtn.t{background:transparent;color:var(--muted);font-weight:700;font-size:.72rem;padding:4px;margin-top:5px}
 
+/* Invita la cerchia (schermata contatti, dati fittizi) */
+.ci-sub{padding:2px 14px 0;color:var(--muted);font-size:.6rem;line-height:1.32}
+.ci-count{padding:8px 14px 0;color:var(--orange-d);font-weight:800;font-size:.72rem;font-family:var(--fd)}
+.ci-chips{display:flex;gap:6px;padding:8px 14px 0;overflow:hidden}
+.ci-chip{white-space:nowrap;font-size:.6rem;font-weight:700;padding:6px 11px;border-radius:20px;border:1.5px solid var(--line);color:var(--espresso)}
+.ci-chip.on{background:#EBDDC8;border-color:#EBDDC8}
+.ci-search{margin:9px 14px 0;display:flex;align-items:center;gap:8px;background:var(--cream);border:1.5px solid var(--line);border-radius:16px;padding:9px 12px;color:var(--muted);font-size:.72rem}
+.ci-list{flex:1;overflow:hidden;padding:2px 14px 0;display:flex;flex-direction:column}
+.ci-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid var(--line)}
+.ci-info{min-width:0}
+.ci-nm{font-weight:800;font-size:.76rem;color:var(--espresso);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci-ph{color:var(--muted);font-size:.64rem;margin-top:1px}
+.ci-has{color:var(--orange-d);font-weight:800;font-size:.6rem;margin-top:2px}
+.ci-invita{flex:0 0 auto;background:#EBDDC8;color:#4A3524;font-weight:800;font-size:.72rem;padding:8px 16px;border-radius:16px}
+.ci-wa{flex:0 0 auto;display:flex;align-items:center;gap:6px;background:var(--cream);border:1.5px solid #F3D9BD;color:var(--orange-d);font-weight:800;font-size:.66rem;padding:7px 11px;border-radius:16px}
+.wa-ic{width:15px;height:13px;background:#25D366;border-radius:4px 4px 1px 4px;display:inline-block}
+.ci-cta{margin:8px 14px 12px;background:#E8772E;color:#fff;font-weight:800;text-align:center;padding:12px;border-radius:22px;font-size:.8rem}
+
 /* SECTIONS (chiare) */
 section{padding:92px 0}
 .s-cream{background:var(--cream)}
@@ -377,16 +395,18 @@ html.js .rv.in{opacity:1;transform:none}
 <section class="s-cream2" id="contatti"><div class="wrap band">
   <div class="bphone rv"><div class="phone sm"><div class="notch"></div><div class="screen">
 <div class="app">
-  <div class="abar"><span><span class="bk">‹</span> Invita amici</span><span></span></div>
-  <div class="search">🔍  Cerca un contatto…</div>
-  <div class="count">6 tuoi contatti hanno già Extreme Coffee</div>
-  <div class="chips"><span class="chip on">Tutti</span><span class="chip">Hanno l'app · 6</span><span class="chip">Da invitare · 120</span></div>
-  <div class="list" style="margin-top:10px">
-    <div class="row"><div class="ava" style="background:#E8772E">M</div><div class="rn">Marco Bianchi<br><i class="has">☕ Ha già l'app</i></div><span class="dot">›</span></div>
-    <div class="row"><div class="ava" style="background:#7A5230">L</div><div class="rn">Luca Verdi<br><i class="has">☕ Ha già l'app</i></div><span class="dot">›</span></div>
-    <div class="row"><div class="ava" style="background:#C85F1C">S</div><div class="rn">Sara Neri<br><i class="no">non ancora</i></div><span class="invbtn">Invita</span></div>
-    <div class="row"><div class="ava" style="background:#3A2417">A</div><div class="rn">Anna Russo<br><i class="no">non ancora</i></div><span class="invbtn">Invita</span></div>
+  <div class="labar"><span class="bk">&#8249;</span><div class="ltitle">Invita la cerchia</div><span class="fwd">&#8250;</span><span class="hm">&#8962;</span></div>
+  <div class="ci-sub">Chi ha gi&#224; l'app riceve l'invito direttamente con una notifica. A chi non ce l'ha mandi il link per scaricarla su WhatsApp.</div>
+  <div class="ci-count">8 tuoi contatti hanno Extreme Coffee</div>
+  <div class="ci-chips"><span class="ci-chip on">Tutti</span><span class="ci-chip">Hanno l'app &#183; 8</span><span class="ci-chip">Da invitare &#183; 4</span></div>
+  <div class="ci-search">&#128269; <span>Cerca un contatto</span></div>
+  <div class="ci-list">
+    <div class="ci-row"><div class="ci-info"><div class="ci-nm">Giulia Romano</div><div class="ci-ph">+39 333 12 45 678</div><div class="ci-has">&#9749; Ha l'app</div></div><span class="ci-invita">Invita</span></div>
+    <div class="ci-row"><div class="ci-info"><div class="ci-nm">Marco Bianchi</div><div class="ci-ph">+39 347 55 61 090</div><div class="ci-has">&#9749; Ha l'app</div></div><span class="ci-invita">Invita</span></div>
+    <div class="ci-row"><div class="ci-info"><div class="ci-nm">+39 340 71 22 015</div><div class="ci-ph">+39 340 71 22 015</div></div><span class="ci-wa"><span class="wa-ic"></span> WhatsApp</span></div>
+    <div class="ci-row"><div class="ci-info"><div class="ci-nm">Bar Centrale</div><div class="ci-ph">+39 06 555 12 34</div></div><span class="ci-wa"><span class="wa-ic"></span> WhatsApp</span></div>
   </div>
+  <div class="ci-cta">Vai allo stato del caff&#232; &#8594;</div>
 </div></div></div></div>
   <div class="rv">
     <div class="eyebrow">Trova gli amici</div>
