@@ -7,7 +7,7 @@ const fs = require("fs");
 admin.initializeApp({ credential: admin.credential.applicationDefault() });
 const db = admin.firestore();
 
-const ADDRESS = process.env.SEED_ADDRESS || "Bar Magenta, Via Carducci, Milano";
+const ADDRESS = process.env.SEED_ADDRESS || "Bar Luce, Fondazione Prada, Largo Isarco 2, Milano";
 const FALLBACK = { lat: 45.4659, lng: 9.1755 }; // Milano centro (Bar Magenta)
 
 async function geocode(addr) {
@@ -61,8 +61,8 @@ async function geocode(addr) {
       const minutes = 15;
       await ref.set({
         id: ref.id,
-        launcherId: "gabriele-tester",
-        launcherName: "Gabriele",
+        launcherId: "marco-tester",
+        launcherName: "Marco",
         barName: ADDRESS,
         barLat: lat, barLng: lng,
         minutes: minutes, createdAt: now,
