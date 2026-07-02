@@ -18,21 +18,26 @@ jobs:
         run: brew install xcodegen
 
       - name: Genera il progetto Xcode
-        run: xcodegen generate
+        run: |
+          xcodegen generate
+          echo "=== schemi disponibili ===" | tee build.log
+          xcodebuild -project ExtremeCoffee.xcodeproj -list 2>&1 | tee -a build.log
 
       - name: Build Simulatore (verifica)
         run: |
+          set -o pipefail
           xcodebuild \
             -project ExtremeCoffee.xcodeproj \
             -scheme ExtremeCoffee \
             -sdk iphonesimulator \
             -configuration Debug \
-            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -destination 'generic/platform=iOS Simulator' \
             CODE_SIGNING_ALLOWED=NO \
-            build
+            build 2>&1 | tee -a build.log
 
       - name: Build dispositivo (IPA non firmata)
         run: |
+          set -o pipefail
           xcodebuild \
             -project ExtremeCoffee.xcodeproj \
             -scheme ExtremeCoffee \
@@ -43,7 +48,7 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            build
+            build 2>&1 | tee -a build.log
           APP=$(find build/Build/Products/Release-iphoneos -maxdepth 1 -name '*.app' | head -1)
           echo "App: $APP"
           mkdir -p Payload
@@ -55,10 +60,20 @@ jobs:
         run: |
           mkdir -p /tmp/out && cp ExtremeCoffee-unsigned.ipa /tmp/out/
           cd /tmp/out
-          git init -q
-          git checkout -b ipa-ios
-          git config user.email "bot@extremecoffee.app"
-          git config user.name "ios-bot"
-          git add -A
-          git commit -q -m "IPA non firmata build ${{ github.run_number }}"
+          git init -q && git checkout -b ipa-ios
+          git config user.email "bot@extremecoffee.app"; git config user.name "ios-bot"
+          git add -A && git commit -q -m "IPA non firmata build ${{ github.run_number }}"
           git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ipa-ios
+
+      - name: Pubblica log su branch ioslog
+        if: always()
+        run: |
+          mkdir -p /tmp/l
+          cp build.log /tmp/l/ 2>/dev/null || echo "nessun build.log" > /tmp/l/build.log
+          grep -n "error:" /tmp/l/build.log > /tmp/l/errors.txt || echo "nessun errore trovato" > /tmp/l/errors.txt
+          tail -n 200 /tmp/l/build.log > /tmp/l/tail.txt
+          cd /tmp/l
+          git init -q && git checkout -b ioslog
+          git config user.email "bot@extremecoffee.app"; git config user.name "ios-bot"
+          git add -A && git commit -q -m "log build ${{ github.run_number }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ioslog

@@ -36,6 +36,9 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.extremecoffee.myapp
         GENERATE_INFOPLIST_FILE: NO
+    scheme:
+      testTargets: []
+      gatherCoverageData: false
     # Quando colleghi Firebase, aggiungi qui i package (vedi README_iOS.md):
     # dependencies:
     #   - package: Firebase
