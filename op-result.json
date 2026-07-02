@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "address": "Bar Luce, Fondazione Prada, Largo Isarco 2, Milano",
+  "usersScanned": 9,
+  "darioId": "1e30d398-aabf-4b22-aac7-f3b3e802216c",
+  "darioName": "Dario",
+  "darioPhone": "+393935672548",
+  "hasToken": true,
+  "formatted": "L.go Isarco, 2, 20139 Milano MI, Italy",
+  "geocoded": true,
+  "lat": 45.4440406,
+  "lng": 9.2052921,
+  "eventId": "ZjNpgcVM8N7iilSbcKM4",
+  "expiresAt": 1783021201925
+}
