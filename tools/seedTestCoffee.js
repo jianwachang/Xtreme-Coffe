@@ -31,19 +31,30 @@ async function geocode(addr) {
 (async () => {
   const out = { ok: false, address: ADDRESS };
   try {
+    const TARGET_ID = (process.env.SEED_TARGET_ID || "").trim();
     const TARGET_DIGITS = "3935672548";
-    const snap = await db.collection("users").get();
     let dario = null;
-    snap.forEach((d) => {
-      if (dario) return;
-      const x = d.data() || {};
-      const digits = String(x.phone || "").replace(/\D/g, "");
-      const nm = String(x.name || x.nickname || "").trim().toLowerCase();
-      if (digits.endsWith(TARGET_DIGITS) || nm === "dario") {
-        dario = { id: x.id || d.id, name: x.name || x.nickname || "", phone: x.phone || "" };
-      }
-    });
-    out.usersScanned = snap.size;
+
+    if (TARGET_ID) {
+      // Modalità puntata: invita direttamente questo id (es. l'utente iOS letto in Account → Debug).
+      out.targetIdOverride = TARGET_ID;
+      const u = await db.collection("users").doc(TARGET_ID).get();
+      const ux = u.exists ? (u.data() || {}) : {};
+      dario = { id: TARGET_ID, name: ux.name || ux.nickname || "iOS Tester", phone: ux.phone || "" };
+      out.usersScanned = 1;
+    } else {
+      const snap = await db.collection("users").get();
+      snap.forEach((d) => {
+        if (dario) return;
+        const x = d.data() || {};
+        const digits = String(x.phone || "").replace(/\D/g, "");
+        const nm = String(x.name || x.nickname || "").trim().toLowerCase();
+        if (digits.endsWith(TARGET_DIGITS) || nm === "dario") {
+          dario = { id: x.id || d.id, name: x.name || x.nickname || "", phone: x.phone || "" };
+        }
+      });
+      out.usersScanned = snap.size;
+    }
     if (!dario) { out.error = "Utente Dario non trovato."; }
     else {
       out.darioId = dario.id; out.darioName = dario.name; out.darioPhone = dario.phone;

@@ -11,7 +11,16 @@ on:
       - "tools/seed_test_coffee.txt"
       - "tools/seedTestCoffee.js"
       - ".github/workflows/seed-test-coffee.yml"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      target_id:
+        description: "ID utente da invitare (es. utente iOS da Account → Debug). Vuoto = Dario per numero."
+        required: false
+        default: ""
+      address:
+        description: "Indirizzo del bar (vuoto = default)"
+        required: false
+        default: ""
 
 jobs:
   seed:
@@ -38,6 +47,8 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/sa.json
           GEOCODE_KEY: "AIzaSyBu9KWGYiMlY4i_3U_SrkhEKYP5cS-zQKk"
+          SEED_TARGET_ID: ${{ github.event.inputs.target_id }}
+          SEED_ADDRESS: ${{ github.event.inputs.address }}
         run: node tools/seedTestCoffee.js 2>&1 | tee seed.log
 
       - name: Pubblica il risultato su branch seedlog
