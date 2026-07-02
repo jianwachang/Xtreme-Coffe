@@ -1,0 +1,64 @@
+name: iOS Build
+
+on:
+  push:
+    branches: [ ios ]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installa XcodeGen
+        run: brew install xcodegen
+
+      - name: Genera il progetto Xcode
+        run: xcodegen generate
+
+      - name: Build Simulatore (verifica)
+        run: |
+          xcodebuild \
+            -project ExtremeCoffee.xcodeproj \
+            -scheme ExtremeCoffee \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Build dispositivo (IPA non firmata)
+        run: |
+          xcodebuild \
+            -project ExtremeCoffee.xcodeproj \
+            -scheme ExtremeCoffee \
+            -sdk iphoneos \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build
+          APP=$(find build/Build/Products/Release-iphoneos -maxdepth 1 -name '*.app' | head -1)
+          echo "App: $APP"
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          zip -qry ExtremeCoffee-unsigned.ipa Payload
+          ls -lh ExtremeCoffee-unsigned.ipa
+
+      - name: Pubblica IPA su branch ipa-ios
+        run: |
+          mkdir -p /tmp/out && cp ExtremeCoffee-unsigned.ipa /tmp/out/
+          cd /tmp/out
+          git init -q
+          git checkout -b ipa-ios
+          git config user.email "bot@extremecoffee.app"
+          git config user.name "ios-bot"
+          git add -A
+          git commit -q -m "IPA non firmata build ${{ github.run_number }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ipa-ios

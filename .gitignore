@@ -1,0 +1,10 @@
+# Xcode / build
+*.xcodeproj/
+DerivedData/
+build/
+*.xcuserstate
+xcuserdata/
+# XcodeGen genera l'xcodeproj: non versionarlo
+# Firebase
+GoogleService-Info.plist
+.DS_Store

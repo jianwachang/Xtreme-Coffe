@@ -1,0 +1,50 @@
+name: ExtremeCoffee
+options:
+  bundleIdPrefix: com.extremecoffee
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.9"
+    DEVELOPMENT_TEAM: ""          # <-- inserisci il tuo Team ID Apple Developer
+    CODE_SIGN_STYLE: Automatic
+
+targets:
+  ExtremeCoffee:
+    type: application
+    platform: iOS
+    sources:
+      - path: ExtremeCoffee
+    info:
+      path: ExtremeCoffee/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: Extreme Coffee
+        CFBundleShortVersionString: "1.0.0"
+        UILaunchScreen: {}
+        # Permessi (mirror dell'AndroidManifest): fotocamera, posizione, contatti, notifiche
+        NSCameraUsageDescription: "Serve la fotocamera per scattare la tua Selfie Coffee."
+        NSLocationWhenInUseUsageDescription: "Usiamo la posizione per mostrare il bar e il percorso verso gli amici."
+        NSContactsUsageDescription: "Accediamo ai contatti solo per farti invitare gli amici a un caffè."
+        NSPhotoLibraryAddUsageDescription: "Per salvare la tua Selfie Coffee nella galleria."
+        UIBackgroundModes:
+          - remote-notification
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.extremecoffee.myapp
+        GENERATE_INFOPLIST_FILE: NO
+    # Quando colleghi Firebase, aggiungi qui i package (vedi README_iOS.md):
+    # dependencies:
+    #   - package: Firebase
+    #     product: FirebaseAuth
+    #   - package: Firebase
+    #     product: FirebaseFirestore
+    #   - package: Firebase
+    #     product: FirebaseMessaging
+# packages:
+#   Firebase:
+#     url: https://github.com/firebase/firebase-ios-sdk
+#     from: "11.0.0"
