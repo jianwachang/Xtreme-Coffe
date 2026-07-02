@@ -7,8 +7,8 @@ const fs = require("fs");
 admin.initializeApp({ credential: admin.credential.applicationDefault() });
 const db = admin.firestore();
 
-const ADDRESS = process.env.SEED_ADDRESS || "Piazza del Popolo, Montecatini Terme";
-const FALLBACK = { lat: 43.8821, lng: 10.7716 }; // centro Montecatini Terme
+const ADDRESS = process.env.SEED_ADDRESS || "Bar Magenta, Via Carducci, Milano";
+const FALLBACK = { lat: 45.4659, lng: 9.1755 }; // Milano centro (Bar Magenta)
 
 async function geocode(addr) {
   const key = process.env.GEOCODE_KEY || "";
@@ -58,11 +58,11 @@ async function geocode(addr) {
 
       const ref = db.collection("events").doc();
       const now = Date.now();
-      const minutes = 20;
+      const minutes = 15;
       await ref.set({
         id: ref.id,
-        launcherId: "claude-tester",
-        launcherName: "Claude \u2615",
+        launcherId: "gabriele-tester",
+        launcherName: "Gabriele",
         barName: ADDRESS,
         barLat: lat, barLng: lng,
         minutes: minutes, createdAt: now,
