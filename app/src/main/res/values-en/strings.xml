@@ -185,9 +185,9 @@
     <string name="ip_cancelled">This Extreme Coffee has been cancelled</string>
     <string name="ip_back_home">Back to home</string>
     <string name="ip_launched">%1$s started an\nEXTREME COFFEE!!</string>
-    <string name="ip_free">You still have %1$d minutes to get a FREE coffee at %2$s!</string>
+    <string name="ip_free">You still have %1$d minutes to join your friends at %2$s: the coffee is just an excuse, being together is what counts!</string>
     <string name="ip_pass">I\'ll pass this time 😴</string>
-    <string name="ip_timeout">⏰ Time\'s up... the free coffee flew away!</string>
+    <string name="ip_timeout">⏰ Time is up... catch the next coffee together!</string>
     <string name="ls_title">Extreme Coffee launched</string>
     <string name="ls_launched">☕🔥 You launched!</string>
     <string name="ls_timeout">Time\'s up</string>

@@ -19,7 +19,7 @@ data class CoffeeEvent(
     val launcherPhoto: String = "",   // avatar piccolo (base64) di chi ha lanciato
     val cancelled: Boolean = false    // true se il lanciatore ha annullato l'Extreme Coffee
 ) {
-    /** Millisecondi rimanenti prima della scadenza del caffè gratis */
+    /** Millisecondi rimanenti prima della scadenza dell'Extreme Coffee */
     fun remainingMillis(now: Long = System.currentTimeMillis()): Long =
         (createdAt + minutes * 60_000L) - now
 }
