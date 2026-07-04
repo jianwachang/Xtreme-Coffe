@@ -9,6 +9,14 @@ const { setGlobalOptions } = require("firebase-functions/v2");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
 const { getMessaging } = require("firebase-admin/messaging");
+const { defineSecret } = require("firebase-functions/params");
+const { google } = require("googleapis");
+
+// Config automazione tester (Cloud Identity Free + Admin SDK Directory).
+// Se non impostati, la funzione ricade sulla sola notifica push (nessun errore).
+const GWS_SA_KEY = defineSecret("GWS_SA_KEY");   // JSON del service account con delega
+const GWS_ADMIN_EMAIL = process.env.GWS_ADMIN_EMAIL || "";   // es. admin@extremecoffee.it
+const GWS_TESTERS_GROUP = process.env.GWS_TESTERS_GROUP || ""; // es. testers@extremecoffee.it
 
 initializeApp();
 const db = getFirestore();
@@ -315,25 +323,68 @@ async function findAdminTokens() {
   return tokens;
 }
 
-// Alla nuova richiesta -> notifica push a Dario con l'email da aggiungere.
-exports.onTesterRequest = onDocumentCreated("testerRequests/{id}", async (event) => {
-  const snap = event.data;
-  if (!snap) return;
-  const data = snap.data() || {};
-  const email = data.email || "";
-  const tokens = await findAdminTokens();
-  if (tokens.length === 0) {
-    console.log("Nuovo tester (nessun token admin per la push):", email);
-    return;
-  }
-  const res = await getMessaging().sendEachForMulticast({
-    tokens,
-    notification: {
-      title: "\uD83D\uDCE5 Nuovo tester Extreme Coffee",
-      body: email + " \u2014 aggiungilo ai tester interni nella Play Console"
-    },
-    data: { type: "tester_request", email: String(email) },
-    android: androidConfig()
+// Aggiunge un'email come MEMBRO del Google Gruppo dei tester, via Admin SDK
+// Directory API (delega a livello di dominio su Cloud Identity Free).
+// Ritorna: {added} | {already} | {skipped} | {error}
+async function addToTestersGroup(email) {
+  if (!GWS_TESTERS_GROUP || !GWS_ADMIN_EMAIL) return { skipped: "config_mancante" };
+  let key;
+  try { key = JSON.parse(GWS_SA_KEY.value() || "{}"); }
+  catch (e) { return { skipped: "chiave_assente" }; }
+  if (!key.client_email || !key.private_key) return { skipped: "chiave_invalida" };
+
+  const auth = new google.auth.JWT({
+    email: key.client_email,
+    key: key.private_key,
+    scopes: ["https://www.googleapis.com/auth/admin.directory.group.member"],
+    subject: GWS_ADMIN_EMAIL   // impersona un super-admin del dominio
   });
-  await pruneInvalid(res, tokens, await db.collection("tokens").get());
-});
+  const directory = google.admin({ version: "directory_v1", auth });
+  try {
+    await directory.members.insert({
+      groupKey: GWS_TESTERS_GROUP,
+      requestBody: { email, role: "MEMBER" }
+    });
+    return { added: true };
+  } catch (e) {
+    if (e && e.code === 409) return { already: true }; // gia' membro
+    console.error("addToTestersGroup error", e && e.errors ? e.errors : e);
+    return { error: (e && e.message) || "unknown" };
+  }
+}
+
+// Alla nuova richiesta -> prova ad aggiungere al gruppo tester, poi notifica push a Dario.
+exports.onTesterRequest = onDocumentCreated(
+  { document: "testerRequests/{id}", secrets: [GWS_SA_KEY] },
+  async (event) => {
+    const snap = event.data;
+    if (!snap) return;
+    const data = snap.data() || {};
+    const email = data.email || "";
+
+    // 1) Automazione: aggiunta al Google Gruppo (se configurata)
+    const result = await addToTestersGroup(email);
+    const auto = result.added || result.already;
+    await snap.ref.set({
+      status: auto ? "added" : (result.error ? "error" : "pending"),
+      autoResult: result
+    }, { merge: true });
+
+    // 2) Notifica push a Dario (conferma automatica o richiesta manuale)
+    const tokens = await findAdminTokens();
+    if (tokens.length === 0) {
+      console.log("Tester", email, "->", JSON.stringify(result));
+      return;
+    }
+    const body = auto
+      ? email + " \u2014 aggiunto automaticamente ai tester \u2705"
+      : email + " \u2014 aggiungilo ai tester interni nella Play Console";
+    const res = await getMessaging().sendEachForMulticast({
+      tokens,
+      notification: { title: "\uD83D\uDCE5 Nuovo tester Extreme Coffee", body },
+      data: { type: "tester_request", email: String(email), auto: String(!!auto) },
+      android: androidConfig()
+    });
+    await pruneInvalid(res, tokens, await db.collection("tokens").get());
+  }
+);
