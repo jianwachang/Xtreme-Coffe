@@ -4,6 +4,7 @@
  * I token vengono raggruppati per lingua e ogni gruppo riceve il testo tradotto.
  */
 const { onDocumentCreated, onDocumentUpdated } = require("firebase-functions/v2/firestore");
+const { onRequest } = require("firebase-functions/v2/https");
 const { setGlobalOptions } = require("firebase-functions/v2");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
@@ -255,3 +256,84 @@ async function pruneInvalid(res, tokens, tokensSnap) {
   });
   await batch.commit().catch(() => {});
 }
+
+// =====================================================================
+//  Richiesta accesso ai test interni dal sito web
+//  Il sito invia l'email del tester -> la salviamo in "testerRequests"
+//  e mandiamo una push a Dario con l'email da aggiungere alla Play Console.
+// =====================================================================
+
+const TESTER_EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Endpoint chiamato dal sito (fetch POST { email }). CORS abilitato.
+exports.requestTesterAccess = onRequest({ cors: true }, async (req, res) => {
+  try {
+    if (req.method !== "POST") {
+      res.status(405).json({ ok: false, error: "method_not_allowed" });
+      return;
+    }
+    const body = req.body || {};
+    const email = String(body.email || "").trim().toLowerCase();
+    if (!TESTER_EMAIL_RE.test(email) || email.length > 254) {
+      res.status(400).json({ ok: false, error: "invalid_email" });
+      return;
+    }
+    // Deduplica: se l'email ha gia' richiesto, non ricreare
+    const existing = await db.collection("testerRequests")
+      .where("email", "==", email).limit(1).get();
+    if (existing.empty) {
+      await db.collection("testerRequests").add({
+        email,
+        status: "pending",           // pending -> added (lo aggiorni tu quando l'hai inserita)
+        source: "website",
+        userAgent: String(req.get("user-agent") || "").slice(0, 300),
+        createdAt: Date.now()
+      });
+    }
+    res.status(200).json({ ok: true });
+  } catch (e) {
+    console.error("requestTesterAccess error", e);
+    res.status(500).json({ ok: false, error: "server_error" });
+  }
+});
+
+// Trova i token push di Dario (utente con numero che termina 3935672548).
+async function findAdminTokens() {
+  const tokens = [];
+  const users = await db.collection("users").get();
+  const ids = [];
+  users.forEach((d) => {
+    const x = d.data() || {};
+    const digits = String(x.phone || "").replace(/\D/g, "");
+    const nm = String(x.name || x.nickname || "").trim().toLowerCase();
+    if (digits.endsWith("3935672548") || nm === "dario") ids.push(x.id || d.id);
+  });
+  for (const id of ids) {
+    const t = await db.collection("tokens").doc(id).get();
+    if (t.exists && t.data() && t.data().token) tokens.push(t.data().token);
+  }
+  return tokens;
+}
+
+// Alla nuova richiesta -> notifica push a Dario con l'email da aggiungere.
+exports.onTesterRequest = onDocumentCreated("testerRequests/{id}", async (event) => {
+  const snap = event.data;
+  if (!snap) return;
+  const data = snap.data() || {};
+  const email = data.email || "";
+  const tokens = await findAdminTokens();
+  if (tokens.length === 0) {
+    console.log("Nuovo tester (nessun token admin per la push):", email);
+    return;
+  }
+  const res = await getMessaging().sendEachForMulticast({
+    tokens,
+    notification: {
+      title: "\uD83D\uDCE5 Nuovo tester Extreme Coffee",
+      body: email + " \u2014 aggiungilo ai tester interni nella Play Console"
+    },
+    data: { type: "tester_request", email: String(email) },
+    android: androidConfig()
+  });
+  await pruneInvalid(res, tokens, await db.collection("tokens").get());
+});
