@@ -447,7 +447,7 @@ html.js .rv.in{opacity:1;transform:none}
   <div class="eyebrow" style="color:var(--orange-d)">Il prossimo caffè</div>
   <h2 class="sec-h center" style="margin-top:14px">Parte ora. Chi c'è?</h2>
   <p class="lead center">Scaricala, lancia il primo Extreme Coffee e guarda chi risponde.</p>
-  <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.extremecoffee.myapp"><span class="play"></span> Scarica per Android</a>
+  <button type="button" class="btn btn-primary" id="ecDownloadBtn"><span class="play"></span> Scarica per Android</button>
   <div class="os-note" style="margin-top:18px;color:#7A5230">Gratis · senza account · per chi crede che un caffè valga più di mille messaggi</div>
 </div></section>
 
@@ -466,5 +466,85 @@ els.forEach(function(e){if(!e.classList.contains('in'))io.observe(e);});})();
 (function(){var t=4*60+13;function fmt(x){var m=Math.floor(x/60),s=x%60;return (m<10?'0':'')+m+':'+(s<10?'0':'')+s;}
 setInterval(function(){t--;if(t<0)t=4*60+30;var a=document.getElementById('cd'),b=document.getElementById('cd2');if(a)a.textContent=fmt(t);if(b)b.textContent=fmt(t);},1000);})();
 </script>
+<!-- ===== Gate email per test interno ===== -->
+<div id="ecModal" class="ecm-overlay" hidden>
+  <div class="ecm-box" role="dialog" aria-modal="true" aria-labelledby="ecmTitle">
+    <button class="ecm-x" id="ecmClose" aria-label="Chiudi">&times;</button>
+    <div id="ecmStep1">
+      <h3 id="ecmTitle">Provala in anteprima</h3>
+      <p class="ecm-p">Extreme Coffee è in <b>test interno</b>. Inserisci l'email del tuo account Google Play: ti abilitiamo al test e potrai scaricarla.</p>
+      <input id="ecmEmail" class="ecm-input" type="email" inputmode="email" autocomplete="email" placeholder="latua@email.com"/>
+      <div id="ecmErr" class="ecm-err" hidden></div>
+      <button id="ecmSubmit" class="btn btn-primary ecm-full">Abilitami al test</button>
+      <p class="ecm-note">Inserendo l'email acconsenti a essere aggiunto all'elenco dei tester. Vedi la <a href="/privacy">privacy</a>.</p>
+    </div>
+    <div id="ecmStep2" hidden>
+      <div class="ecm-check">&#10003;</div>
+      <h3>Ci siamo quasi!</h3>
+      <p class="ecm-p">Ti stiamo abilitando come tester. L'attivazione può richiedere qualche ora lato Google. Apri il link qui sotto e tocca <b>&ldquo;Diventa tester&rdquo;</b>, poi scarica.</p>
+      <a id="ecmLink" class="btn btn-primary ecm-full" href="#" target="_blank" rel="noopener">Apri il test su Google Play</a>
+      <p class="ecm-note">Se il link dice che non sei un tester, riprova tra un po': l'abilitazione non è ancora propagata.</p>
+    </div>
+  </div>
+</div>
+<style>
+.ecm-overlay{position:fixed;inset:0;background:rgba(27,14,7,.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+.ecm-overlay[hidden]{display:none}
+.ecm-box{background:var(--paper,#FFFDF9);max-width:420px;width:100%;border-radius:20px;padding:26px 24px;position:relative;box-shadow:0 20px 60px rgba(27,14,7,.35);font-family:var(--fb,'Inter',sans-serif)}
+.ecm-box h3{font-family:var(--fd,'Bricolage Grotesque',sans-serif);color:var(--orange,#E8772E);font-size:1.5rem;margin:0 0 8px}
+.ecm-p{color:var(--ink,#2A1A10);font-size:.98rem;line-height:1.55;margin:0 0 16px}
+.ecm-input{width:100%;padding:14px 16px;border:1.5px solid var(--line,#E7D6C0);border-radius:12px;font-size:1rem;font-family:inherit;color:var(--ink,#2A1A10);background:#fff}
+.ecm-input:focus{outline:none;border-color:var(--orange,#E8772E)}
+.ecm-full{width:100%;margin-top:14px;justify-content:center;border:0;cursor:pointer}
+.ecm-note{font-size:.78rem;color:var(--muted,#897463);margin:12px 0 0;line-height:1.5}
+.ecm-note a{color:var(--orange-d,#C85F1C)}
+.ecm-err{color:#B23B2E;font-size:.85rem;font-weight:600;margin-top:8px}
+.ecm-x{position:absolute;top:12px;right:14px;background:none;border:0;font-size:1.6rem;line-height:1;color:var(--muted,#897463);cursor:pointer}
+.ecm-check{width:56px;height:56px;border-radius:50%;background:var(--orange,#E8772E);color:#fff;font-size:1.8rem;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+</style>
+<script>
+(function(){
+  // URL della Cloud Function (v2). Dopo "firebase deploy" incolla qui l'URL esatto se diverso.
+  var TESTER_ENDPOINT = "https://us-central1-extreme-coffe.cloudfunctions.net/requestTesterAccess";
+  var INTERNAL_TEST_URL = "https://play.google.com/apps/internaltest/4700187288509338630";
+
+  var reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var modal = document.getElementById('ecModal');
+  var step1 = document.getElementById('ecmStep1');
+  var step2 = document.getElementById('ecmStep2');
+  var email = document.getElementById('ecmEmail');
+  var err = document.getElementById('ecmErr');
+  var submit = document.getElementById('ecmSubmit');
+  var link = document.getElementById('ecmLink');
+
+  function open(){ modal.hidden=false; step1.hidden=false; step2.hidden=true; err.hidden=true; email.value=''; setTimeout(function(){email.focus();},50); }
+  function close(){ modal.hidden=true; }
+
+  var btn = document.getElementById('ecDownloadBtn');
+  if(btn){ btn.addEventListener('click', open); }
+  document.getElementById('ecmClose').addEventListener('click', close);
+  modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
+
+  function showLink(){ step1.hidden=true; step2.hidden=false; link.href=INTERNAL_TEST_URL; }
+
+  submit.addEventListener('click', function(){
+    var v=(email.value||'').trim().toLowerCase();
+    if(!reEmail.test(v)){ err.textContent='Inserisci un indirizzo email valido.'; err.hidden=false; return; }
+    err.hidden=true; submit.disabled=true; submit.textContent='Invio…';
+    fetch(TESTER_ENDPOINT, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email:v })
+    }).then(function(r){ return r.ok ? r.json() : Promise.reject(r); })
+      .then(function(){ showLink(); })
+      .catch(function(){
+        err.textContent='Registrazione non riuscita: se il test non parte, scrivici a unlimitedvisionltd@gmail.com';
+        err.hidden=false; showLink();
+      })
+      .finally(function(){ submit.disabled=false; submit.textContent='Abilitami al test'; });
+  });
+  email.addEventListener('keydown', function(e){ if(e.key==='Enter') submit.click(); });
+})();
+</script>
+
 </body>
 </html>
