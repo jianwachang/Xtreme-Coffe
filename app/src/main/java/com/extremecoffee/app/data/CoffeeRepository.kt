@@ -268,6 +268,15 @@ object CoffeeRepository {
         runCatching { d?.collection("tokens")?.document(id)?.delete()?.await() }
         if (phone.isNotBlank()) runCatching { d?.collection("users")?.document(phone)?.delete()?.await() }
         if (nick.isNotBlank()) runCatching { d?.collection("nicknames")?.document(nick)?.delete()?.await() }
+        // eventi lanciati da me (+ eventuali posizioni live) e mie risposte
+        runCatching {
+            d?.collection("events")?.whereEqualTo("launcherId", id)?.get()?.await()
+                ?.documents?.forEach { it.reference.delete() }
+        }
+        runCatching {
+            d?.collection("responses")?.whereEqualTo("fromId", id)?.get()?.await()
+                ?.documents?.forEach { it.reference.delete() }
+        }
         // pulizia stato locale (id, profilo, foto, flag)
         Profile.clearAll(context)
     }
