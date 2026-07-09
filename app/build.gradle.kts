@@ -12,8 +12,8 @@ android {
         applicationId = "com.extremecoffee.myapp"
         minSdk = 26
         targetSdk = 35
-        versionCode = 6
-        versionName = "1.2.3"
+        versionCode = 7
+        versionName = "1.2.4"
         manifestPlaceholders["MAPS_API_KEY"] =
             (project.findProperty("MAPS_API_KEY") as? String) ?: ""
     }
@@ -62,6 +62,11 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.9.2")
     implementation("androidx.navigation:navigation-compose:2.8.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.6")
+
+    // Forza androidx.fragment a una versione recente: la 1.1.0 arriva come dipendenza
+    // transitiva (es. play-services-maps/places) ed è segnalata obsoleta da Google Play.
+    // Gradle risolve la più alta -> upgrade sicuro, nessun uso diretto di Fragment nel codice.
+    implementation("androidx.fragment:fragment:1.8.5")
 
     // Google Maps + Places
     implementation("com.google.maps.android:maps-compose:6.1.2")
