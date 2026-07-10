@@ -1,7 +1,15 @@
 name: Build Release AAB
 
-# Compila l'App Bundle di release (NON firmato) e lo pubblica sul branch 'aab'.
-# La firma viene fatta a parte con la chiave di upload (che resta privata).
+# Compila l'App Bundle di release e, se sono presenti i secret del keystore,
+# lo FIRMA con la chiave di upload. L'AAB (firmato) viene pubblicato sul branch 'aab'.
+# Se i secret non ci sono, l'AAB viene comunque prodotto ma NON firmato.
+#
+# Secret richiesti per la firma (Settings -> Secrets and variables -> Actions):
+#   KEYSTORE_BASE64    -> contenuto del file extreme-coffee-upload.jks in base64
+#   KEYSTORE_PASSWORD  -> password dello store
+#   KEY_ALIAS          -> alias della chiave (es. upload)
+#   KEY_PASSWORD       -> password della chiave
+#
 # Parte a mano (Run workflow) o toccando tools/build_aab.txt.
 
 on:
@@ -49,14 +57,39 @@ jobs:
             fi
           fi
 
-      - name: Compila l'AAB di release (non firmato)
+      - name: Prepara keystore per la firma (se secret presenti)
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/upload.jks"
+            # esporto KEYSTORE_PATH per gli step successivi: build.gradle.kts firma se e' presente
+            echo "KEYSTORE_PATH=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
+            echo "Firma ABILITATA (keystore caricato dai secret)."
+          else
+            echo "Nessun KEYSTORE_BASE64: l'AAB sara' prodotto NON firmato."
+          fi
+
+      - name: Compila l'AAB di release
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           chmod +x ./gradlew
           set -o pipefail
           ./gradlew bundleRelease --stacktrace 2>&1 | tee /tmp/aab.log
 
-      - name: Mostra dove e' l'AAB
-        run: ls -la app/build/outputs/bundle/release/
+      - name: Verifica firma dell'AAB
+        run: |
+          AAB=app/build/outputs/bundle/release/app-release.aab
+          ls -la "$AAB"
+          if jarsigner -verify "$AAB" >/dev/null 2>&1; then
+            echo "==> AAB FIRMATO correttamente."
+            jarsigner -verify -certs "$AAB" 2>/dev/null | grep -m1 -iE "signed by|alias|CN=" || true
+          else
+            echo "==> ATTENZIONE: AAB NON firmato (secret keystore assenti o non validi)."
+          fi
 
       - name: Pubblica l'AAB sul branch 'aab'
         run: |
@@ -70,6 +103,10 @@ jobs:
           git add app-release.aab
           git commit -q -m "AAB release build ${{ github.run_number }}"
           git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" aab
+
+      - name: Rimuovi keystore (sempre)
+        if: always()
+        run: rm -f "$RUNNER_TEMP/upload.jks"
 
       - name: Se fallisce, salva il log su branch aablog
         if: failure()
