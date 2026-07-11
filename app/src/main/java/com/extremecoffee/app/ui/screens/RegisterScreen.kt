@@ -1,4 +1,4 @@
-@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
 
 package com.extremecoffee.app.ui.screens
 
@@ -29,6 +29,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -71,7 +74,9 @@ fun RegisterScreen(nav: NavController) {
     }
 
     Column(
-        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())
+        modifier = Modifier.fillMaxSize()
+            .semantics { testTagsAsResourceId = true }
+            .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp, vertical = 32.dp)
     ) {
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -135,7 +140,7 @@ fun RegisterScreen(nav: NavController) {
             singleLine = true,
             shape = MaterialTheme.shapes.medium,
             colors = fieldColors,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().testTag("reg_nickname")
         )
 
         Spacer(Modifier.height(12.dp))
@@ -155,7 +160,7 @@ fun RegisterScreen(nav: NavController) {
             singleLine = true,
             shape = MaterialTheme.shapes.medium,
             colors = fieldColors,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().testTag("reg_phone")
         )
 
         if (error != null) {
@@ -193,7 +198,7 @@ fun RegisterScreen(nav: NavController) {
         Button(
             enabled = !loading && nickname.isNotBlank() && normPhone != null,
             onClick = submit,
-            modifier = Modifier.fillMaxWidth().height(54.dp),
+            modifier = Modifier.fillMaxWidth().height(54.dp).testTag("reg_submit"),
             shape = MaterialTheme.shapes.large
         ) {
             if (loading) CircularProgressIndicator(
