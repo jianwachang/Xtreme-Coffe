@@ -1,1 +1,2 @@
 deploy regole richiesto 2026-06-22T16:14:39Z
+deploy 2026-07-13T09:37:19Z - fix invites + chiusura modalita test

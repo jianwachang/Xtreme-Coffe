@@ -29,6 +29,12 @@ service cloud.firestore {
           && (!('photo' in request.resource.data) || request.resource.data.photo.size() < 60000);
         allow delete: if signedIn();
       }
+
+      // INVITI all'evento: record dei numeri invitati ({phone, invitedAt})
+      match /invites/{phone} {
+        allow read: if signedIn();
+        allow write: if signedIn();
+      }
     }
 
     // RISPOSTE agli inviti (accettato/rifiutato + distanza)
