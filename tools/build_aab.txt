@@ -1,3 +1,4 @@
 build AAB v6 - 2026-06-28T14:26:41Z
 build 2026-07-09T18:04:08Z - fragment 1.8.5 v7
 build 2026-07-13T10:45:55Z v8/1.2.5
+build 2026-07-14T17:42:55Z v9/1.2.6 (mappa fluida + autocomplete)
