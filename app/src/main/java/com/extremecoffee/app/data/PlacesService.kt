@@ -8,6 +8,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.tasks.await
 
 /**
@@ -36,17 +37,25 @@ object PlacesService {
         if (token == null) token = AutocompleteSessionToken.newInstance()
     }
 
-    suspend fun autocomplete(context: Context, query: String): List<Suggestion> {
-        if (query.trim().length < 3) return emptyList()
+    suspend fun autocomplete(
+        context: Context,
+        query: String,
+        originLat: Double? = null,
+        originLng: Double? = null
+    ): List<Suggestion> {
+        if (query.trim().length < 2) return emptyList()
         ensureReady(context)
         val c = client ?: return emptyList()
         return try {
-            val request = FindAutocompletePredictionsRequest.builder()
+            val builder = FindAutocompletePredictionsRequest.builder()
                 .setSessionToken(token)
                 .setCountries("IT")
                 .setQuery(query)
-                .build()
-            c.findAutocompletePredictions(request).await()
+            // Bias sulla posizione dell'utente: i risultati vicini vengono ordinati prima.
+            if (originLat != null && originLng != null) {
+                builder.setOrigin(LatLng(originLat, originLng))
+            }
+            c.findAutocompletePredictions(builder.build()).await()
                 .autocompletePredictions
                 .map { Suggestion(it.placeId, it.getFullText(null).toString()) }
         } catch (e: Exception) {

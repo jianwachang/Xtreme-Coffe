@@ -1,8 +1,10 @@
-@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class, com.google.accompanist.permissions.ExperimentalPermissionsApi::class)
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class, com.google.accompanist.permissions.ExperimentalPermissionsApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
 
 package com.extremecoffee.app.ui.screens
 
 import android.Manifest
+import android.view.MotionEvent
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.res.stringResource
 import com.extremecoffee.app.R
 import android.widget.Toast
@@ -53,6 +55,11 @@ fun LaunchCoffeeScreen(nav: NavController) {
     var picked by remember { mutableStateOf(false) }
     var loading by remember { mutableStateOf(false) }
 
+    // Scroll della pagina: viene disabilitato mentre si interagisce con la mappa,
+    // così il trascinamento della mappa è fluido e non "ruba" lo scroll (e viceversa).
+    val pageScroll = rememberScrollState()
+    var mapTouched by remember { mutableStateOf(false) }
+
     var minutes by remember { mutableStateOf(15) }
     var mode by remember { mutableStateOf("CERCHIA") }
     var barLat by remember { mutableStateOf<Double?>(null) }
@@ -72,13 +79,14 @@ fun LaunchCoffeeScreen(nav: NavController) {
         }
     }
 
-    // Autocompletamento ufficiale Google Places (con piccolo ritardo)
+    // Autocompletamento ufficiale Google Places: parte da 2 caratteri, in tempo reale,
+    // con debounce breve e bias sulla posizione attuale (suggerimenti vicini prima).
     LaunchedEffect(query) {
         if (picked) { picked = false; return@LaunchedEffect }
-        if (query.trim().length < 3) { suggestions = emptyList(); loading = false; return@LaunchedEffect }
+        if (query.trim().length < 2) { suggestions = emptyList(); loading = false; return@LaunchedEffect }
         loading = true
-        delay(300)
-        suggestions = PlacesService.autocomplete(context, query)
+        delay(250)
+        suggestions = PlacesService.autocomplete(context, query, myLat, myLng)
         loading = false
     }
 
@@ -99,7 +107,7 @@ fun LaunchCoffeeScreen(nav: NavController) {
     val focusLng = barLng ?: myLng
 
     CoffeeScaffold(stringResource(R.string.launch_title), nav, "launch") { mod ->
-        Column(mod.fillMaxSize().padding(horizontal = 20.dp).verticalScroll(rememberScrollState())) {
+        Column(mod.fillMaxSize().padding(horizontal = 20.dp).verticalScroll(pageScroll, enabled = !mapTouched)) {
             Spacer(Modifier.height(8.dp))
             Text(stringResource(R.string.launch_where), style = MaterialTheme.typography.titleLarge)
             Spacer(Modifier.height(10.dp))
@@ -136,7 +144,21 @@ fun LaunchCoffeeScreen(nav: NavController) {
 
             Spacer(Modifier.height(16.dp))
 
-            Box(Modifier.fillMaxWidth().height(300.dp).clip(MaterialTheme.shapes.large)) {
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+                    .clip(MaterialTheme.shapes.large)
+                    .pointerInteropFilter { event ->
+                        when (event.action) {
+                            MotionEvent.ACTION_DOWN,
+                            MotionEvent.ACTION_MOVE -> mapTouched = true
+                            MotionEvent.ACTION_UP,
+                            MotionEvent.ACTION_CANCEL -> mapTouched = false
+                        }
+                        false // non consumo il gesto: lo gestisce la mappa
+                    }
+            ) {
                 AppMap(
                     modifier = Modifier.fillMaxSize(),
                     centerLat = startLat, centerLng = startLng, zoom = 14.0,
