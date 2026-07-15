@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -102,6 +103,16 @@ fun InvitePopupScreen(nav: NavController, eventId: String) {
                 stringResource(R.string.ip_free, min, e.barName),
                 textAlign = TextAlign.Center, style = MaterialTheme.typography.bodyLarge
             )
+            if (e.mode == "AMICIZIA" && e.offerCount > 0) {
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    pluralStringResource(R.plurals.ip_offer, e.offerCount, e.offerCount),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
             Spacer(Modifier.height(32.dp))
 
             val busy = myActive != null || (acceptedActive?.let { it.id != eventId } ?: false)

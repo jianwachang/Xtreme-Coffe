@@ -247,7 +247,7 @@ fun RadarScreen(nav: NavController) {
                                 e.id, e.launcherPhoto,
                                 state = rememberMarkerState(key = e.id, position = LatLng(e.barLat, e.barLng)),
                                 title = e.launcherName,
-                                snippet = stringResource(R.string.rad_open_item, e.barName, e.minutes),
+                                snippet = stringResource(R.string.rad_open_item, e.barName, e.minutes, e.offerCount),
                                 onClick = { nav.goFresh("invite/${e.id}"); true }
                             ) {
                                 val avatar = remember(e.launcherPhoto) { decodeAvatar(e.launcherPhoto) }

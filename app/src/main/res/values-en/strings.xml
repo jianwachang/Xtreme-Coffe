@@ -164,6 +164,7 @@
     <string name="launch_mode_circle_sub">Invite your contacts</string>
     <string name="launch_mode_open">A friendly coffee</string>
     <string name="launch_mode_open_sub">Open to whoever\'s nearby</string>
+    <string name="launch_offer_q">How many people are you offering a coffee to?</string>
     <string name="launch_blocked">☕ You\'re already heading to a coffee. You can start yours once it ends.</string>
     <string name="launch_pick_place">Pick a spot (search or tap the map)</string>
     <string name="launch_error">Launch error: %1$s</string>
@@ -224,7 +225,7 @@
     <string name="rad_local">Local</string>
     <string name="rad_national">National</string>
     <string name="rad_radius">Search radius: %1$s km</string>
-    <string name="rad_open_item">%1$s · %2$d min</string>
+    <string name="rad_open_item">%1$s · %2$d min · offering %3$d</string>
     <string name="rad_tap">Tap a coffee on the map to go there.</string>
     <string name="rad_none">No open coffees nearby for now.</string>
     <string name="lb_you">You</string>
@@ -348,4 +349,8 @@
     <string name="ls_p_declined">Declined</string>
     <string name="ls_p_waiting">Waiting · %1$d</string>
     <string name="ls_p_summary">Accepted %1$d/%2$d</string>
+    <plurals name="ip_offer">
+        <item quantity="one">☕ Offering a coffee to %1$d person</item>
+        <item quantity="other">☕ Offering a coffee to %1$d people</item>
+    </plurals>
 </resources>

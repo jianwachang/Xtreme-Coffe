@@ -62,6 +62,7 @@ fun LaunchCoffeeScreen(nav: NavController) {
 
     var minutes by remember { mutableStateOf(15) }
     var mode by remember { mutableStateOf("CERCHIA") }
+    var offerCount by remember { mutableStateOf(1) }
     var barLat by remember { mutableStateOf<Double?>(null) }
     var barLng by remember { mutableStateOf<Double?>(null) }
 
@@ -196,6 +197,22 @@ fun LaunchCoffeeScreen(nav: NavController) {
                 ModeOption(stringResource(R.string.launch_mode_open), stringResource(R.string.launch_mode_open_sub), mode == "AMICIZIA") { mode = "AMICIZIA" }
             }
 
+            if (mode == "AMICIZIA") {
+                Spacer(Modifier.height(20.dp))
+                Text(stringResource(R.string.launch_offer_q), style = MaterialTheme.typography.titleMedium)
+                Spacer(Modifier.height(8.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    OutlinedButton(onClick = { if (offerCount > 1) offerCount-- }, enabled = offerCount > 1) { Text("−") }
+                    Text(
+                        "$offerCount",
+                        modifier = Modifier.padding(horizontal = 24.dp),
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+                    OutlinedButton(onClick = { if (offerCount < 20) offerCount++ }, enabled = offerCount < 20) { Text("+") }
+                }
+            }
+
             Spacer(Modifier.height(28.dp))
             val blockLaunch = myActive != null || acceptedInvite != null
             if (blockLaunch) {
@@ -229,7 +246,8 @@ fun LaunchCoffeeScreen(nav: NavController) {
                                     launcherId = Profile.id(context), launcherName = Profile.name(context),
                                     launcherPhoto = Profile.photo64(context),
                                     barName = query, barLat = la, barLng = ln,
-                                    minutes = minutes, mode = mode
+                                    minutes = minutes, mode = mode,
+                                    offerCount = if (mode == "AMICIZIA") offerCount else 0
                                 )
                             )
                             if (mode == "CERCHIA") nav.goFresh("inviteCircle/$id")

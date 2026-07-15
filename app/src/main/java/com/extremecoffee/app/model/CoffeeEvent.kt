@@ -14,6 +14,7 @@ data class CoffeeEvent(
     val minutes: Int = 15,
     val createdAt: Long = System.currentTimeMillis(),
     val mode: String = "CERCHIA",
+    val offerCount: Int = 0,          // AMICIZIA: a quante persone si offre il caffè
     val acceptedCount: Int = 0,
     val invitedIds: List<String> = emptyList(),
     val launcherPhoto: String = "",   // avatar piccolo (base64) di chi ha lanciato
