@@ -9,12 +9,12 @@ const { setGlobalOptions } = require("firebase-functions/v2");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
 const { getMessaging } = require("firebase-admin/messaging");
-const { defineSecret } = require("firebase-functions/params");
 const { google } = require("googleapis");
 
 // Config automazione tester (Cloud Identity Free + Admin SDK Directory).
 // Se non impostati, la funzione ricade sulla sola notifica push (nessun errore).
-const GWS_SA_KEY = defineSecret("GWS_SA_KEY");   // JSON del service account con delega
+// Chiave SA letta da variabile d'ambiente: nessuna dipendenza da Secret Manager al deploy.
+const GWS_SA_KEY_JSON = process.env.GWS_SA_KEY || "";   // JSON del service account con delega
 const GWS_ADMIN_EMAIL = process.env.GWS_ADMIN_EMAIL || "";   // es. admin@extremecoffee.it
 const GWS_TESTERS_GROUP = process.env.GWS_TESTERS_GROUP || ""; // es. testers@extremecoffee.it
 
@@ -329,7 +329,7 @@ async function findAdminTokens() {
 async function addToTestersGroup(email) {
   if (!GWS_TESTERS_GROUP || !GWS_ADMIN_EMAIL) return { skipped: "config_mancante" };
   let key;
-  try { key = JSON.parse(GWS_SA_KEY.value() || "{}"); }
+  try { key = JSON.parse(GWS_SA_KEY_JSON || "{}"); }
   catch (e) { return { skipped: "chiave_assente" }; }
   if (!key.client_email || !key.private_key) return { skipped: "chiave_invalida" };
 
@@ -355,7 +355,7 @@ async function addToTestersGroup(email) {
 
 // Alla nuova richiesta -> prova ad aggiungere al gruppo tester, poi notifica push a Dario.
 exports.onTesterRequest = onDocumentCreated(
-  { document: "testerRequests/{id}", secrets: [GWS_SA_KEY] },
+  { document: "testerRequests/{id}" },
   async (event) => {
     const snap = event.data;
     if (!snap) return;
