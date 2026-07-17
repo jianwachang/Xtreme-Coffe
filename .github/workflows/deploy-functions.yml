@@ -39,7 +39,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/sa.json
         run: |
           set -o pipefail
-          firebase deploy --only "functions:onNewEvent,functions:onNewResponse,functions:onEventCancelled,functions:onInviteAdded,functions:requestTesterAccess" --project extreme-coffe --non-interactive 2>&1 | tee /tmp/deploy.log
+          firebase deploy --only "functions:onNewEvent,functions:onNewResponse,functions:onEventCancelled,functions:onInviteAdded,functions:requestTesterAccess" --project extreme-coffe --force --non-interactive 2>&1 | tee /tmp/deploy.log
 
       - name: Salva sempre il log del deploy su branch funcdeploylog
         if: always()
