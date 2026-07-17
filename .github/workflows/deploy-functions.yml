@@ -39,7 +39,21 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/sa.json
         run: |
           set -o pipefail
-          firebase deploy --only functions --project extreme-coffe --non-interactive 2>&1 | tee /tmp/deploy.log
+          firebase deploy --only "functions:onNewEvent,functions:onNewResponse,functions:onEventCancelled,functions:onInviteAdded,functions:requestTesterAccess" --project extreme-coffe --non-interactive 2>&1 | tee /tmp/deploy.log
+
+      - name: Salva sempre il log del deploy su branch funcdeploylog
+        if: always()
+        run: |
+          mkdir -p /tmp/fdl
+          cp /tmp/deploy.log /tmp/fdl/deploy.log 2>/dev/null || echo "nessun log" > /tmp/fdl/deploy.log
+          cd /tmp/fdl
+          git init -q
+          git checkout -b funcdeploylog
+          git config user.email "bot@extremecoffee.app"
+          git config user.name "log-bot"
+          git add deploy.log
+          git commit -q -m "func deploy log ${{ github.run_number }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" funcdeploylog
 
       - name: Se fallisce, salva il log su branch deploylog
         if: failure()
