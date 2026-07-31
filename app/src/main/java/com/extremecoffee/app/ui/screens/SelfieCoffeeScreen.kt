@@ -35,6 +35,7 @@ import androidx.navigation.NavController
 import com.extremecoffee.app.R
 import com.extremecoffee.app.data.CoffeeRepository
 import com.extremecoffee.app.ui.CoffeeScaffold
+import com.extremecoffee.app.ui.goFresh
 import com.extremecoffee.app.data.topEarnedBadge
 import com.extremecoffee.app.ui.SelfieShare
 import com.google.accompanist.permissions.isGranted
@@ -104,6 +105,8 @@ fun SelfieCoffeeScreen(nav: NavController, eventId: String) {
                                     Toast.makeText(context,
                                         if (ok) context.getString(R.string.sf_saved) else context.getString(R.string.sf_save_fail),
                                         Toast.LENGTH_SHORT).show()
+                                    // Punto 7: dopo il salvataggio riuscito torna alla home.
+                                    if (ok) nav.goFresh("home")
                                 },
                                 modifier = Modifier.weight(1f).height(50.dp)
                             ) { Text(stringResource(R.string.sf_save)) }
