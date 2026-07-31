@@ -22,11 +22,11 @@
     <string name="home_btn_viewmap">View on map</string>
     <string name="home_btn_blocked">☕ You\'re already heading to a coffee</string>
     <string name="home_blocked_msg">You\'ve accepted an invite: you can start your own once it ends.</string>
-    <string name="home_stat_streak">STREAK</string>
+    <string name="home_stat_streak">SLANCIO</string>
     <string name="home_stat_weeks">weeks</string>
     <string name="home_stat_coffees">COFFEES</string>
     <string name="home_stat_total">total</string>
-    <string name="home_atrisk">No coffee yet this week: start an Extreme Coffee to keep your streak.</string>
+    <string name="home_atrisk">No coffee yet this week: start an Extreme Coffee to keep your Slancio.</string>
     <string name="home_explore">Explore</string>
     <string name="home_radar_title">Friends radar</string>
     <string name="home_radar_sub">Who\'s on a coffee break now</string>
@@ -292,7 +292,7 @@
     <string name="bdg_amico_t">True friend</string>
     <string name="bdg_amico_d">Travel at least 10 km for a coffee together</string>
     <string name="bdg_fedele_t">Loyal one</string>
-    <string name="bdg_fedele_d">Keep a 4-week streak</string>
+    <string name="bdg_fedele_d">Keep a 4-week Slancio</string>
     <string name="bdg_espl_t">Explorer</string>
     <string name="bdg_espl_d">Visit 5 different places</string>
     <string name="bdg_vet_t">Veteran</string>
@@ -312,9 +312,9 @@
     <string name="push_generic_title">Extreme Coffee</string>
     <string name="recap_title">Your week of coffee ☕</string>
     <string name="recap_month">%1$d coffees this month</string>
-    <string name="recap_streak"> · %1$d-week streak 🔥</string>
+    <string name="recap_streak"> · %1$d-week Slancio 🔥</string>
     <string name="recap_counts">\n%1$d started · %2$d joined</string>
-    <string name="recap_atrisk">\nStart an Extreme Coffee to keep your streak!</string>
+    <string name="recap_atrisk">\nStart an Extreme Coffee to keep your Slancio!</string>
     <string name="rad_km_min">0.1 km</string>
     <string name="rad_km_max">20 km</string>
     <!-- Legale GDPR personalizzato -->

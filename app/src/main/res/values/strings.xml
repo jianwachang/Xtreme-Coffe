@@ -24,11 +24,11 @@
     <string name="home_btn_viewmap">Vedi sulla mappa</string>
     <string name="home_btn_blocked">☕ Sei già in viaggio per un caffè</string>
     <string name="home_blocked_msg">Hai accettato un invito: potrai lanciare il tuo appena questo si conclude.</string>
-    <string name="home_stat_streak">STREAK</string>
+    <string name="home_stat_streak">SLANCIO</string>
     <string name="home_stat_weeks">settimane</string>
     <string name="home_stat_coffees">CAFFÈ</string>
     <string name="home_stat_total">totali</string>
-    <string name="home_atrisk">Questa settimana ancora nessun caffè: lancia un Extreme Coffee per non perdere lo streak.</string>
+    <string name="home_atrisk">Questa settimana ancora nessun caffè: lancia un Extreme Coffee per non perdere lo slancio.</string>
     <string name="home_explore">Esplora</string>
     <string name="home_radar_title">Radar amici</string>
     <string name="home_radar_sub">Chi è in pausa caffè ora</string>
@@ -294,7 +294,7 @@
     <string name="bdg_amico_t">Amico vero</string>
     <string name="bdg_amico_d">Arriva da almeno 10 km per un caffè insieme</string>
     <string name="bdg_fedele_t">Fedelissimo</string>
-    <string name="bdg_fedele_d">Mantieni uno streak di 4 settimane</string>
+    <string name="bdg_fedele_d">Mantieni uno slancio di 4 settimane</string>
     <string name="bdg_espl_t">Esploratore</string>
     <string name="bdg_espl_d">Visita 5 locali diversi</string>
     <string name="bdg_vet_t">Veterano</string>
@@ -314,9 +314,9 @@
     <string name="push_generic_title">Extreme Coffee</string>
     <string name="recap_title">La tua settimana di caffè ☕</string>
     <string name="recap_month">%1$d caffè questo mese</string>
-    <string name="recap_streak"> · streak %1$d settimane 🔥</string>
+    <string name="recap_streak"> · slancio %1$d settimane 🔥</string>
     <string name="recap_counts">\n%1$d lanciati · %2$d partecipati</string>
-    <string name="recap_atrisk">\nLancia un Extreme Coffee per non perdere lo streak!</string>
+    <string name="recap_atrisk">\nLancia un Extreme Coffee per non perdere lo slancio!</string>
     <string name="rad_km_min">0,1 km</string>
     <string name="rad_km_max">20 km</string>
     <!-- Legale GDPR personalizzato -->
