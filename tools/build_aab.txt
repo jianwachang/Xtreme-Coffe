@@ -4,3 +4,4 @@ build 2026-07-13T10:45:55Z v8/1.2.5
 build 2026-07-14T17:42:55Z v9/1.2.6 (mappa fluida + autocomplete)
 build 2026-07-15T12:11:29Z v9 offerCount amicizia
 build 2026-07-31T12:31:06Z v10/1.2.7 (punto2 link invito cross-platform + punto3 Streak->Slancio)
+build 2026-07-31T15:44:02Z v10/1.2.7 (punto1 percorso reale: fallback OSRM in DirectionsService)

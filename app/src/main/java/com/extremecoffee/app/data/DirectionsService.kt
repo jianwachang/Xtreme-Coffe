@@ -28,21 +28,59 @@ object DirectionsService {
         dLat: Double, dLng: Double,
         mode: String = "driving"
     ): List<LatLng>? = withContext(Dispatchers.IO) {
-        val key = apiKey(context)
-        if (key.isNullOrBlank()) return@withContext null
+        // 1) Prova Google Directions (se la chiave ha la Directions API abilitata).
+        googleRoute(apiKey(context), oLat, oLng, dLat, dLng, mode)?.let { if (it.size >= 2) return@withContext it }
+        // 2) Fallback OSRM: percorso reale su strada senza dipendere dall'abilitazione Directions.
+        osrmRoute(oLat, oLng, dLat, dLng)?.let { if (it.size >= 2) return@withContext it }
+        // 3) Niente rete/percorso: la schermata ripiega da sola sulla linea retta.
+        null
+    }
+
+    /** Percorso su strada via Google Directions. Ritorna null se la chiave manca o l'API non risponde. */
+    private fun googleRoute(
+        key: String?, oLat: Double, oLng: Double, dLat: Double, dLng: Double, mode: String
+    ): List<LatLng>? {
+        if (key.isNullOrBlank()) return null
         val urlStr = "https://maps.googleapis.com/maps/api/directions/json" +
             "?origin=$oLat,$oLng&destination=$dLat,$dLng&mode=$mode&key=$key"
-        try {
+        return try {
             val conn = (URL(urlStr).openConnection() as HttpURLConnection).apply {
                 connectTimeout = 8000; readTimeout = 8000
             }
             val body = conn.inputStream.bufferedReader().use { it.readText() }
             conn.disconnect()
-            val routes = JSONObject(body).optJSONArray("routes") ?: return@withContext null
-            if (routes.length() == 0) return@withContext null
+            val routes = JSONObject(body).optJSONArray("routes") ?: return null
+            if (routes.length() == 0) return null
             val enc = routes.getJSONObject(0)
-                .optJSONObject("overview_polyline")?.optString("points")
-                ?: return@withContext null
+                .optJSONObject("overview_polyline")?.optString("points") ?: return null
+            decode(enc)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    /**
+     * Fallback su OSRM (router pubblico): percorso reale su strada, nessuna chiave richiesta.
+     * Attenzione: usa l'ordine lng,lat e ritorna una encoded polyline (stesso formato di Google).
+     */
+    private fun osrmRoute(
+        oLat: Double, oLng: Double, dLat: Double, dLng: Double
+    ): List<LatLng>? {
+        val urlStr = "https://router.project-osrm.org/route/v1/driving/" +
+            "$oLng,$oLat;$dLng,$dLat?overview=full&geometries=polyline"
+        return try {
+            val conn = (URL(urlStr).openConnection() as HttpURLConnection).apply {
+                connectTimeout = 8000; readTimeout = 8000
+                setRequestProperty("User-Agent", "ExtremeCoffee/1.0")
+            }
+            val body = conn.inputStream.bufferedReader().use { it.readText() }
+            conn.disconnect()
+            val obj = JSONObject(body)
+            if (obj.optString("code") != "Ok") return null
+            val routes = obj.optJSONArray("routes") ?: return null
+            if (routes.length() == 0) return null
+            val enc = routes.getJSONObject(0).optString("geometry")
+            if (enc.isNullOrBlank()) return null
             decode(enc)
         } catch (e: Exception) {
             null
