@@ -43,7 +43,7 @@ jobs:
       - name: Componenti SDK
         run: |
           yes | sdkmanager --licenses >/dev/null 2>&1 || true
-          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0" >/dev/null
+          sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0" >/dev/null
 
       - name: Chiave Maps (se presente come secret)
         env:

@@ -6,14 +6,14 @@ plugins {
 
 android {
     namespace = "com.extremecoffee.app"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.extremecoffee.myapp"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 10
-        versionName = "1.2.7"
+        targetSdk = 36
+        versionCode = 11
+        versionName = "1.2.8"
         manifestPlaceholders["MAPS_API_KEY"] =
             (project.findProperty("MAPS_API_KEY") as? String) ?: ""
     }
