@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Extreme Coffee — Scarica l'app</title>
+<style>
+  :root{ --cream:#FBF4EA; --orange:#E8772E; --dark:#2A1A10; --muted:#8A7460; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       background:var(--cream);color:var(--dark);min-height:100vh;
+       display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{max-width:420px;width:100%;text-align:center}
+  .logo{width:96px;height:96px;border-radius:24px;background:#F5E6D3;display:flex;
+        align-items:center;justify-content:center;font-size:52px;margin:0 auto 20px}
+  h1{font-size:26px;margin-bottom:8px}
+  p{color:var(--muted);font-size:17px;line-height:1.5;margin-bottom:24px}
+  .btn{display:block;background:var(--orange);color:#fff;text-decoration:none;
+       font-weight:700;font-size:18px;padding:16px;border-radius:16px;margin-bottom:12px}
+  .btn.ghost{background:transparent;border:2px solid var(--orange);color:var(--orange)}
+  .small{font-size:14px;color:var(--muted);margin-top:16px}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">☕</div>
+    <h1>Ti aspetta un Extreme Coffee</h1>
+    <p id="msg">Ti sto portando allo store per scaricare l'app…</p>
+    <a id="primary" class="btn" href="#">Scarica l'app</a>
+    <a class="btn ghost" href="https://www.extremecoffee.it">Vai al sito</a>
+    <div class="small">Il caffè è la scusa, ritrovarsi è il bello.</div>
+  </div>
+
+<script>
+  // === Configura qui i link degli store ===
+  var PLAY_URL  = "https://play.google.com/store/apps/details?id=com.extremecoffee.myapp";
+  // iOS: quando l'app sarà sull'App Store, incolla qui l'URL (es. https://apps.apple.com/app/idXXXXXXXXX)
+  var IOS_URL   = "";                 // vuoto = "in arrivo"
+  var WEB_URL   = "https://www.extremecoffee.it";
+
+  var ua = navigator.userAgent || navigator.vendor || "";
+  var isAndroid = /android/i.test(ua);
+  var isIOS = /iPad|iPhone|iPod/i.test(ua) ||
+              (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1); // iPad moderni
+
+  var target, label, message;
+
+  if (isAndroid) {
+    target = PLAY_URL;
+    label = "Scarica su Google Play";
+    message = "Apertura di Google Play…";
+  } else if (isIOS) {
+    if (IOS_URL) {
+      target = IOS_URL;
+      label = "Scarica su App Store";
+      message = "Apertura dell'App Store…";
+    } else {
+      target = WEB_URL;
+      label = "Scopri di più";
+      message = "La versione iOS sta arrivando! Intanto dai un'occhiata al sito.";
+    }
+  } else {
+    // desktop o altro: mostra entrambe le opzioni sul sito
+    target = WEB_URL;
+    label = "Vai al sito per scaricarla";
+    message = "Apri questo link dal tuo telefono per scaricare l'app.";
+  }
+
+  var primary = document.getElementById("primary");
+  primary.href = target;
+  primary.textContent = label;
+  document.getElementById("msg").textContent = message;
+
+  // Redirect automatico solo verso gli store (non verso il sito), dopo un attimo
+  if (isAndroid || (isIOS && IOS_URL)) {
+    setTimeout(function(){ window.location.href = target; }, 900);
+  }
+</script>
+</body>
+</html>
