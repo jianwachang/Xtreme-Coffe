@@ -12,8 +12,8 @@ android {
         applicationId = "com.extremecoffee.myapp"
         minSdk = 26
         targetSdk = 36
-        versionCode = 13
-        versionName = "1.2.10"
+        versionCode = 14
+        versionName = "1.2.11"
         manifestPlaceholders["MAPS_API_KEY"] =
             (project.findProperty("MAPS_API_KEY") as? String) ?: ""
     }
@@ -91,10 +91,10 @@ dependencies {
     implementation("com.google.accompanist:accompanist-permissions:0.36.0")
 
     // Fotocamera (Selfie Coffee)
-    implementation("androidx.camera:camera-core:1.3.4")
-    implementation("androidx.camera:camera-camera2:1.3.4")
-    implementation("androidx.camera:camera-lifecycle:1.3.4")
-    implementation("androidx.camera:camera-view:1.3.4")
+    implementation("androidx.camera:camera-core:1.4.2")
+    implementation("androidx.camera:camera-camera2:1.4.2")
+    implementation("androidx.camera:camera-lifecycle:1.4.2")
+    implementation("androidx.camera:camera-view:1.4.2")
     // Fornisce com.google.common.util.concurrent.ListenableFuture usata da CameraX
     implementation("com.google.guava:guava:33.3.1-android")
 }
