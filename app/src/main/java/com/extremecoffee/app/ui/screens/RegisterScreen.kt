@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import android.app.Activity
+import com.extremecoffee.app.data.CoffeeRepository
 import com.extremecoffee.app.data.LocaleManager
 import com.extremecoffee.app.data.Phones
 import com.extremecoffee.app.data.Profile
