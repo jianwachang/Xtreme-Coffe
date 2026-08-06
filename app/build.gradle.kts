@@ -12,8 +12,8 @@ android {
         applicationId = "com.extremecoffee.myapp"
         minSdk = 26
         targetSdk = 36
-        versionCode = 15
-        versionName = "1.2.12"
+        versionCode = 16
+        versionName = "1.2.13"
         manifestPlaceholders["MAPS_API_KEY"] =
             (project.findProperty("MAPS_API_KEY") as? String) ?: ""
     }
@@ -97,6 +97,8 @@ dependencies {
     implementation("androidx.camera:camera-view:1.4.2")
     // Fornisce com.google.common.util.concurrent.ListenableFuture usata da CameraX
     implementation("com.google.guava:guava:33.3.1-android")
+    // Normalizzazione numeri di telefono valida in tutto il mondo (non solo Italia)
+    implementation("com.googlecode.libphonenumber:libphonenumber:9.0.36")
 }
 
 // Il plugin si applica solo se esiste il file di config (così compila anche col segnaposto)

@@ -285,7 +285,9 @@ fun RadarScreen(nav: NavController) {
 }
 
 private fun fmtKm(r: Float): String =
-    if (r < 1f) String.format(Locale.ITALY, "%.1f", r) else r.roundToInt().toString()
+    // Segue la lingua scelta dall'utente (LocaleManager la imposta come lingua di sistema
+    // del processo all'avvio), invece di essere sempre in formato italiano.
+    if (r < 1f) String.format(Locale.getDefault(), "%.1f", r) else r.roundToInt().toString()
 
 private fun zoomForRadius(radiusKm: Float): Float =
     (14.0 - ln(radiusKm.toDouble().coerceAtLeast(0.1)) / ln(2.0)).toFloat()

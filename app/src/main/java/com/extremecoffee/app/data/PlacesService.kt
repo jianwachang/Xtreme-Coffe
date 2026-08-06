@@ -49,9 +49,10 @@ object PlacesService {
         return try {
             val builder = FindAutocompletePredictionsRequest.builder()
                 .setSessionToken(token)
-                .setCountries("IT")
                 .setQuery(query)
-            // Bias sulla posizione dell'utente: i risultati vicini vengono ordinati prima.
+            // Nessuna restrizione di paese: l'autocomplete funziona ovunque nel mondo.
+            // Il bias sulla posizione (sotto) resta comunque il modo principale per dare
+            // priorità ai risultati vicini all'utente, in qualsiasi paese si trovi.
             if (originLat != null && originLng != null) {
                 builder.setOrigin(LatLng(originLat, originLng))
             }
