@@ -168,7 +168,19 @@ fun LaunchCoffeeScreen(nav: NavController) {
                     else emptyList(),
                     recenterLat = focusLat, recenterLng = focusLng,
                     showMyLocation = locPerm.status.isGranted,
-                    onMapTap = { lat, lng -> barLat = lat; barLng = lng; if (query.isBlank()) query = context.getString(R.string.launch_point_map) }
+                    // animateRecenter = false: spostamento istantaneo, non animato (vedi MapView.kt:
+                    // evita che la camera resti in attesa a tempo indeterminato dopo il tap).
+                    animateRecenter = false,
+                    onMapTap = { lat, lng ->
+                        barLat = lat; barLng = lng
+                        if (query.isBlank()) {
+                            // Punto scelto sulla mappa: mostriamo un'etichetta, ma NON deve
+                            // avviare una ricerca live in Places (quel testo non l'ha scritto
+                            // l'utente). "picked = true" fa saltare la ricerca per questo giro.
+                            picked = true
+                            query = context.getString(R.string.launch_point_map)
+                        }
+                    }
                 )
             }
             Text(

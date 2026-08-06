@@ -46,6 +46,12 @@ fun AppMap(
     polylines: List<List<LatLng>> = emptyList(),
     recenterLat: Double? = null,
     recenterLng: Double? = null,
+    // Se false, il ricentraggio è uno spostamento ISTANTANEO invece che un'animazione.
+    // L'animazione (camera.animate) può restare in attesa a tempo indeterminato in alcune
+    // condizioni della libreria mappe, dando la sensazione che l'app si blocchi. Le mappe
+    // che seguono un percorso in tempo reale continuano ad animare (aspetto più fluido);
+    // la mappa di selezione punto (Lancia un caffè) usa lo spostamento istantaneo.
+    animateRecenter: Boolean = true,
     showMyLocation: Boolean = false,
     onMapTap: ((Double, Double) -> Unit)? = null,
 ) {
@@ -57,6 +63,10 @@ fun AppMap(
     LaunchedEffect(recenterLat, recenterLng) {
         if (recenterLat != null && recenterLng != null) {
             val target = LatLng(recenterLat, recenterLng)
+            if (!animateRecenter) {
+                camera.position = CameraPosition.fromLatLngZoom(target, 16.5f)
+                return@LaunchedEffect
+            }
             try {
                 camera.animate(CameraUpdateFactory.newLatLngZoom(target, 16.5f))
             } catch (e: Exception) {
