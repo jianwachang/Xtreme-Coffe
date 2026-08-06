@@ -15,6 +15,9 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -160,35 +163,36 @@ object CoffeeRepository {
     }
 
     /** Conta (lanciati, partecipati) di un utente, per la classifica. */
-    suspend fun countCoffeesFor(userId: String): Pair<Int, Int> {
-        val d = db ?: return 0 to 0
-        var launched = 0
-        var joined = 0
-        runCatching {
-            val snap = d.collection("events").whereEqualTo("launcherId", userId).get().await()
-            for (doc in snap.documents) {
-                if (doc.getBoolean("cancelled") == true) continue
-                if (doc.getBoolean("simulated") == true) continue
-                launched++
-            }
+    suspend fun countCoffeesFor(userId: String): Pair<Int, Int> = coroutineScope {
+        val d = db ?: return@coroutineScope 0 to 0
+        // Punto 5 (classifica più veloce): le 2 query per utente ora partono insieme
+        // invece che una dopo l'altra. Stesso risultato, tempo dimezzato.
+        val launchedDeferred = async {
+            runCatching {
+                d.collection("events").whereEqualTo("launcherId", userId).get().await()
+            }.getOrNull()?.documents?.count { doc ->
+                doc.getBoolean("cancelled") != true && doc.getBoolean("simulated") != true
+            } ?: 0
         }
-        runCatching {
-            val snap = d.collection("responses").whereEqualTo("fromId", userId).get().await()
-            for (doc in snap.documents) {
-                if (doc.getString("status") == "accepted") joined++
-            }
+        val joinedDeferred = async {
+            runCatching {
+                d.collection("responses").whereEqualTo("fromId", userId).get().await()
+            }.getOrNull()?.documents?.count { it.getString("status") == "accepted" } ?: 0
         }
-        return launched to joined
+        launchedDeferred.await() to joinedDeferred.await()
     }
 
     /** Costruisce la classifica per un insieme di utenti (id -> nome). */
-    suspend fun loadLeaderboard(users: List<Pair<String, String>>): List<LeaderEntry> {
-        val out = ArrayList<LeaderEntry>()
-        for ((id, name) in users) {
-            val (l, j) = countCoffeesFor(id)
-            out.add(LeaderEntry(id, name, l, j))
-        }
-        return out
+    suspend fun loadLeaderboard(users: List<Pair<String, String>>): List<LeaderEntry> = coroutineScope {
+        // Punto 5 (classifica più veloce): prima erano N utenti interrogati uno dopo l'altro
+        // (N x 2 round-trip in sequenza). Ora tutte le richieste partono insieme: il tempo totale
+        // è quello dell'utente più lento, non la somma di tutti. Stessi dati, stesso ordine.
+        users.map { (id, name) ->
+            async {
+                val (l, j) = countCoffeesFor(id)
+                LeaderEntry(id, name, l, j)
+            }
+        }.awaitAll()
     }
 
     private val downloadUrlState = MutableStateFlow(Config.DOWNLOAD_URL)
@@ -330,20 +334,25 @@ object CoffeeRepository {
     }
 
     /** Dato un elenco di numeri E.164, restituisce quelli registrati (numero -> utente). */
-    suspend fun findRegistered(phones: List<String>): Map<String, AppUser> {
-        val d = db ?: return emptyMap()
-        if (phones.isEmpty()) return emptyMap()
+    suspend fun findRegistered(phones: List<String>): Map<String, AppUser> = coroutineScope {
+        val d = db ?: return@coroutineScope emptyMap()
+        if (phones.isEmpty()) return@coroutineScope emptyMap()
+        val chunks = phones.distinct().chunked(10)
+        val results = chunks.map { chunk ->
+            async {
+                runCatching {
+                    d.collection("users").whereIn("phone", chunk).get().await()
+                }.getOrNull()
+            }
+        }.awaitAll()
         val out = mutableMapOf<String, AppUser>()
-        phones.distinct().chunked(10).forEach { chunk ->
-            runCatching {
-                val snap = d.collection("users").whereIn("phone", chunk).get().await()
-                snap.documents.forEach { doc ->
-                    val ph = doc.getString("phone") ?: return@forEach
-                    out[ph] = AppUser(doc.getString("id") ?: "", doc.getString("name") ?: "", ph)
-                }
+        results.forEach { snap ->
+            snap?.documents?.forEach { doc ->
+                val ph = doc.getString("phone") ?: return@forEach
+                out[ph] = AppUser(doc.getString("id") ?: "", doc.getString("name") ?: "", ph)
             }
         }
-        return out
+        out
     }
 
     /** Invita in-app un utente registrato all'evento: aggiunge il suo id agli invitati. */
@@ -363,17 +372,20 @@ object CoffeeRepository {
         }
     }
 
-    suspend fun findRegisteredPhones(phones: List<String>): Set<String> {
-        val d = db ?: return emptySet()
-        if (phones.isEmpty()) return emptySet()
-        val found = mutableSetOf<String>()
-        phones.distinct().chunked(10).forEach { chunk ->
-            runCatching {
-                val snap = d.collection("users").whereIn("phone", chunk).get().await()
-                snap.documents.forEach { doc -> doc.getString("phone")?.let { found.add(it) } }
+    suspend fun findRegisteredPhones(phones: List<String>): Set<String> = coroutineScope {
+        val d = db ?: return@coroutineScope emptySet()
+        if (phones.isEmpty()) return@coroutineScope emptySet()
+        val chunks = phones.distinct().chunked(10)
+        val results = chunks.map { chunk ->
+            async {
+                runCatching {
+                    d.collection("users").whereIn("phone", chunk).get().await()
+                }.getOrNull()
             }
-        }
-        return found
+        }.awaitAll()
+        val found = mutableSetOf<String>()
+        results.forEach { snap -> snap?.documents?.forEach { doc -> doc.getString("phone")?.let { found.add(it) } } }
+        found
     }
 
     private var friendshipReg: ListenerRegistration? = null

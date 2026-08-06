@@ -37,7 +37,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.extremecoffee.app.data.CoffeeRepository
+import android.app.Activity
+import com.extremecoffee.app.data.LocaleManager
 import com.extremecoffee.app.data.Phones
 import com.extremecoffee.app.data.Profile
 import com.extremecoffee.app.data.RegisterResult
@@ -56,6 +57,15 @@ fun RegisterScreen(nav: NavController) {
     val editMode = remember { Profile.isRegistered(context) }
     var nickname by remember { mutableStateOf(if (editMode) Profile.name(context) else "") }
     var phone by remember { mutableStateOf(if (editMode) Profile.phone(context) else "") }
+    // Punto 4: scelta lingua alla registrazione (solo per nuovi utenti; chi ha già un profilo
+    // cambia lingua dalle Impostazioni, per non alterare il flusso di modifica esistente).
+    var selectedLang by remember { mutableStateOf(LocaleManager.getLang(context)) }
+    fun switchLang(lang: String) {
+        if (selectedLang == lang) return
+        selectedLang = lang
+        LocaleManager.setLang(context, lang)
+        (context as? Activity)?.recreate()
+    }
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
     val normPhone = Phones.normalizeIt(phone)
@@ -79,6 +89,30 @@ fun RegisterScreen(nav: NavController) {
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp, vertical = 32.dp)
     ) {
+        if (!editMode) {
+            Text(
+                stringResource(R.string.reg_lang_title),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(Modifier.height(8.dp))
+            Row(Modifier.fillMaxWidth().testTag("reg_lang_row")) {
+                FilterChip(
+                    selected = selectedLang == "it",
+                    onClick = { switchLang("it") },
+                    label = { Text(stringResource(R.string.lang_italian)) },
+                    modifier = Modifier.weight(1f).testTag("reg_lang_it")
+                )
+                Spacer(Modifier.width(10.dp))
+                FilterChip(
+                    selected = selectedLang == "en",
+                    onClick = { switchLang("en") },
+                    label = { Text(stringResource(R.string.lang_english)) },
+                    modifier = Modifier.weight(1f).testTag("reg_lang_en")
+                )
+            }
+            Spacer(Modifier.height(20.dp))
+        }
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             Box(
                 Modifier.size(104.dp).clip(CircleShape)

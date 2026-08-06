@@ -351,6 +351,7 @@
     <string name="ls_p_declined">Ha rifiutato</string>
     <string name="ls_p_waiting">In attesa · %1$d</string>
     <string name="ls_p_summary">Accettati %1$d/%2$d</string>
+    <string name="reg_lang_title">In che lingua vuoi usare l\'app?</string>
     <plurals name="ip_offer">
         <item quantity="one">☕ Offre il caffè a %1$d persona</item>
         <item quantity="other">☕ Offre il caffè a %1$d persone</item>
