@@ -13,6 +13,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -57,7 +60,16 @@ fun RegisterScreen(nav: NavController) {
 
     val editMode = remember { Profile.isRegistered(context) }
     var nickname by remember { mutableStateOf(if (editMode) Profile.name(context) else "") }
-    var phone by remember { mutableStateOf(if (editMode) Profile.phone(context) else "") }
+    // Numero diviso in due: prefisso (menu a tendina) + numero nazionale (box separato).
+    // In modifica profilo pre-compilo entrambi a partire dal numero già salvato; per un nuovo
+    // utente il prefisso parte già impostato in base al paese del dispositivo.
+    val initialPhoneSplit = remember {
+        if (editMode) Phones.splitForEdit(Profile.phone(context))
+        else Phones.dialCodeForRegion(Phones.defaultRegion()) to ""
+    }
+    var dialCode by remember { mutableStateOf(initialPhoneSplit.first) }
+    var phoneNational by remember { mutableStateOf(initialPhoneSplit.second) }
+    val phone = dialCode + phoneNational
     // Punto 4: scelta lingua alla registrazione (solo per nuovi utenti; chi ha già un profilo
     // cambia lingua dalle Impostazioni, per non alterare il flusso di modifica esistente).
     var selectedLang by remember { mutableStateOf(LocaleManager.getLang(context)) }
@@ -179,24 +191,116 @@ fun RegisterScreen(nav: NavController) {
         )
 
         Spacer(Modifier.height(12.dp))
-        OutlinedTextField(
-            value = phone,
-            onValueChange = { phone = it; error = null },
-            label = { Text(stringResource(R.string.reg_phone_label)) },
-            leadingIcon = { Icon(Icons.Filled.Phone, contentDescription = null) },
-            supportingText = {
-                Text(
-                    if (normPhone != null) stringResource(R.string.reg_phone_recognised, normPhone)
-                    else stringResource(R.string.reg_phone_help1) +
-                        stringResource(R.string.reg_phone_help2)
-                )
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-            singleLine = true,
-            shape = MaterialTheme.shapes.medium,
-            colors = fieldColors,
-            modifier = Modifier.fillMaxWidth().testTag("reg_phone")
+        var showCountryPicker by remember { mutableStateOf(false) }
+        var countrySearch by remember { mutableStateOf("") }
+        val allDialCodes = remember { Phones.allDialCodes() }
+        val selectedCountryName = remember(dialCode) {
+            allDialCodes.firstOrNull { it.code == dialCode }?.name
+        }
+
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            // Box 1: prefisso, apre il menu a tendina di selezione paese
+            Surface(
+                onClick = { countrySearch = ""; showCountryPicker = true },
+                shape = MaterialTheme.shapes.medium,
+                color = Color.Transparent,
+                border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                modifier = Modifier.width(108.dp).height(58.dp).testTag("reg_dialcode")
+            ) {
+                Row(
+                    Modifier.fillMaxSize().padding(horizontal = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        dialCode,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color(0xFF241309),
+                        modifier = Modifier.weight(1f)
+                    )
+                    Icon(
+                        Icons.Filled.ArrowDropDown, contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            // Box 2: numero nazionale (es. 3935672548)
+            OutlinedTextField(
+                value = phoneNational,
+                onValueChange = { phoneNational = it.filter { ch -> ch.isDigit() || ch == ' ' }; error = null },
+                label = { Text(stringResource(R.string.reg_phone_label)) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                singleLine = true,
+                shape = MaterialTheme.shapes.medium,
+                colors = fieldColors,
+                modifier = Modifier.weight(1f).testTag("reg_phone")
+            )
+        }
+        // Nome del paese selezionato, per conferma visiva sotto ai due box.
+        if (selectedCountryName != null) {
+            Spacer(Modifier.height(4.dp))
+            Text(
+                selectedCountryName,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(start = 4.dp)
+            )
+        }
+        Spacer(Modifier.height(6.dp))
+        Text(
+            if (normPhone != null) stringResource(R.string.reg_phone_recognised, normPhone)
+            else stringResource(R.string.reg_phone_help1) +
+                stringResource(R.string.reg_phone_help2),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(start = 4.dp)
         )
+
+        if (showCountryPicker) {
+            AlertDialog(
+                onDismissRequest = { showCountryPicker = false },
+                title = { Text(stringResource(R.string.reg_country_pick_title)) },
+                text = {
+                    Column(Modifier.heightIn(max = 420.dp)) {
+                        OutlinedTextField(
+                            value = countrySearch,
+                            onValueChange = { countrySearch = it },
+                            singleLine = true,
+                            placeholder = { Text(stringResource(R.string.reg_country_search)) },
+                            modifier = Modifier.fillMaxWidth().testTag("reg_country_search")
+                        )
+                        Spacer(Modifier.height(10.dp))
+                        val filtered = remember(countrySearch, allDialCodes) {
+                            if (countrySearch.isBlank()) allDialCodes
+                            else allDialCodes.filter {
+                                it.name.contains(countrySearch, ignoreCase = true) ||
+                                    it.code.contains(countrySearch)
+                            }
+                        }
+                        LazyColumn {
+                            items(filtered) { dc ->
+                                Row(
+                                    Modifier.fillMaxWidth()
+                                        .clickable {
+                                            dialCode = dc.code
+                                            showCountryPicker = false
+                                        }
+                                        .padding(vertical = 12.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(dc.name, modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
+                                    Text(dc.code, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.primary)
+                                }
+                            }
+                        }
+                    }
+                },
+                confirmButton = {
+                    TextButton(onClick = { showCountryPicker = false }) { Text(stringResource(R.string.common_cancel)) }
+                }
+            )
+        }
 
         if (error != null) {
             Spacer(Modifier.height(8.dp))

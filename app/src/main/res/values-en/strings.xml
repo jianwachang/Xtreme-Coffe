@@ -350,6 +350,8 @@
     <string name="ls_p_waiting">Waiting · %1$d</string>
     <string name="ls_p_summary">Accepted %1$d/%2$d</string>
     <string name="reg_lang_title">Which language do you want to use?</string>
+    <string name="reg_country_pick_title">Choose your country</string>
+    <string name="reg_country_search">Search for a country…</string>
     <plurals name="ip_offer">
         <item quantity="one">☕ Offering a coffee to %1$d person</item>
         <item quantity="other">☕ Offering a coffee to %1$d people</item>
