@@ -45,6 +45,7 @@ import com.extremecoffee.app.ui.TabScaffold
 import com.extremecoffee.app.ui.goFresh
 import com.extremecoffee.app.ui.makeAvatarBase64
 import com.extremecoffee.app.ui.saveProfilePhoto
+import com.extremecoffee.app.ui.decodeSampledBitmapFromFile
 import kotlinx.coroutines.launch
 
 @Composable
@@ -84,7 +85,7 @@ fun AccountScreen(nav: NavController) {
                 color = MaterialTheme.colorScheme.surfaceVariant, shadowElevation = 3.dp, modifier = Modifier.fillMaxWidth()) {
                 Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     val bmp = remember(photoPath, photoVersion) {
-                        if (photoPath != null) BitmapFactory.decodeFile(photoPath) else null
+                        if (photoPath != null) decodeSampledBitmapFromFile(photoPath, 260, 260) else null
                     }
                     if (bmp != null) {
                         Image(bmp.asImageBitmap(), contentDescription = "Foto profilo",

@@ -49,6 +49,7 @@ import com.extremecoffee.app.data.RegisterResult
 import com.extremecoffee.app.ui.goFresh
 import com.extremecoffee.app.ui.makeAvatarBase64
 import com.extremecoffee.app.ui.saveProfilePhoto
+import com.extremecoffee.app.ui.decodeSampledBitmapFromFile
 import java.io.File
 import kotlinx.coroutines.launch
 
@@ -138,7 +139,7 @@ fun RegisterScreen(nav: NavController) {
                 contentAlignment = Alignment.Center
             ) {
                 val pp = photoPath
-                val bmp = remember(pp, photoVersion) { if (pp != null) BitmapFactory.decodeFile(pp) else null }
+                val bmp = remember(pp, photoVersion) { if (pp != null) decodeSampledBitmapFromFile(pp, 300, 300) else null }
                 if (bmp != null) {
                     Image(bmp.asImageBitmap(), contentDescription = stringResource(R.string.reg_photo_cd),
                         modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)

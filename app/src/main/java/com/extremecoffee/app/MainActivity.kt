@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
@@ -35,6 +36,11 @@ class MainActivity : ComponentActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Da Android 15+ (e obbligatorio da Android 16/targetSdk 36) il sistema disegna sempre
+        // a schermo intero sotto le barre di stato/navigazione: questa è la chiamata ufficiale
+        // Google per gestirlo correttamente (Scaffold di Compose applica già da solo il padding
+        // giusto ai contenuti, quindi non serve altro).
+        enableEdgeToEdge()
         // Accesso anonimo Firebase: necessario perché le regole Firestore richiedono un utente autenticato.
         runCatching {
             if (FirebaseAuth.getInstance().currentUser == null) {

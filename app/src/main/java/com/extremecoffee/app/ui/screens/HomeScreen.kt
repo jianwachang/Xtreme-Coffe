@@ -58,6 +58,7 @@ import com.extremecoffee.app.data.MyStats
 import com.extremecoffee.app.ui.goFresh
 import com.extremecoffee.app.ui.AppBottomBar
 import com.extremecoffee.app.ui.decodeAvatar
+import com.extremecoffee.app.ui.decodeSampledBitmapFromFile
 
 private val HeroStart = Color(0xFFF3923F)
 private val HeroEnd = Color(0xFFC85F1C)
@@ -117,7 +118,7 @@ fun HomeScreen(nav: NavController) {
                     Spacer(Modifier.width(10.dp))
                     Text("Extreme Coffee", style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.weight(1f))
-                    val bmp = remember(photoPath, photoVersion) { if (photoPath != null) BitmapFactory.decodeFile(photoPath) else null }
+                    val bmp = remember(photoPath, photoVersion) { if (photoPath != null) decodeSampledBitmapFromFile(photoPath, 400, 400) else null }
                     Surface(onClick = { pickProfilePhoto.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }, shape = CircleShape,
                         color = MaterialTheme.colorScheme.primary, modifier = Modifier.size(44.dp)) {
                         if (bmp != null) {
