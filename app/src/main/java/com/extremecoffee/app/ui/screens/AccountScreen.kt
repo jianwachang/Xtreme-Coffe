@@ -84,8 +84,9 @@ fun AccountScreen(nav: NavController) {
             Surface(shape = MaterialTheme.shapes.large,
                 color = MaterialTheme.colorScheme.surfaceVariant, shadowElevation = 3.dp, modifier = Modifier.fillMaxWidth()) {
                 Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    val bmp = remember(photoPath, photoVersion) {
-                        if (photoPath != null) decodeSampledBitmapFromFile(photoPath, 260, 260) else null
+                    val pp = photoPath
+                    val bmp = remember(pp, photoVersion) {
+                        if (pp != null) decodeSampledBitmapFromFile(pp, 260, 260) else null
                     }
                     if (bmp != null) {
                         Image(bmp.asImageBitmap(), contentDescription = "Foto profilo",

@@ -118,7 +118,8 @@ fun HomeScreen(nav: NavController) {
                     Spacer(Modifier.width(10.dp))
                     Text("Extreme Coffee", style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.weight(1f))
-                    val bmp = remember(photoPath, photoVersion) { if (photoPath != null) decodeSampledBitmapFromFile(photoPath, 400, 400) else null }
+                    val pp = photoPath
+                    val bmp = remember(pp, photoVersion) { if (pp != null) decodeSampledBitmapFromFile(pp, 400, 400) else null }
                     Surface(onClick = { pickProfilePhoto.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }, shape = CircleShape,
                         color = MaterialTheme.colorScheme.primary, modifier = Modifier.size(44.dp)) {
                         if (bmp != null) {

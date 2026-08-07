@@ -15,3 +15,4 @@ build 2026-08-06T09:44:28Z v16/1.2.13 (uso internazionale: numeri telefono world
 build 2026-08-06T10:24:14Z v17/1.2.14 (registrazione: prefisso paese in menu a tendina + box numero separato)
 build 2026-08-06T15:53:56Z v18/1.2.15 (fix: mappa selezione punto non si blocca piu' - spostamento istantaneo invece di animazione; tap mappa non avvia piu' ricerca live indesiderata; Places con timeout e log diagnostici)
 build 2026-08-07T13:17:29Z v19/1.2.16 (avvisi Play Console: enableEdgeToEdge, downsampling avatar, R8 full mode)
+build 2026-08-07T13:20:56Z v19 retry (fix smart-cast su photoPath delegated property)
