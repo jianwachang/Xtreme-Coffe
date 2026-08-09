@@ -17,3 +17,4 @@ build 2026-08-06T15:53:56Z v18/1.2.15 (fix: mappa selezione punto non si blocca 
 build 2026-08-07T13:17:29Z v19/1.2.16 (avvisi Play Console: enableEdgeToEdge, downsampling avatar, R8 full mode)
 build 2026-08-07T13:20:56Z v19 retry (fix smart-cast su photoPath delegated property)
 build 2026-08-09T07:49:30Z v20/1.2.17 (Firebase BOM 33.4.0->34.16.0, firebase-auth-ktx->firebase-auth: risolve API edge-to-edge deprecate nelle librerie interne datatransport/grpc/guava)
+build 2026-08-09T07:53:01Z v20 retry (Firebase BOM 33.7.0, versione confermata compatibile con import .ktx. usati nel codice)

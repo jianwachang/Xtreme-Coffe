@@ -75,7 +75,7 @@ dependencies {
     implementation("com.google.android.libraries.places:places:3.5.0")
 
     // Firebase Firestore (backend realtime tra telefoni)
-    implementation(platform("com.google.firebase:firebase-bom:34.16.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-messaging")
 
