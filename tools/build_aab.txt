@@ -18,3 +18,4 @@ build 2026-08-07T13:17:29Z v19/1.2.16 (avvisi Play Console: enableEdgeToEdge, do
 build 2026-08-07T13:20:56Z v19 retry (fix smart-cast su photoPath delegated property)
 build 2026-08-09T07:49:30Z v20/1.2.17 (Firebase BOM 33.4.0->34.16.0, firebase-auth-ktx->firebase-auth: risolve API edge-to-edge deprecate nelle librerie interne datatransport/grpc/guava)
 build 2026-08-09T07:53:01Z v20 retry (Firebase BOM 33.7.0, versione confermata compatibile con import .ktx. usati nel codice)
+build 2026-08-09T08:02:48Z v21/1.2.18 (upgrade AGP 8.10.1->9.0.1, Gradle 8.11.1->9.1.0, Kotlin 2.0.20->2.2.10, resource shrinking ottimizzato)
