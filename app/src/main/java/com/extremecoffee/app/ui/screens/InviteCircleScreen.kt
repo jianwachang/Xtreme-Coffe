@@ -153,7 +153,7 @@ fun InviteCircleScreen(nav: NavController, eventId: String) {
         Column(mod.fillMaxSize().padding(horizontal = 16.dp)) {
 
             Text(
-                stringResource(R.string.ic_intro1) +
+                stringResource(R.string.ic_intro1).trim() + " " +
                     stringResource(R.string.ic_intro2),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,

@@ -273,7 +273,7 @@ fun LauncherStatusScreen(nav: NavController, eventId: String) {
                     shape = MaterialTheme.shapes.large
                 ) {
                     Text(
-                        stringResource(R.string.ls_new_in) + String.format("%02d:%02d", min, sec),
+                        stringResource(R.string.ls_new_in).trim() + " " + String.format("%02d:%02d", min, sec),
                         fontWeight = FontWeight.Bold
                     )
                 }

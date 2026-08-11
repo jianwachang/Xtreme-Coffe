@@ -144,7 +144,7 @@ fun InviteFriendsScreen(nav: NavController) {
         Column(mod.fillMaxSize().padding(horizontal = 16.dp)) {
 
             Text(
-                stringResource(R.string.if_intro1) +
+                stringResource(R.string.if_intro1).trim() + " " +
                     stringResource(R.string.if_intro2),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,

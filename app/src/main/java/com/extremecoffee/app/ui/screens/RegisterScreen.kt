@@ -166,7 +166,7 @@ fun RegisterScreen(nav: NavController) {
         )
         Text(
             if (editMode) stringResource(R.string.reg_sub_edit)
-            else stringResource(R.string.reg_sub_new1) +
+            else stringResource(R.string.reg_sub_new1).trim() + " " +
                 stringResource(R.string.reg_sub_new2),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -239,7 +239,7 @@ fun RegisterScreen(nav: NavController) {
         Spacer(Modifier.height(6.dp))
         Text(
             if (normPhone != null) stringResource(R.string.reg_phone_recognised, normPhone)
-            else stringResource(R.string.reg_phone_help1) +
+            else stringResource(R.string.reg_phone_help1).trim() + " " +
                 stringResource(R.string.reg_phone_help2),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
