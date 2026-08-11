@@ -115,7 +115,7 @@ fun LauncherStatusScreen(nav: NavController, eventId: String) {
                         )
                     }
                     Column(horizontalAlignment = Alignment.End) {
-                        Text("TEMPO", style = MaterialTheme.typography.labelSmall,
+                        Text(stringResource(R.string.common_time), style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant)
                         Text(
                             String.format("%02d:%02d", min, sec),

@@ -356,4 +356,10 @@
         <item quantity="one">☕ Offering a coffee to %1$d person</item>
         <item quantity="other">☕ Offering a coffee to %1$d people</item>
     </plurals>
+    <!-- Labels that used to be hardcoded -->
+    <string name="nav_back">Back</string>
+    <string name="nav_forward">Forward</string>
+    <string name="common_time">TIME</string>
+    <string name="share_tagline1">One coffee. One timer.</string>
+    <string name="share_tagline2">No excuses.</string>
 </resources>

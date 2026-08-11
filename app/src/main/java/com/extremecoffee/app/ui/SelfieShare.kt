@@ -121,10 +121,11 @@ object SelfieShare {
         c.drawOval(lx, ly, lx + ls, ly + ls,
             Paint().apply { isAntiAlias = true; style = Paint.Style.STROKE; strokeWidth = W * 0.006f; color = 0xFF281814.toInt() })
 
-        // tagline in basso a sinistra (tono di voce dell'app)
+        // tagline in basso a sinistra (tono di voce dell'app), nella lingua scelta
+        val loc = com.extremecoffee.app.data.LocaleManager.wrap(context)
         val tag = Paint().apply { isAntiAlias = true; textSize = bottomH * 0.22f; typeface = Typeface.DEFAULT_BOLD }
-        tag.color = dark; c.drawText("Un caff\u00e8. Un timer.", mx, py + innerH + bottomH * 0.42f, tag)
-        tag.color = orange; c.drawText("Zero scuse.", mx, py + innerH + bottomH * 0.72f, tag)
+        tag.color = dark; c.drawText(loc.getString(R.string.share_tagline1), mx, py + innerH + bottomH * 0.42f, tag)
+        tag.color = orange; c.drawText(loc.getString(R.string.share_tagline2), mx, py + innerH + bottomH * 0.72f, tag)
 
         return out
     }

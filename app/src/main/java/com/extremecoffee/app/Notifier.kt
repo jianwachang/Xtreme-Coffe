@@ -16,13 +16,19 @@ import com.extremecoffee.app.model.InviteResponse
 object Notifier {
     private const val CHANNEL = "extreme_coffee_invites"
 
+    // Le notifiche partono anche da servizi/worker, dove il Context di sistema non conosce
+    // la lingua scelta dall'utente (su Android 8-12): la applichiamo qui.
+    private fun loc(context: Context): Context =
+        com.extremecoffee.app.data.LocaleManager.wrap(context)
+
     fun ensureChannel(context: Context) {
         val nm = context.getSystemService(NotificationManager::class.java) ?: return
-        if (nm.getNotificationChannel(CHANNEL) == null) {
-            nm.createNotificationChannel(
-                NotificationChannel(CHANNEL, context.getString(R.string.notif_channel), NotificationManager.IMPORTANCE_HIGH)
-            )
-        }
+        // Ricreare il canale con lo stesso id non lo duplica: ne aggiorna solo il nome.
+        // Cosi' anche il nome del canale (visibile nelle impostazioni notifiche di Android)
+        // segue la lingua scelta quando l'utente la cambia.
+        nm.createNotificationChannel(
+            NotificationChannel(CHANNEL, loc(context).getString(R.string.notif_channel), NotificationManager.IMPORTANCE_HIGH)
+        )
     }
 
     private fun hasPerm(context: Context): Boolean =
@@ -60,11 +66,11 @@ object Notifier {
         if (!hasPerm(context)) return
         ensureChannel(context)
         val pi = contentPI(context, notifId, "home")
-        val text = if (label.isBlank()) context.getString(R.string.push_reminder_body)
-        else context.getString(R.string.push_reminder_body_with, label)
+        val text = if (label.isBlank()) loc(context).getString(R.string.push_reminder_body)
+        else loc(context).getString(R.string.push_reminder_body_with, label)
         val notif = NotificationCompat.Builder(context, CHANNEL)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle(context.getString(R.string.push_reminder_title))
+            .setContentTitle(loc(context).getString(R.string.push_reminder_title))
             .setContentText(text)
             .setStyle(NotificationCompat.BigTextStyle().bigText(text))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -121,8 +127,8 @@ object Notifier {
         val pi = contentPI(context, event.id.hashCode(), "invite/${event.id}")
         val notif = NotificationCompat.Builder(context, CHANNEL)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle(context.getString(R.string.push_invite_title, event.launcherName))
-            .setContentText(context.getString(R.string.push_invite_body, event.barName, event.minutes))
+            .setContentTitle(loc(context).getString(R.string.push_invite_title, event.launcherName))
+            .setContentText(loc(context).getString(R.string.push_invite_body, event.barName, event.minutes))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setTimeoutAfter(remaining)             // sparisce da sola quando l'Extreme Coffee scade
@@ -162,10 +168,10 @@ object Notifier {
         if (remaining <= 0L) return
         ensureChannel(context)
         val declined = response.status == "declined"
-        val title = if (declined) context.getString(R.string.push_resp_decline_title, response.fromName)
-                    else context.getString(R.string.push_resp_accept_title, response.fromName)
-        val text = if (declined) context.getString(R.string.push_resp_decline_body, response.fromName)
-                   else context.getString(R.string.push_resp_accept_body, response.fromName)
+        val title = if (declined) loc(context).getString(R.string.push_resp_decline_title, response.fromName)
+                    else loc(context).getString(R.string.push_resp_accept_title, response.fromName)
+        val text = if (declined) loc(context).getString(R.string.push_resp_decline_body, response.fromName)
+                   else loc(context).getString(R.string.push_resp_accept_body, response.fromName)
         val notif = NotificationCompat.Builder(context, CHANNEL)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)

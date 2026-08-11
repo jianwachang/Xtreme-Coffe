@@ -89,7 +89,7 @@ fun AccountScreen(nav: NavController) {
                         if (pp != null) decodeSampledBitmapFromFile(pp, 260, 260) else null
                     }
                     if (bmp != null) {
-                        Image(bmp.asImageBitmap(), contentDescription = "Foto profilo",
+                        Image(bmp.asImageBitmap(), contentDescription = stringResource(R.string.reg_photo_cd),
                             modifier = Modifier.size(64.dp).clip(CircleShape).clickable { editPhoto() },
                             contentScale = ContentScale.Crop)
                     } else {

@@ -19,13 +19,13 @@ class PushService : FirebaseMessagingService() {
         if (data["type"] == "cancelled") {
             val eventId = data["eventId"]
             if (!eventId.isNullOrBlank()) Notifier.cancelInvite(applicationContext, eventId)
-            val title = data["title"] ?: applicationContext.getString(R.string.push_cancelled_title)
-            val body = data["body"] ?: applicationContext.getString(R.string.push_cancelled_body)
+            val title = data["title"] ?: LocaleManager.wrap(applicationContext).getString(R.string.push_cancelled_title)
+            val body = data["body"] ?: LocaleManager.wrap(applicationContext).getString(R.string.push_cancelled_body)
             Notifier.showCancelled(applicationContext, title, body, eventId)
             return
         }
         val n = message.notification
-        val title = n?.title ?: data["title"] ?: applicationContext.getString(R.string.push_generic_title)
+        val title = n?.title ?: data["title"] ?: LocaleManager.wrap(applicationContext).getString(R.string.push_generic_title)
         val body = n?.body ?: data["body"] ?: ""
         val expiresAt = data["expiresAt"]?.toLongOrNull()
         Notifier.showRaw(applicationContext, title, body, data["eventId"], expiresAt, data["nav_route"])

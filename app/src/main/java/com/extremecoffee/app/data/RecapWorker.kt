@@ -12,6 +12,7 @@ class RecapWorker(appContext: Context, params: WorkerParameters) :
 
     override suspend fun doWork(): Result {
         val ctx = applicationContext
+        val loc = LocaleManager.wrap(ctx)   // testi del recap nella lingua scelta
         return try {
             if (!Profile.isRegistered(ctx)) return Result.success()
             val now = System.currentTimeMillis()
@@ -21,12 +22,12 @@ class RecapWorker(appContext: Context, params: WorkerParameters) :
             val stats = CoffeeRepository.loadMyStats(ctx)
             if (stats.total <= 0) { Profile.setLastRecapWeek(ctx, week); return Result.success() }
 
-            val title = ctx.getString(R.string.recap_title)
+            val title = loc.getString(R.string.recap_title)
             val body = buildString {
-                append(ctx.getString(R.string.recap_month, stats.thisMonth))
-                if (stats.streakWeeks > 0) append(ctx.getString(R.string.recap_streak, stats.streakWeeks))
-                append(ctx.getString(R.string.recap_counts, stats.launched, stats.joined))
-                if (stats.atRisk) append(ctx.getString(R.string.recap_atrisk))
+                append(loc.getString(R.string.recap_month, stats.thisMonth))
+                if (stats.streakWeeks > 0) append(loc.getString(R.string.recap_streak, stats.streakWeeks))
+                append(loc.getString(R.string.recap_counts, stats.launched, stats.joined))
+                if (stats.atRisk) append(loc.getString(R.string.recap_atrisk))
             }
             Notifier.showRecap(ctx, title, body)
             Profile.setLastRecapWeek(ctx, week)

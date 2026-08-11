@@ -358,4 +358,10 @@
         <item quantity="one">☕ Offre il caffè a %1$d persona</item>
         <item quantity="other">☕ Offre il caffè a %1$d persone</item>
     </plurals>
+    <!-- Etichette rimaste in precedenza fisse nel codice -->
+    <string name="nav_back">Indietro</string>
+    <string name="nav_forward">Avanti</string>
+    <string name="common_time">TEMPO</string>
+    <string name="share_tagline1">Un caffè. Un timer.</string>
+    <string name="share_tagline2">Zero scuse.</string>
 </resources>

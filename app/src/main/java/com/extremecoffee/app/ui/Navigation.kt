@@ -66,7 +66,7 @@ fun CoffeeScaffold(
                         NavHistory.forward.add(currentRoute)
                         if (!nav.popBackStack()) nav.navigate("home")
                     }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Indietro")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.nav_back))
                     }
                 },
                 actions = {
@@ -77,13 +77,13 @@ fun CoffeeScaffold(
                             nav.navigate(r)
                         }
                     ) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Avanti")
+                        Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = stringResource(R.string.nav_forward))
                     }
                     IconButton(onClick = {
                         NavHistory.forward.clear()
                         nav.navigate("home") { popUpTo("home") { inclusive = true } }
                     }) {
-                        Icon(Icons.Filled.Home, contentDescription = "Home")
+                        Icon(Icons.Filled.Home, contentDescription = stringResource(R.string.nav_home))
                     }
                 }
             )

@@ -77,8 +77,9 @@ fun RegisterScreen(nav: NavController) {
     fun switchLang(lang: String) {
         if (selectedLang == lang) return
         selectedLang = lang
-        LocaleManager.setLang(context, lang)
-        (context as? Activity)?.recreate()
+        // Su Android 13+ e' il sistema a riavviare la schermata con la nuova lingua;
+        // sulle versioni precedenti la ricreiamo noi.
+        if (LocaleManager.setLang(context, lang)) (context as? Activity)?.recreate()
     }
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
@@ -195,9 +196,6 @@ fun RegisterScreen(nav: NavController) {
         var showCountryPicker by remember { mutableStateOf(false) }
         var countrySearch by remember { mutableStateOf("") }
         val allDialCodes = remember { Phones.allDialCodes() }
-        val selectedCountryName = remember(dialCode) {
-            allDialCodes.firstOrNull { it.code == dialCode }?.name
-        }
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             // Box 1: prefisso, apre il menu a tendina di selezione paese
@@ -236,16 +234,6 @@ fun RegisterScreen(nav: NavController) {
                 shape = MaterialTheme.shapes.medium,
                 colors = fieldColors,
                 modifier = Modifier.weight(1f).testTag("reg_phone")
-            )
-        }
-        // Nome del paese selezionato, per conferma visiva sotto ai due box.
-        if (selectedCountryName != null) {
-            Spacer(Modifier.height(4.dp))
-            Text(
-                selectedCountryName,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(start = 4.dp)
             )
         }
         Spacer(Modifier.height(6.dp))

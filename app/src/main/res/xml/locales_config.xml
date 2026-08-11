@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Lingue supportate dall'app. Serve ad Android 13+ per la "lingua per app":
+     permette all'utente di cambiarla anche da Impostazioni > App > Extreme Coffee > Lingua. -->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="it" />
+    <locale android:name="en" />
+</locale-config>

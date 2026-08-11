@@ -69,8 +69,7 @@ fun LanguageScreen(nav: NavController) {
 
     fun switchTo(lang: String) {
         if (LocaleManager.getLang(context) == lang) return
-        LocaleManager.setLang(context, lang)
-        (context as? Activity)?.recreate()
+        if (LocaleManager.setLang(context, lang)) (context as? Activity)?.recreate()
     }
 
     InfoScaffold(nav, "language", stringResource(R.string.account_language)) {
