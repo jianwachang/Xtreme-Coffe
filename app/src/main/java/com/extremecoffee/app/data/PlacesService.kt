@@ -1,63 +1,45 @@
 package com.extremecoffee.app.data
 
 import android.content.Context
-import android.content.pm.PackageManager
+import android.net.Uri
 import android.util.Log
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.AutocompleteSessionToken
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.FetchPlaceRequest
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
-import com.google.android.libraries.places.api.net.PlacesClient
-import com.google.android.gms.maps.model.LatLng
-import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+import org.json.JSONObject
+import java.net.HttpURLConnection
+import java.net.URL
+import java.util.Locale
 
 private const val TAG = "PlacesService"
-private const val NETWORK_TIMEOUT_MS = 8_000L
+private const val TIMEOUT_MS = 8_000
 
 /**
- * Autocompletamento ufficiale Google Places.
- * - autocomplete(): suggerimenti mentre scrivi (solo testo, niente coordinate).
- * - fetchLatLng(): coordinate del luogo scelto (chiamata quando l'utente tocca un suggerimento).
- * La chiave viene letta dalla meta-data del manifest (com.google.android.geo.API_KEY).
+ * Autocompletamento indirizzi basato su Photon (OpenStreetMap) — https://photon.komoot.io
  *
- * Se i suggerimenti non compaiono MAI (lista sempre vuota), la causa più probabile non è nel
- * codice ma nella configurazione della chiave su Google Cloud Console: la "Places API" deve
- * essere abilitata per il progetto E la chiave non deve avere restrizioni che la escludono
- * (controllare "API restrictions" sulla chiave). Gli errori vengono scritti nel Logcat con
- * tag "PlacesService" per poterli verificare via `adb logcat`.
+ * PERCHÉ QUESTA SCELTA: l'autocomplete di Google Places richiede la "Places API" abilitata e
+ * fatturabile su Google Cloud, con la chiave configurata senza restrizioni che la escludano.
+ * Quando quella configurazione non è a posto, Google non restituisce risultati (senza errori
+ * visibili). Photon invece è gratuito, non richiede alcuna chiave, copre tutto il mondo ed è
+ * progettato proprio per il "completamento mentre digiti". Così la funzione è affidabile a
+ * prescindere dalla configurazione Google.
+ *
+ * L'interfaccia pubblica (Suggestion, autocomplete, fetchLatLng) è rimasta identica a prima,
+ * quindi la schermata che la usa non ha avuto bisogno di modifiche.
+ * Nota: le coordinate arrivano già nella risposta di autocomplete, quindi le "impacchettiamo"
+ * dentro placeId ("lat,lng") e fetchLatLng le rilegge senza dover fare una seconda chiamata.
  */
 object PlacesService {
 
     data class Suggestion(val placeId: String, val label: String)
 
-    private var client: PlacesClient? = null
-    private var token: AutocompleteSessionToken? = null
-
-    /** Inizializza il client Places. Non lancia mai eccezioni: se fallisce, client resta null. */
-    private fun ensureReady(context: Context): Boolean {
-        return try {
-            if (!Places.isInitialized()) {
-                val ai = context.packageManager
-                    .getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
-                val key = ai.metaData?.getString("com.google.android.geo.API_KEY")
-                if (key.isNullOrBlank()) {
-                    Log.e(TAG, "Chiave Maps/Places assente o vuota nel manifest: autocomplete disabilitato.")
-                    return false
-                }
-                Places.initialize(context.applicationContext, key)
-            }
-            if (client == null && Places.isInitialized()) {
-                client = Places.createClient(context.applicationContext)
-            }
-            if (token == null) token = AutocompleteSessionToken.newInstance()
-            client != null
-        } catch (e: Exception) {
-            // Qualsiasi problema di inizializzazione (chiave non valida, SDK non pronto, ecc.)
-            // non deve mai propagarsi: meglio "nessun suggerimento" che un crash dell'app.
-            Log.e(TAG, "Inizializzazione Places fallita", e)
-            false
+    /** Lingue realmente supportate da Photon per i nomi; per le altre usiamo l'inglese. */
+    private fun photonLang(): String {
+        return when (Locale.getDefault().language.lowercase(Locale.ROOT)) {
+            "it" -> "it"
+            "de" -> "de"
+            "fr" -> "fr"
+            else -> "en"
         }
     }
 
@@ -66,52 +48,109 @@ object PlacesService {
         query: String,
         originLat: Double? = null,
         originLng: Double? = null
-    ): List<Suggestion> {
-        if (query.trim().length < 2) return emptyList()
-        if (!ensureReady(context)) return emptyList()
-        val c = client ?: return emptyList()
-        return try {
-            withTimeoutOrNull(NETWORK_TIMEOUT_MS) {
-                val builder = FindAutocompletePredictionsRequest.builder()
-                    .setSessionToken(token)
-                    .setQuery(query)
-                // Nessuna restrizione di paese: l'autocomplete funziona ovunque nel mondo.
-                // Il bias sulla posizione (sotto) resta comunque il modo principale per dare
-                // priorità ai risultati vicini all'utente, in qualsiasi paese si trovi.
-                if (originLat != null && originLng != null) {
-                    builder.setOrigin(LatLng(originLat, originLng))
-                }
-                c.findAutocompletePredictions(builder.build()).await()
-                    .autocompletePredictions
-                    .map { Suggestion(it.placeId, it.getFullText(null).toString()) }
-            } ?: run {
-                Log.e(TAG, "Timeout richiesta autocomplete (>${NETWORK_TIMEOUT_MS}ms)")
-                emptyList()
+    ): List<Suggestion> = withContext(Dispatchers.IO) {
+        if (query.trim().length < 2) return@withContext emptyList()
+
+        val url = buildString {
+            append("https://photon.komoot.io/api/?q=")
+            append(Uri.encode(query.trim()))
+            append("&limit=6")
+            append("&lang=").append(photonLang())
+            // Bias sulla posizione: dà priorità ai risultati vicini all'utente (non è un filtro,
+            // funziona in qualsiasi paese).
+            if (originLat != null && originLng != null) {
+                append("&lat=").append(originLat)
+                append("&lon=").append(originLng)
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "Richiesta autocomplete fallita: ${e.message}", e)
+        }
+
+        val result = withTimeoutOrNull(TIMEOUT_MS.toLong()) {
+            try {
+                val conn = (URL(url).openConnection() as HttpURLConnection).apply {
+                    connectTimeout = TIMEOUT_MS
+                    readTimeout = TIMEOUT_MS
+                    // User-Agent richiesto dalle policy dei servizi OSM.
+                    setRequestProperty("User-Agent", "ExtremeCoffee/1.0 (Android; contatto: unlimitedvisionltd@gmail.com)")
+                }
+                val code = conn.responseCode
+                if (code != 200) {
+                    Log.e(TAG, "Photon ha risposto HTTP $code")
+                    conn.disconnect()
+                    return@withTimeoutOrNull emptyList<Suggestion>()
+                }
+                val body = conn.inputStream.bufferedReader().use { it.readText() }
+                conn.disconnect()
+                parsePhoton(body)
+            } catch (e: Exception) {
+                Log.e(TAG, "Richiesta Photon fallita: ${e.message}", e)
+                emptyList<Suggestion>()
+            }
+        }
+        result ?: run {
+            Log.e(TAG, "Timeout richiesta Photon (>${TIMEOUT_MS}ms)")
             emptyList()
         }
     }
 
+    /**
+     * Le coordinate sono già dentro placeId nel formato "lat,lng" (le mette autocomplete),
+     * quindi qui non serve alcuna chiamata di rete: le rileggiamo e basta.
+     */
     suspend fun fetchLatLng(context: Context, placeId: String): Pair<Double, Double>? {
-        if (!ensureReady(context)) return null
-        val c = client ?: return null
-        return try {
-            withTimeoutOrNull(NETWORK_TIMEOUT_MS) {
-                val request = FetchPlaceRequest.builder(placeId, listOf(Place.Field.LAT_LNG))
-                    .setSessionToken(token)
-                    .build()
-                val place = c.fetchPlace(request).await().place
-                token = AutocompleteSessionToken.newInstance() // nuova sessione dopo il fetch (fatturazione corretta)
-                place.latLng?.let { it.latitude to it.longitude }
-            } ?: run {
-                Log.e(TAG, "Timeout richiesta fetchLatLng (>${NETWORK_TIMEOUT_MS}ms)")
-                null
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Richiesta fetchLatLng fallita: ${e.message}", e)
-            null
+        val parts = placeId.split(",")
+        if (parts.size != 2) return null
+        val lat = parts[0].trim().toDoubleOrNull() ?: return null
+        val lng = parts[1].trim().toDoubleOrNull() ?: return null
+        return lat to lng
+    }
+
+    private fun parsePhoton(body: String): List<Suggestion> {
+        val out = ArrayList<Suggestion>()
+        val features = JSONObject(body).optJSONArray("features") ?: return out
+        for (i in 0 until features.length()) {
+            val f = features.optJSONObject(i) ?: continue
+            val geom = f.optJSONObject("geometry") ?: continue
+            val coords = geom.optJSONArray("coordinates") ?: continue
+            if (coords.length() < 2) continue
+            val lng = coords.optDouble(0, Double.NaN)
+            val lat = coords.optDouble(1, Double.NaN)
+            if (lat.isNaN() || lng.isNaN()) continue
+            val props = f.optJSONObject("properties") ?: JSONObject()
+            val label = buildLabel(props)
+            if (label.isBlank()) continue
+            out.add(Suggestion("$lat,$lng", label))
         }
+        return out
+    }
+
+    /** Costruisce un'etichetta leggibile dalle proprietà OSM (nome, via, città, paese…). */
+    private fun buildLabel(p: JSONObject): String {
+        fun v(key: String): String? = p.optString(key).takeIf { it.isNotBlank() }
+
+        val name = v("name")
+        val street = v("street")
+        val house = v("housenumber")
+        val postcode = v("postcode")
+        val city = v("city") ?: v("district") ?: v("county") ?: v("locality")
+        val state = v("state")
+        val country = v("country")
+
+        val streetLine = when {
+            street != null && house != null -> "$street $house"
+            street != null -> street
+            else -> null
+        }
+        val cityLine = listOfNotNull(postcode, city).joinToString(" ").takeIf { it.isNotBlank() }
+
+        val parts = ArrayList<String>()
+        if (name != null && name != street) parts.add(name)
+        if (streetLine != null) parts.add(streetLine)
+        when {
+            cityLine != null -> parts.add(cityLine)
+            state != null -> parts.add(state)
+        }
+        if (country != null) parts.add(country)
+
+        return parts.distinct().joinToString(", ")
     }
 }

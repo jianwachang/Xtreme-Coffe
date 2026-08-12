@@ -21,3 +21,4 @@ build 2026-08-09T07:53:01Z v20 retry (Firebase BOM 33.7.0, versione confermata c
 build 2026-08-09T08:02:48Z v21/1.2.18 (upgrade AGP 8.10.1->9.0.1, Gradle 8.11.1->9.1.0, Kotlin 2.0.20->2.2.10, resource shrinking ottimizzato)
 build 2026-08-10T10:17:48Z v22/1.2.19 ROLLBACK URGENTE: v21 (AGP9/Gradle9/R8 optimizedResourceShrinking) causava crash all'apertura in produzione. Torno alla configurazione build AGP8.10.1/Gradle8.11.1/Kotlin2.0.20 di v20, confermata funzionante.
 build 2026-08-11T10:28:53Z v24/1.2.21 (fix spazi mancanti nei testi concatenati: registrazione, invita cerchia, invita amici, countdown)
+build 2026-08-12T13:15:13Z v25/1.2.22 (autocomplete indirizzi via Photon/OpenStreetMap: gratuito, senza chiave, mondiale - risolve il completamento che non funzionava con Google Places)
