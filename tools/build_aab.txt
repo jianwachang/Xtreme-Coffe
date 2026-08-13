@@ -23,3 +23,4 @@ build 2026-08-10T10:17:48Z v22/1.2.19 ROLLBACK URGENTE: v21 (AGP9/Gradle9/R8 opt
 build 2026-08-11T10:28:53Z v24/1.2.21 (fix spazi mancanti nei testi concatenati: registrazione, invita cerchia, invita amici, countdown)
 build 2026-08-12T13:15:13Z v25/1.2.22 (autocomplete indirizzi via Photon/OpenStreetMap: gratuito, senza chiave, mondiale - risolve il completamento che non funzionava con Google Places)
 build 2026-08-13T08:36:11Z v26/1.2.23 (autocomplete: due provider OSM con fallback Photon->Nominatim + stato visibile nel box: cerco/nessuno/errore, per non fallire mai in silenzio)
+build 2026-08-13T08:51:33Z v27/1.2.24 (autocomplete: Google Places primario + Photon riserva + motivo errore esatto a schermo per diagnosi)

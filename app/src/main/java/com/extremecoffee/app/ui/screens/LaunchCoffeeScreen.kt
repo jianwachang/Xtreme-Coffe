@@ -96,7 +96,7 @@ fun LaunchCoffeeScreen(nav: NavController) {
             }
             is PlacesService.Result.Failed -> {
                 suggestions = emptyList()
-                searchInfo = context.getString(R.string.launch_addr_error)
+                searchInfo = context.getString(R.string.launch_addr_error) + "\n(" + r.reason + ")"
             }
         }
         loading = false
