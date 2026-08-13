@@ -52,6 +52,7 @@ fun LaunchCoffeeScreen(nav: NavController) {
 
     var query by remember { mutableStateOf("") }
     var suggestions by remember { mutableStateOf<List<PlacesService.Suggestion>>(emptyList()) }
+    var searchInfo by remember { mutableStateOf<String?>(null) }
     var picked by remember { mutableStateOf(false) }
     var loading by remember { mutableStateOf(false) }
 
@@ -80,14 +81,24 @@ fun LaunchCoffeeScreen(nav: NavController) {
         }
     }
 
-    // Autocompletamento ufficiale Google Places: parte da 2 caratteri, in tempo reale,
-    // con debounce breve e bias sulla posizione attuale (suggerimenti vicini prima).
+    // Autocompletamento indirizzi (OpenStreetMap): parte da 2 caratteri, in tempo reale, con
+    // debounce breve e bias sulla posizione. Ora mostra anche lo stato (cerco / nessuno / errore).
     LaunchedEffect(query) {
         if (picked) { picked = false; return@LaunchedEffect }
+        searchInfo = null
         if (query.trim().length < 2) { suggestions = emptyList(); loading = false; return@LaunchedEffect }
         loading = true
         delay(250)
-        suggestions = PlacesService.autocomplete(context, query, myLat, myLng)
+        when (val r = PlacesService.autocomplete(context, query, myLat, myLng)) {
+            is PlacesService.Result.Ok -> {
+                suggestions = r.items
+                searchInfo = if (r.items.isEmpty()) context.getString(R.string.launch_addr_none) else null
+            }
+            is PlacesService.Result.Failed -> {
+                suggestions = emptyList()
+                searchInfo = context.getString(R.string.launch_addr_error)
+            }
+        }
         loading = false
     }
 
@@ -95,6 +106,7 @@ fun LaunchCoffeeScreen(nav: NavController) {
         picked = true
         query = s.label
         suggestions = emptyList()
+        searchInfo = null
         scope.launch {
             PlacesService.fetchLatLng(context, s.placeId)?.let { (lat, lng) ->
                 barLat = lat; barLng = lng
@@ -140,6 +152,19 @@ fun LaunchCoffeeScreen(nav: NavController) {
                             if (i < suggestions.lastIndex) HorizontalDivider()
                         }
                     }
+                }
+            } else if (searchInfo != null && !loading) {
+                // Nessun suggerimento da mostrare, ma c'è qualcosa da dire all'utente
+                // (nessun risultato oppure errore di rete): non lasciamo il box muto.
+                Spacer(Modifier.height(4.dp))
+                Surface(tonalElevation = 1.dp, shape = MaterialTheme.shapes.medium,
+                    modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        searchInfo!!,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.fillMaxWidth().padding(14.dp)
+                    )
                 }
             }
 

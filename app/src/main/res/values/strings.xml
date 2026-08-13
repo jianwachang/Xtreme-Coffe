@@ -155,6 +155,8 @@
     <string name="launch_title">Lancia un caffè</string>
     <string name="launch_where">Dove vi vedete?</string>
     <string name="launch_addr_hint">Inserisci un bar o un indirizzo</string>
+    <string name="launch_addr_none">Nessun indirizzo trovato. Prova a scrivere in modo diverso.</string>
+    <string name="launch_addr_error">Non riesco a cercare gli indirizzi ora. Controlla la connessione e riprova.</string>
     <string name="launch_point_chosen">Punto scelto</string>
     <string name="launch_point_map">Punto sulla mappa</string>
     <string name="launch_point_set">☕ Punto di ritrovo impostato</string>

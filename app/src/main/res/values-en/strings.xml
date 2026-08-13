@@ -153,6 +153,8 @@
     <string name="launch_title">Start a coffee</string>
     <string name="launch_where">Where do you meet?</string>
     <string name="launch_addr_hint">Enter a café or an address</string>
+    <string name="launch_addr_none">No address found. Try typing it differently.</string>
+    <string name="launch_addr_error">Can\'t search addresses right now. Check your connection and try again.</string>
     <string name="launch_point_chosen">Chosen spot</string>
     <string name="launch_point_map">Spot on the map</string>
     <string name="launch_point_set">☕ Meeting point set</string>
