@@ -44,10 +44,6 @@ object PlacesService {
     private var client: PlacesClient? = null
     private var token: AutocompleteSessionToken? = null
 
-    private fun lang(): String = when (Locale.getDefault().language.lowercase(Locale.ROOT)) {
-        "it" -> "it"; "de" -> "de"; "fr" -> "fr"; else -> "en"
-    }
-
     suspend fun autocomplete(
         context: Context,
         query: String,
@@ -57,16 +53,16 @@ object PlacesService {
         val q = query.trim()
         if (q.length < 2) return Result.Ok(emptyList())
 
-        // 1) Google Places
-        val (googleItems, googleErr) = googleAutocomplete(context, q, originLat, originLng)
-        if (googleItems != null) return Result.Ok(googleItems)
-
-        // 2) Fallback Photon (OpenStreetMap)
+        // 1) Photon (OpenStreetMap): gratuito, senza fatturazione, ora funzionante. Motore principale.
         val (photonItems, photonErr) = photonAutocomplete(q, originLat, originLng)
         if (photonItems != null) return Result.Ok(photonItems)
 
-        // Entrambi ko: riporto i due motivi, così è chiaro cosa correggere.
-        return Result.Failed("Google: ${googleErr ?: "?"} · OpenStreetMap: ${photonErr ?: "?"}")
+        // 2) Google Places come riserva (utile solo se attivi la fatturazione sul progetto Google).
+        val (googleItems, googleErr) = googleAutocomplete(context, q, originLat, originLng)
+        if (googleItems != null) return Result.Ok(googleItems)
+
+        // Entrambi ko: riporto i due motivi, così è chiaro cosa succede.
+        return Result.Failed("OpenStreetMap: ${photonErr ?: "?"} · Google: ${googleErr ?: "?"}")
     }
 
     suspend fun fetchLatLng(context: Context, placeId: String): Pair<Double, Double>? {
@@ -137,7 +133,16 @@ object PlacesService {
     ): Pair<List<Suggestion>?, String?> = withContext(Dispatchers.IO) {
         val url = buildString {
             append("https://photon.komoot.io/api/?q=").append(Uri.encode(q))
-            append("&limit=6&lang=").append(lang())
+            append("&limit=6")
+            // Photon pubblico supporta SOLO: default, en, de, fr. Con "it" (o altre lingue)
+            // risponde HTTP 400 e non arriva NESSUN risultato. Per le lingue non supportate
+            // OMETTIAMO il parametro: Photon usa allora i nomi locali (in Italia = italiano),
+            // che è esattamente ciò che vogliamo.
+            when (Locale.getDefault().language.lowercase(Locale.ROOT)) {
+                "en" -> append("&lang=en")
+                "de" -> append("&lang=de")
+                "fr" -> append("&lang=fr")
+            }
             if (lat != null && lng != null) { append("&lat=").append(lat); append("&lon=").append(lng) }
         }
         try {
