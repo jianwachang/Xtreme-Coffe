@@ -34,6 +34,11 @@ jobs:
           echo "=== schemi disponibili ===" | tee -a build.log
           xcodebuild -project ExtremeCoffee.xcodeproj -list 2>&1 | tee -a build.log
 
+      - name: Imposta numero build univoco (evita duplicati su App Store)
+        run: |
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ github.run_number }}" ExtremeCoffee/Resources/Info.plist
+          echo "CFBundleVersion impostato a ${{ github.run_number }}" | tee -a build.log
+
       - name: Build Simulatore (verifica compilazione)
         run: |
           set -o pipefail
