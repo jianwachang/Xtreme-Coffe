@@ -34,11 +34,9 @@ struct SelfieCoffeeView: View {
                     // Banda brand in basso: logo + EXTREME COFFEE a sx, ☕ bar a dx
                     HStack(alignment: .center) {
                         HStack(spacing: 8) {
-                            ZStack {
-                                Circle().fill(EC.cream)
-                                Circle().stroke(EC.ink, lineWidth: 2)
-                                BrandLogo(size: 24, framed: false)
-                            }.frame(width: 34, height: 34)
+                            Image("CoffeeMarker")
+                                .resizable().scaledToFit()
+                                .frame(width: 34, height: 34)
                             Text("EXTREME\nCOFFEE")
                                 .font(EC.sans(13, weight: .bold)).foregroundColor(.white)
                                 .lineSpacing(0)

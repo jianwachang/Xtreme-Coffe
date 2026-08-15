@@ -28,6 +28,7 @@ enum EC {
     static let radiusSmall: CGFloat = 14
     static let radiusMedium: CGFloat = 18
     static let radiusLarge: CGFloat = 24
+    static let radiusXLarge: CGFloat = 30
 
     // MARK: Tipografia
     // Android usa DM Serif Display (titoli) + Poppins (UI). Se i font sono

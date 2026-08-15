@@ -36,7 +36,7 @@ struct HomeView: View {
                             Text(mine != nil
                                  ? t("Caffè in corso!", "Coffee in progress!")
                                  : t("Pronto per\nun caffè?", "Ready for\na coffee?"))
-                                .font(EC.serif(34)).foregroundColor(.white)
+                                .font(EC.serif(32)).foregroundColor(.white)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .padding(.top, 8)
                             // CTA bianca
@@ -56,19 +56,16 @@ struct HomeView: View {
                         }
                         .padding(20)
 
-                        // logo tazza in cerchio (in alto a destra)
-                        ZStack {
-                            Circle().fill(EC.cream)
-                            Circle().stroke(EC.ink, lineWidth: 3)
-                            BrandLogo(size: 46, framed: false)
-                        }
-                        .frame(width: 66, height: 66)
-                        .padding(18)
+                        // logo tazza reale (identico all'Android) in alto a destra
+                        Image("CoffeeMarker")
+                            .resizable().scaledToFit()
+                            .frame(width: 66, height: 66)
+                            .padding(18)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(LinearGradient(colors: [HeroStart, HeroEnd],
                                               startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .clipShape(RoundedRectangle(cornerRadius: EC.radiusLarge, style: .continuous))
+                    .clipShape(RoundedRectangle(cornerRadius: EC.radiusXLarge, style: .continuous))
                     .shadow(color: HeroEnd.opacity(0.25), radius: 10, y: 6)
 
                     // ---- CARD statistiche ----

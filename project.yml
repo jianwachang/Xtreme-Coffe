@@ -40,6 +40,12 @@ targets:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
         ITSAppUsesNonExemptEncryption: false
+        UIAppFonts:
+          - dm_serif_display.ttf
+          - poppins_regular.ttf
+          - poppins_medium.ttf
+          - poppins_semibold.ttf
+          - poppins_bold.ttf
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.extremecoffee.myapp
