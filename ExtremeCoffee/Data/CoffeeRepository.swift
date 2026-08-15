@@ -155,7 +155,17 @@ final class InMemoryCoffeeRepository: CoffeeRepositoryProtocol {
     func registerOnce(nickname: String, phone: String, myId: String) -> RegisterResult {
         let nick = nickname.trimmingCharacters(in: .whitespaces)
         guard nick.count >= 2 else { return .invalidNickname }
-        guard let norm = Phones.normalizeIt(phone) else { return .invalidPhone }
+        // Accetta numeri internazionali (E.164) o, in assenza di prefisso, il formato italiano.
+        let norm: String
+        if phone.hasPrefix("+") {
+            let digits = phone.dropFirst().filter { $0.isNumber }
+            guard digits.count >= 8 && digits.count <= 15 else { return .invalidPhone }
+            norm = "+" + digits
+        } else if let it = Phones.normalizeIt(phone) {
+            norm = it
+        } else {
+            return .invalidPhone
+        }
         if registeredUsers.contains(where: { $0.name.lowercased() == nick.lowercased() && $0.id != myId }) {
             return .nicknameTaken
         }

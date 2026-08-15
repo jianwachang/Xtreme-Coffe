@@ -8,6 +8,8 @@ final class AppState: ObservableObject {
     let repo = InMemoryCoffeeRepository()
     @Published var isRegistered: Bool = Profile.isRegistered
     @Published var myName: String = Profile.name
+    /// Lingua scelta dall'utente ("it"/"en"). Al primo avvio segue la lingua del dispositivo.
+    @Published var lang: String = (Locale.current.language.languageCode?.identifier == "en" ? "en" : "it")
     var myId: String { Profile.id }
 
     func completeRegistration(name: String, phone: String) {
