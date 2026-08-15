@@ -71,8 +71,7 @@ jobs:
           IPA=$(find build/ios/ipa -name '*.ipa' | head -1)
           echo "IPA da caricare: $IPA" | tee -a build.log
           app-store-connect publish \
-            --path "$IPA" \
-            --testflight 2>&1 | tee -a build.log
+            --path "$IPA" 2>&1 | tee -a build.log
 
       - name: Pubblica log su branch ioslog
         if: always()
