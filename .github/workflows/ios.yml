@@ -11,19 +11,30 @@ permissions:
 jobs:
   build:
     runs-on: macos-15
+    env:
+      APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ secrets.ASC_KEY_ID }}
+      APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+      CERTIFICATE_PRIVATE_KEY: ${{ secrets.CERTIFICATE_PRIVATE_KEY }}
+      BUNDLE_ID: com.extremecoffee.myapp
     steps:
       - uses: actions/checkout@v4
 
-      - name: Installa XcodeGen
-        run: brew install xcodegen
+      - name: Installa XcodeGen + Codemagic CLI tools
+        run: |
+          brew install xcodegen
+          pip3 install codemagic-cli-tools || pip3 install --break-system-packages codemagic-cli-tools
+          echo "=== versioni ===" | tee build.log
+          xcodegen --version 2>&1 | tee -a build.log
+          app-store-connect --version 2>&1 | tee -a build.log || true
 
       - name: Genera il progetto Xcode
         run: |
           xcodegen generate
-          echo "=== schemi disponibili ===" | tee build.log
+          echo "=== schemi disponibili ===" | tee -a build.log
           xcodebuild -project ExtremeCoffee.xcodeproj -list 2>&1 | tee -a build.log
 
-      - name: Build Simulatore (verifica)
+      - name: Build Simulatore (verifica compilazione)
         run: |
           set -o pipefail
           xcodebuild \
@@ -35,43 +46,41 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build 2>&1 | tee -a build.log
 
-      - name: Build dispositivo (IPA non firmata)
+      - name: Prepara keychain e scarica/crea i file di firma
         run: |
           set -o pipefail
-          xcodebuild \
-            -project ExtremeCoffee.xcodeproj \
-            -scheme ExtremeCoffee \
-            -sdk iphoneos \
-            -configuration Release \
-            -destination 'generic/platform=iOS' \
-            -derivedDataPath build \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY="" \
-            build 2>&1 | tee -a build.log
-          APP=$(find build/Build/Products/Release-iphoneos -maxdepth 1 -name '*.app' | head -1)
-          echo "App: $APP"
-          mkdir -p Payload
-          cp -R "$APP" Payload/
-          zip -qry ExtremeCoffee-unsigned.ipa Payload
-          ls -lh ExtremeCoffee-unsigned.ipa
+          keychain initialize 2>&1 | tee -a build.log
+          app-store-connect fetch-signing-files "$BUNDLE_ID" \
+            --type IOS_APP_STORE \
+            --certificate-key @env:CERTIFICATE_PRIVATE_KEY \
+            --create 2>&1 | tee -a build.log
+          keychain add-certificates 2>&1 | tee -a build.log
+          xcode-project use-profiles --project ExtremeCoffee.xcodeproj 2>&1 | tee -a build.log
 
-      - name: Pubblica IPA su branch ipa-ios
+      - name: Costruisci l'IPA firmata
         run: |
-          mkdir -p /tmp/out && cp ExtremeCoffee-unsigned.ipa /tmp/out/
-          cd /tmp/out
-          git init -q && git checkout -b ipa-ios
-          git config user.email "bot@extremecoffee.app"; git config user.name "ios-bot"
-          git add -A && git commit -q -m "IPA non firmata build ${{ github.run_number }}"
-          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ipa-ios
+          set -o pipefail
+          xcode-project build-ipa \
+            --project ExtremeCoffee.xcodeproj \
+            --scheme ExtremeCoffee 2>&1 | tee -a build.log
+          ls -lh build/ios/ipa/ 2>&1 | tee -a build.log
+
+      - name: Carica su TestFlight
+        run: |
+          set -o pipefail
+          IPA=$(find build/ios/ipa -name '*.ipa' | head -1)
+          echo "IPA da caricare: $IPA" | tee -a build.log
+          app-store-connect publish \
+            --path "$IPA" \
+            --testflight 2>&1 | tee -a build.log
 
       - name: Pubblica log su branch ioslog
         if: always()
         run: |
           mkdir -p /tmp/l
           cp build.log /tmp/l/ 2>/dev/null || echo "nessun build.log" > /tmp/l/build.log
-          grep -n "error:" /tmp/l/build.log > /tmp/l/errors.txt || echo "nessun errore trovato" > /tmp/l/errors.txt
-          tail -n 200 /tmp/l/build.log > /tmp/l/tail.txt
+          grep -niE "error:|error |failed|not authorized|no profiles|no suitable|Provisioning|Signing|Exception" /tmp/l/build.log > /tmp/l/errors.txt || echo "nessun errore trovato" > /tmp/l/errors.txt
+          tail -n 250 /tmp/l/build.log > /tmp/l/tail.txt
           cd /tmp/l
           git init -q && git checkout -b ioslog
           git config user.email "bot@extremecoffee.app"; git config user.name "ios-bot"
