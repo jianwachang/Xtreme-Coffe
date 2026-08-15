@@ -1,74 +1,94 @@
 import SwiftUI
 
-/// Selfie Coffee: scatto incorniciato con il brand (bordo arancione + banda logo
-/// "EXTREME COFFEE · ☕ <bar>") e azioni Storia/Condividi/Salva.
-/// Mirror di ui/screens/SelfieCoffeeScreen.kt (qui con placeholder foto:
-/// l'integrazione fotocamera reale va collegata su device, vedi README).
+/// Selfie Coffee — replica fedele dello screenshot Android: scatto con cornice arancione,
+/// banda brand ("EXTREME COFFEE" + "☕ <bar>"), pulsante grande "Storia Instagram",
+/// poi "Condividi"/"Salva" e "Rifai lo scatto". Mirror di SelfieCoffeeScreen.kt.
 struct SelfieCoffeeView: View {
     let barName: String
+    @EnvironmentObject var app: AppState
     @Environment(\.colorScheme) var scheme
-    @State private var shareText = ""
+
+    private func t(_ it: String, _ en: String) -> String { app.lang == "en" ? en : it }
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 16) {
-                // Cornice brandizzata
+            VStack(alignment: .leading, spacing: 18) {
+
+                Text(t("Selfie Coffee", "Selfie Coffee"))
+                    .font(EC.sans(22, weight: .bold))
+                    .foregroundColor(EC.onBackground(scheme))
+                    .padding(.top, 4)
+
+                // Scatto incorniciato
                 VStack(spacing: 0) {
                     ZStack {
                         Rectangle().fill(EC.primaryContainer)
                         VStack(spacing: 8) {
-                            Image(systemName: "camera.fill").font(.system(size: 40))
-                                .foregroundColor(EC.primary)
-                            Text("Anteprima scatto")
+                            Image(systemName: "camera.fill").font(.system(size: 44)).foregroundColor(EC.primary)
+                            Text(t("Anteprima scatto", "Photo preview"))
                                 .font(EC.label).foregroundColor(EC.muted)
                         }
                     }
-                    .frame(height: 380)
+                    .frame(height: 340)
 
-                    // Banda logo in basso
-                    HStack(spacing: 8) {
-                        BrandLogo(size: 28, framed: false)
-                        Text("EXTREME COFFEE · \u{2615} \(barName)")
-                            .font(EC.sans(12, weight: .semibold))
-                            .foregroundColor(.white).lineLimit(1)
+                    // Banda brand in basso: logo + EXTREME COFFEE a sx, ☕ bar a dx
+                    HStack(alignment: .center) {
+                        HStack(spacing: 8) {
+                            ZStack {
+                                Circle().fill(EC.cream)
+                                Circle().stroke(EC.ink, lineWidth: 2)
+                                BrandLogo(size: 24, framed: false)
+                            }.frame(width: 34, height: 34)
+                            Text("EXTREME\nCOFFEE")
+                                .font(EC.sans(13, weight: .bold)).foregroundColor(.white)
+                                .lineSpacing(0)
+                        }
                         Spacer()
+                        Text("\u{2615} \(barName)")
+                            .font(EC.sans(13, weight: .bold)).foregroundColor(EC.primary)
                     }
-                    .padding(.horizontal, 12).padding(.vertical, 10)
+                    .padding(.horizontal, 14).padding(.vertical, 12)
+                    .frame(maxWidth: .infinity)
                     .background(EC.ink)
                 }
-                .overlay(RoundedRectangle(cornerRadius: EC.radiusMedium)
-                    .stroke(EC.primary, lineWidth: 4))
+                .overlay(RoundedRectangle(cornerRadius: EC.radiusMedium).stroke(EC.primary, lineWidth: 4))
                 .clipShape(RoundedRectangle(cornerRadius: EC.radiusMedium))
 
-                // Azioni
-                HStack(spacing: 10) {
-                    SelfieAction(title: "Storia", icon: "camera.badge.ellipsis")
-                    SelfieAction(title: "Condividi", icon: "square.and.arrow.up")
-                    SelfieAction(title: "Salva", icon: "square.and.arrow.down")
+                // Pulsante grande "Storia Instagram"
+                Button { } label: {
+                    Text(t("Storia Instagram", "Instagram Story"))
+                        .font(EC.sans(17, weight: .bold)).foregroundColor(.white)
+                        .frame(maxWidth: .infinity).frame(height: 56)
+                        .background(EC.primary)
+                        .clipShape(RoundedRectangle(cornerRadius: EC.radiusLarge, style: .continuous))
                 }
 
-                Text("Sul dispositivo, \"Storia\" apre la fotocamera e prepara lo scatto per la storia Instagram con questa cornice.")
-                    .font(EC.label).foregroundColor(EC.muted)
-                    .multilineTextAlignment(.center)
+                // Condividi | Salva (outline)
+                HStack(spacing: 12) {
+                    outlineButton(t("Condividi", "Share"))
+                    outlineButton(t("Salva", "Save"))
+                }
+
+                // Rifai lo scatto
+                Button { } label: {
+                    Text(t("Rifai lo scatto", "Retake"))
+                        .font(EC.sans(15, weight: .semibold)).foregroundColor(EC.muted)
+                        .frame(maxWidth: .infinity).frame(height: 44)
+                }
             }
-            .padding(16)
+            .padding(20)
         }
         .background(EC.background(scheme).ignoresSafeArea())
-        .navigationTitle("Selfie Coffee")
         .navigationBarTitleDisplayMode(.inline)
     }
-}
 
-private struct SelfieAction: View {
-    let title: String, icon: String
-    @Environment(\.colorScheme) var scheme
-    var body: some View {
-        VStack(spacing: 6) {
-            Image(systemName: icon).font(.title3).foregroundColor(EC.primary)
-            Text(title).font(EC.label).foregroundColor(EC.onBackground(scheme))
-        }
-        .frame(maxWidth: .infinity).padding(.vertical, 14)
-        .background(EC.card(scheme))
-        .clipShape(RoundedRectangle(cornerRadius: EC.radiusMedium))
+    @ViewBuilder
+    private func outlineButton(_ title: String) -> some View {
+        Text(title)
+            .font(EC.sans(16, weight: .bold)).foregroundColor(EC.primary)
+            .frame(maxWidth: .infinity).frame(height: 54)
+            .background(EC.card(scheme))
+            .overlay(RoundedRectangle(cornerRadius: EC.radiusLarge).stroke(EC.outline, lineWidth: 1.5))
+            .clipShape(RoundedRectangle(cornerRadius: EC.radiusLarge))
     }
 }
