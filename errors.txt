@@ -1,0 +1,21 @@
+24:    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild -project ExtremeCoffee.xcodeproj -scheme ExtremeCoffee -sdk iphonesimulator -configuration Debug -destination "generic/platform=iOS Simulator" CODE_SIGNING_ALLOWED=NO build
+27:    CODE_SIGNING_ALLOWED = NO
+45:GatherProvisioningInputs
+835:RegisterExecutionPolicyException /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+837:    builtin-RegisterExecutionPolicyException /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app
+849:[32mInitialize new keychain to store code signing certificates at /Users/runner/Library/codemagic-cli-tools/keychains/15-08-26_k41j_ae3.keychain-db[0m
+857:[32mFound 1 Signing Certificate matching specified filters: certificateType=DISTRIBUTION,IOS_DISTRIBUTION.[0m
+858:[32mFiltered out 1 Signing Certificate for given private key[0m
+864:[32mFiltered out 1 Profile that contain Signing Certificate Apple Distribution: DARIO CONDELLO (JCAXT89DTZ)[0m
+867:[32mSaved Signing Certificate Apple Distribution: DARIO CONDELLO (JCAXT89DTZ) to /Users/runner/Library/Developer/Xcode/UserData/Certificates/DISTRIBUTION_JCAXT89DTZ_885xfb3p.p12[0m
+868:[32mSaved Profile IOS_APP_STORE Extreme Coffee ios_app_store 1786785381 (78V74KAF97) to '/Users/runner/Library/Developer/Xcode/UserData/Provisioning Profiles/IOS_APP_STORE_78V74KAF97__arro39g.mobileprovision'[0m
+876:[34mConfigure code signing settings[0m
+877:Searching for files matching /Users/runner/Library/Developer/Xcode/UserData/Provisioning Profiles/*.mobileprovision
+878:Searching for files matching /Users/runner/Library/Developer/Xcode/UserData/Provisioning Profiles/*.provisionprofile
+879:Searching for files matching /Users/runner/Library/MobileDevice/Provisioning Profiles/*.mobileprovision
+880:Searching for files matching /Users/runner/Library/MobileDevice/Provisioning Profiles/*.provisionprofile
+881:List available code signing certificates in keychain /Users/runner/Library/codemagic-cli-tools/keychains/15-08-26_k41j_ae3.keychain-db
+883:[32mCompleted configuring code signing settings[0m
+888: [34m- Provisioning Profiles:[0m
+890: [34m- Signing Certificate: Apple Distribution[0m
+891: [34m- Signing Style: manual[0m

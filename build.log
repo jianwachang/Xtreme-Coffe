@@ -1,0 +1,963 @@
+=== versioni ===
+Version: 2.46.0
+AppStoreConnect installed at /opt/homebrew/bin/app-store-connect
+app-store-connect 0.69.0
+=== schemi disponibili ===
+Command line invocation:
+    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild -project ExtremeCoffee.xcodeproj -list
+
+Information about project "ExtremeCoffee":
+    Targets:
+        ExtremeCoffee
+
+    Build Configurations:
+        Debug
+        Release
+
+    If no build configuration is specified and -scheme is not passed then "Debug" is used.
+
+    Schemes:
+        ExtremeCoffee
+
+CFBundleVersion impostato a 12
+Command line invocation:
+    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild -project ExtremeCoffee.xcodeproj -scheme ExtremeCoffee -sdk iphonesimulator -configuration Debug -destination "generic/platform=iOS Simulator" CODE_SIGNING_ALLOWED=NO build
+
+Build settings from command line:
+    CODE_SIGNING_ALLOWED = NO
+    SDKROOT = iphonesimulator26.5
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (1 target)
+    Target 'ExtremeCoffee' in project 'ExtremeCoffee' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: 3606ef730f60ca8314d43136e81ef134
+Build description path: /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/XCBuildData/3606ef730f60ca8314d43136e81ef134.xcbuilddata
+CreateBuildDirectory /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee.xcodeproj
+    builtin-create-build-directory /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products
+
+CreateBuildDirectory /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee.xcodeproj
+    builtin-create-build-directory /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex
+
+ClangStatCache /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk /Users/runner/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.5-23F81a-688ef53f1462e2c8f657fdc38a81448ff45c64a1807a658693f2a61704f17a36.sdkstatcache
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee.xcodeproj
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk -o /Users/runner/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.5-23F81a-688ef53f1462e2c8f657fdc38a81448ff45c64a1807a658693f2a61704f17a36.sdkstatcache
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee-efa896b3b483a335c40b56e86e90007c-VFS-iphonesimulator/all-product-headers.yaml
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee.xcodeproj
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee-efa896b3b483a335c40b56e86e90007c-VFS-iphonesimulator/all-product-headers.yaml
+
+CreateBuildDirectory /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee.xcodeproj
+    builtin-create-build-directory /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator
+
+CreateBuildDirectory /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee.xcodeproj
+    builtin-create-build-directory /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+CreateBuildDirectory /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExplicitPrecompiledModules
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee.xcodeproj
+    builtin-create-build-directory /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+CreateBuildDirectory /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee.xcodeproj
+    builtin-create-build-directory /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee_const_extract_protocols.json (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee_const_extract_protocols.json
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.SwiftFileList (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.SwiftFileList
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.SwiftConstValuesFileList (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.SwiftConstValuesFileList
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.LinkFileList (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.LinkFileList
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee-OutputFileMap.json (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee-OutputFileMap.json
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee_const_extract_protocols.json (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee_const_extract_protocols.json
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.SwiftFileList (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.SwiftFileList
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.SwiftConstValuesFileList (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.SwiftConstValuesFileList
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.LinkFileList (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.LinkFileList
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee-OutputFileMap.json (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee-OutputFileMap.json
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee.hmap (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee.hmap
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee.DependencyStaticMetadataFileList (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee.DependencyStaticMetadataFileList
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee.DependencyMetadataFileList (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee.DependencyMetadataFileList
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-project-headers.hmap (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-project-headers.hmap
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-own-target-headers.hmap (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-own-target-headers.hmap
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-generated-files.hmap (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-generated-files.hmap
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-all-target-headers.hmap (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-all-target-headers.hmap
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-all-non-framework-target-headers.hmap (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-all-non-framework-target-headers.hmap
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-DebugDylibPath-normal-x86_64.txt (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-DebugDylibPath-normal-x86_64.txt
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-DebugDylibPath-normal-arm64.txt (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-DebugDylibPath-normal-arm64.txt
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-DebugDylibInstallName-normal-x86_64.txt (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-DebugDylibInstallName-normal-x86_64.txt
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-DebugDylibInstallName-normal-arm64.txt (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-DebugDylibInstallName-normal-arm64.txt
+
+MkDir /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /bin/mkdir -p /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app
+
+Ld /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/Binary/__preview.dylib normal x86_64 (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target x86_64-apple-ios16.0-simulator -dynamiclib -isysroot /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk -O0 -L/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -F/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -install_name @rpath/ExtremeCoffee.debug.dylib -Xlinker -dead_strip -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -dependency_info -Xlinker /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee_dependency_info.dat -o /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/Binary/__preview.dylib
+
+Ld /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/Binary/__preview.dylib normal arm64 (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios16.0-simulator -dynamiclib -isysroot /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk -O0 -L/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -F/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -install_name @rpath/ExtremeCoffee.debug.dylib -Xlinker -dead_strip -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -dependency_info -Xlinker /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee_dependency_info.dat -o /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/Binary/__preview.dylib
+
+MkDir /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_output/unthinned (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /bin/mkdir -p /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_output/unthinned
+
+MkDir /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_output/thinned (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /bin/mkdir -p /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_output/thinned
+
+GenerateAssetSymbols /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Assets.xcassets (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/actool /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Assets.xcassets --compile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app --output-format human-readable-text --notices --warnings --export-dependency-info /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_dependencies --output-partial-info-plist /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_generated_info.plist --app-icon AppIcon --compress-pngs --enable-on-demand-resources YES --development-region en --target-device iphone --target-device ipad --minimum-deployment-target 16.0 --platform iphonesimulator --bundle-identifier com.extremecoffee.myapp --generate-swift-asset-symbol-extensions NO --generate-swift-asset-symbols /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/GeneratedAssetSymbols.swift --generate-objc-asset-symbols /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/GeneratedAssetSymbols.h --generate-asset-symbol-index /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/* com.apple.actool.compilation-results */
+/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/GeneratedAssetSymbols.h
+/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/GeneratedAssetSymbols.swift
+
+
+CpResource /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/poppins_semibold.ttf /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Resources/Fonts/poppins_semibold.ttf (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Resources/Fonts/poppins_semibold.ttf /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app
+
+CreateUniversalBinary /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/__preview.dylib normal arm64\ x86_64 (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo -create /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/Binary/__preview.dylib /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/Binary/__preview.dylib -output /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/__preview.dylib
+
+CpResource /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/poppins_regular.ttf /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Resources/Fonts/poppins_regular.ttf (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Resources/Fonts/poppins_regular.ttf /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app
+
+CpResource /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/poppins_medium.ttf /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Resources/Fonts/poppins_medium.ttf (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Resources/Fonts/poppins_medium.ttf /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app
+
+CpResource /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/poppins_bold.ttf /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Resources/Fonts/poppins_bold.ttf (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Resources/Fonts/poppins_bold.ttf /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app
+
+CpResource /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/dm_serif_display.ttf /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Resources/Fonts/dm_serif_display.ttf (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Resources/Fonts/dm_serif_display.ttf /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app
+
+CompileAssetCatalogVariant thinned /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Assets.xcassets (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/actool /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Assets.xcassets --compile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_output/thinned --output-format human-readable-text --notices --warnings --export-dependency-info /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_dependencies_thinned --output-partial-info-plist /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_generated_info.plist_thinned --app-icon AppIcon --compress-pngs --enable-on-demand-resources YES --development-region en --target-device iphone --target-device ipad --minimum-deployment-target 16.0 --platform iphonesimulator
+/* com.apple.actool.compilation-results */
+/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_generated_info.plist_thinned
+/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_output/thinned/AppIcon60x60@2x.png
+/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_output/thinned/AppIcon76x76@2x~ipad.png
+/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_output/thinned/Assets.car
+
+
+SwiftDriver ExtremeCoffee normal arm64 com.apple.xcode.tools.swift.compiler (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-SwiftDriver -- /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name ExtremeCoffee -Onone @/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk -target arm64-apple-ios16.0-simulator -g -module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -F /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -c -j3 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.5-23F81a-688ef53f1462e2c8f657fdc38a81448ff45c64a1807a658693f2a61704f17a36.sdkstatcache -output-file-map /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee_const_extract_protocols.json -Xcc -iquote -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-generated-files.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-own-target-headers.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-all-target-headers.hmap -Xcc -iquote -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-project-headers.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources-normal/arm64 -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/arm64 -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee-Swift.h -working-directory /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe -experimental-emit-module-separately -disable-cmo
+
+SwiftDriver ExtremeCoffee normal x86_64 com.apple.xcode.tools.swift.compiler (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-SwiftDriver -- /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name ExtremeCoffee -Onone @/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk -target x86_64-apple-ios16.0-simulator -g -module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -F /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -c -j3 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.5-23F81a-688ef53f1462e2c8f657fdc38a81448ff45c64a1807a658693f2a61704f17a36.sdkstatcache -output-file-map /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee_const_extract_protocols.json -Xcc -iquote -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-generated-files.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-own-target-headers.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-all-target-headers.hmap -Xcc -iquote -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-project-headers.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources-normal/x86_64 -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/x86_64 -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee-Swift.h -working-directory /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe -experimental-emit-module-separately -disable-cmo
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/SwiftShims-7Q1ZRIZ6XFU8LL8J5G5KNP2ID.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_AvailabilityInternal-4AEMAKUOTYBRLPH7CECEI51PG.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_stdbool-7106MR3MZ5J8M26EF7SFI37GH.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_float-DRI87QHPGHDIV0UGRIVM1OVSM.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ptrauth-99KW7CKVZXSQOHY38O3KXSSTT.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_float-F1RY5W05PL02SOXP7IY5NRKH9.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/SwiftShims-25GF3K3ZWSIY4T115Z2UEBZRL.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ptrcheck-C8R778NJC5CM6RXK2EW19BG9S.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_SwiftConcurrencyShims-4KKVRAVQYQHYK78482W4R7Y0E.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/DeveloperToolsSupport-61KBSG06XH7JULTKC4JJAZYGU.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ptrcheck-WAV18TPZUVHKV3LXIRAFLYN7.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ptrauth-4XHE24MUNLZWC74DWH6I0Q3YH.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_DarwinFoundation1-ELY96AJM4DUJD4M8Y2H1D5054.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_stdarg-16FW3CYRYWSUILUWZVPZ56CI0.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_stdbool-BXY040X58V8IZOC6WDNJXHXCV.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/DeveloperToolsSupport-C53NC86S0F0ZYQ9FAEZ5BBGD8.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_SwiftConcurrencyShims-8DTSQILWN2NJ96VMR1Q63ORO1.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_limits-18GUEO9RKINX2BEVUWBWI25LL.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ExtensionFoundation-AWXKHLJ13PNRG4GLVPFIGS591.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_AvailabilityInternal-6DZPBQ1GDR5VQVTX2KC3CFZKH.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_stdarg-20TTVJBLLUY68CTJF1YJ48AZH.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_stddef-H5QBCMYFLPB91NRO5K33LC6F.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_stddef-DWO58UINTQGF5NN6EL74ARD99.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_DarwinFoundation1-ANGWZ3QPJMCIIRYDIFF6F0A2Q.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_DarwinFoundation2-4CY0F69XKJJJR97KR1OAOG62W.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ExtensionFoundation-6628HWWV07UYCHL51SSUY6CVX.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_DarwinFoundation2-30EAKIEMLPFIAZ2LNB2G4ILWF.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_stdint-7A5X8JRCC3J5JUJJSVHXQY1OG.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/sys_types-8CUB5ECWMSE623GF88LMHT7K4.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_stdatomic-P1QAACCKPJ3XWHDEQVE8R59Y.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_stdint-A50XLKTB75Q7HJSX20NLCDUCC.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_tgmath-BJVZJINKJNFRZCMY9V2E2E98U.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/sys_types-3WFJB1QNQT9HFLHJI0FG7PKCY.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_intrinsics-4KGL842L7V5UUL5DB22ZU9HDA.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_stdatomic-8PHN86WU604AYPILVOIQTNR65.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_DarwinFoundation3-6DD217POB8BARVOV9UQ89H754.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_DarwinFoundation3-87B9R7V06QGDNFA7D4P9H3H78.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_inttypes-73EZH83H58MM24JFLUTCF3XBR.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/simd-8GVFQ6R6BWGAURRZG38Y8OE1A.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_inttypes-EQMHUEBPFIWMF1G4MAGN9PAG0.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_tgmath-AW85S8D1L6TJFKR21487SV7LQ.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Darwin-AYUBA0TZ8YIT72I0TDW1CKCEW.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_intrinsics-44JSFAMSY2FC7CW1B4K3XV8T9.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Spatial-C7MHDB01YPJTHLBLLIQ7CMENC.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/simd-4IARXSJ6SMY3LPH7E2WP7V2L4.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ObjectiveC-3O3IF0PYMFNKBJYAMURB8C1F7.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/MachO-7PGCFQ822XQPB0R0L9H1JHQGW.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/os_object-QKBKG1I83BCA7EQXQRKTZLIX.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_Builtin_limits-AV62CHGU5T6PIMK4ZV6R4N1WH.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/os_workgroup-3D7H17UWESG4UIJVKWDILAZTW.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Darwin-APF3C2ZN9FXR10PA1SRA3PO98.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Spatial-DBHG1LZC5X3AKZANYX927P293.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Dispatch-1ZASPDOAFCNVOJMS2IX9W9XZZ.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/dnssd-4PWGUHCPFJC2C7ERY3TTIAKB5.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreFoundation-6YN29T0KG8NVPD9Q6NBXVGK70.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/MachO-EJV0RP6V75PXZFNOFMV7VU8RV.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ObjectiveC-B802B6QK4BJJ63CGILBWI02OB.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/XPC-CZEQ6NIOH4JYN2AE2VU4BRZYH.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreAudioTypes-29SXYZ6KKNB5YSN1QAHZ2BYSB.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/os_object-AF02TD8G4ZEZ3GXQY1PH0FSNT.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/os-CSOGNA4VSQQETS7C6SEHT8MXZ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/os_workgroup-73NYE0NKG4RHX1UTM23RBIAWC.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreAudio-3T0AM8SJTE9V5D9QLU72FCQSE.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreGraphics-70CVENL6RR77QB5ESL4WE5NV3.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Dispatch-3KN2919J4WK06BTC8UFCB42FN.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Security-EKG1FJ9LCU1NMJLG1J9N7731J.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ImageIO-2EGIVMQ9S0MZZJXVH3E02JJUF.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/XPC-55NK3COZI48F3N2K2V8KFWCC1.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/dnssd-ADI1EP21JY0T7XPB85BID4OJU.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreFoundation-8O1NNKID9BZPZI1HHDYA9QSN8.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreText-D2DI3WWYJ89UN1NUUCKAC4M4O.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/os-7HEU2P5Q9W31LMJ19ZXYYVXSS.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CFNetwork-EH47WOZ3S7C7GWX6JN0MX7DLX.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Security-95EHSFZOAPJ358UFK25YA3AQD.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreGraphics-BLKTZREZS9TJL5Y3Y0V3MUFRO.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Foundation-ESY2KAEEFYPO2X4Q69DYH8B55.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CFNetwork-2GF6GF914KIFQ38MZKXVA3J7I.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ImageIO-1E2X9DD074CC95S3HN9D1IL5U.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreAudioTypes-637BIT0GWSGA5EQD0W66BA81T.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Foundation-1PTEE9RGH68MBUWZNWKWC193Z.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreAudio-21VVU26L7MM8334C04KNQCELT.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/IOSurface-E7YQOH5U3PPLGADYBT53J3SWG.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/FileProvider-7NOMLBB93UL0JVDU6BC6HZJHY.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/UIUtilities-8HVPDUXSG6Y8DQFEZ5QQ2BSJP.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Network-D98U118HGJ0BXGAKIEVHAF1CQ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/OpenGLES-4NKEV3L6CLUARBBYKZS70K8V.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreTransferable-ATYR50YZ8UXEMVZ0C414V2ATZ.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/OpenGLES-2OJ75NWPVE8F95E4MEJLKC4X4.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_LocationEssentials-6SZUXY6WL6IEM2CZVO7IXRBS0.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Symbols-9GQ0YDSHLIVN04OWAYR6HDOHL.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/FileProvider-EV22JPVA1HLL2AQ1VKDPT5ACG.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Network-3QROYKFIEUE3JVAFUBCFX7VVQ.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/UserNotifications-3TUU4QNPOS633T6WQIZN6USFT.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Metal-6F4RTKFK9N7WJCNL2QGSE1L1Q.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/AVRouting-6IUHQK6PODQOASO1EGIMDPHDN.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/OSLog-JELT6ZLAXSAQA917ROMIQAQD.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/UIUtilities-DXFEK0IECSX8PAMNU2S9G0GGX.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Symbols-DQ6JNDWUOVE89G0YXMYNMKUQ2.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Accessibility-D4N59F9ICM7C4V7WKZ47LFT4.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreLocation-D6RCRQPC3SQ66OKL5NCC8WD0J.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreMIDI-B72N5T0UFFX6NWXVHEBV3JH6G.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreTransferable-3F6SX81N75IV2BJBW5HJBLOG5.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/OSLog-1HRW84YGA0B6U6Q2M0W2J6XDN.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/IOSurface-97KA04QGQHV850AXUA05LMB58.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/UniformTypeIdentifiers-4V5BE1PPXMEYWW5KHFRD6G0UT.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/UserNotifications-7P7MEL69A4HM1XOO31HBWLEPC.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Metal-CLJRFHE5G9CUUKBMXC13CSYDO.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreData-8LDZC0X103VE8R8OBZTLG3OUC.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/DataDetection-6SYUEZOG1HRAXQ176ZCACSYXQ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Accessibility-6RYZQOEO1N4UXHKDPKMT1D45A.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/AVRouting-BGZM2VWA73YOAD9LJ9N27LZF6.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/AudioToolbox-AXQQOBYVRVFL1S4GPK6JT9BKZ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/UniformTypeIdentifiers-47LTBOG29G6NM2EM2NGT5R1T6.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreVideo-9FR5O68YZAFEGZNM2GCV3OB8X.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/DataDetection-B7JC3NYB9T5LVJBB8HSGR4UDD.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreVideo-4QFECY7SPZQ1AQJAIUXCZ4GFZ.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreImage-1QP1IRJKH4IQWUEWSMDL1BYA.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreMedia-DWSK72U8N9RRZ91F707U4SX88.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreMedia-9A9WQWD5EUDNBD0KA7LUK5Q0L.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreImage-2XOWYSEH6N8WXT2PHC5R1THSB.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/AVFAudio-20BYSCGRV22GGNFBZD2YGPUC1.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/QuartzCore-4VYWPRYGW7LOLX2FIR42JMSJX.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/QuartzCore-66AHQ13MM6PSTBWUZAIY7XCW9.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/MediaToolbox-BBK486Z5MIFAYJQQ9O46XYL6.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/UIKit-ESRQH9CONQ7QAQ4OTS4H9VXXI.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/AVFoundation-AMVS1QYAO7FRGHIJBK9JWLFHF.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/SwiftUICore-EVAPEM8AR0SUSLVBR623C4XH0.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreData-AFWTX83G7HFRXS673JYS1LKRB.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/_LocationEssentials-WMD78CL6N44Z1HEAT60NG4B8.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreMIDI-DO256TCQTO4OD7EXH3H3V9VBB.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreLocation-EGZ87RCZJKN6SEYR0GNWJKMQ0.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/AudioToolbox-43UCAROOY1DHH69S9URSWB6UU.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Photos-9I2F5J5K9J51E04C08BXPCFRM.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/SwiftUI-1L23XJ0HI83YT7SIYALMMW5PZ.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/MapKit-AWNEDQOHTYLK52COZHCPV8OWJ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/AVFAudio-11D48A21UKXFZU81UJP6AGPIJ.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/PhotosUI-B3RHC2M681YAQOE8PKMD6Y1VW.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/MediaToolbox-PHW0Q1QIN1GMSG4K87OJRC6C.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreText-4EBQHS853T98K6ZTQTFX16U9I.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/AVFoundation-DT2WVBDKOTGISK0E7JKWE62FS.pcm
+
+SwiftEmitModule normal x86_64 Emitting\ module\ for\ ExtremeCoffee (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+EmitSwiftModule normal x86_64 (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/SwiftUICore-4XCD93VCTZTA0381JBAMF03NF.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Photos-3YP5ERM3T1XDWBXSTN5P98I6I.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/UIKit-CVDQ4ZFZ3C09E3QHZA1IQWWUB.pcm
+
+SwiftCompile normal x86_64 Compiling\ BrandLogo.swift,\ CoffeeEvent.swift,\ CoffeeRepository.swift,\ Config.swift,\ DialCodes.swift,\ ExtremeCoffeeApp.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Theme/BrandLogo.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Model/CoffeeEvent.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Data/CoffeeRepository.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Data/Config.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Data/DialCodes.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/App/ExtremeCoffeeApp.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+SwiftCompile normal x86_64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Theme/BrandLogo.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal x86_64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Model/CoffeeEvent.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal x86_64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Data/CoffeeRepository.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal x86_64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Data/Config.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal x86_64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Data/DialCodes.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal x86_64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/App/ExtremeCoffeeApp.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftDriverJobDiscovery normal x86_64 Emitting module for ExtremeCoffee (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+SwiftDriver\ Compilation\ Requirements ExtremeCoffee normal x86_64 com.apple.xcode.tools.swift.compiler (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name ExtremeCoffee -Onone @/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk -target x86_64-apple-ios16.0-simulator -g -module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -F /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -c -j3 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.5-23F81a-688ef53f1462e2c8f657fdc38a81448ff45c64a1807a658693f2a61704f17a36.sdkstatcache -output-file-map /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee_const_extract_protocols.json -Xcc -iquote -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-generated-files.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-own-target-headers.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-all-target-headers.hmap -Xcc -iquote -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-project-headers.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources-normal/x86_64 -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/x86_64 -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee-Swift.h -working-directory /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe -experimental-emit-module-separately -disable-cmo
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/SwiftUI-21HO5GXGWMPI9BSAIULZAIM08.pcm
+
+Copy /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.swiftmodule/x86_64-apple-ios-simulator.swiftmodule /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.swiftmodule (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.swiftmodule /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.swiftmodule/x86_64-apple-ios-simulator.swiftmodule
+
+Copy /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.swiftmodule/x86_64-apple-ios-simulator.swiftdoc /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.swiftdoc (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.swiftdoc /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.swiftmodule/x86_64-apple-ios-simulator.swiftdoc
+
+Copy /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.swiftmodule/x86_64-apple-ios-simulator.abi.json /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.abi.json (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.abi.json /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.swiftmodule/x86_64-apple-ios-simulator.abi.json
+
+Copy /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.swiftsourceinfo (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.swiftsourceinfo /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/PhotosUI-CUXW3PBA1A7NL8V4FSUB5GXBV.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/MapKit-B0VWI7SEQ87L2GBGOHQUXNLQZ.pcm
+
+SwiftCompile normal x86_64 Compiling\ RootView.swift,\ SecondaryScreens.swift,\ SelfieCoffeeView.swift,\ Theme.swift,\ GeneratedAssetSymbols.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/RootView.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/SecondaryScreens.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/SelfieCoffeeView.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Theme/Theme.swift /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+SwiftCompile normal x86_64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/RootView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal x86_64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/SecondaryScreens.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal x86_64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/SelfieCoffeeView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal x86_64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Theme/Theme.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftEmitModule normal arm64 Emitting\ module\ for\ ExtremeCoffee (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+EmitSwiftModule normal arm64 (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftDriverJobDiscovery normal x86_64 Compiling RootView.swift, SecondaryScreens.swift, SelfieCoffeeView.swift, Theme.swift, GeneratedAssetSymbols.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+SwiftCompile normal arm64 Compiling\ HomeView.swift,\ InvitePopupView.swift,\ LaunchCoffeeView.swift,\ LauncherStatusView.swift,\ Profile.swift,\ RegisterView.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/HomeView.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/InvitePopupView.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/LaunchCoffeeView.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/LauncherStatusView.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Data/Profile.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/RegisterView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+SwiftCompile normal arm64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/HomeView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal arm64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/InvitePopupView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal arm64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/LaunchCoffeeView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal arm64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/LauncherStatusView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal arm64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Data/Profile.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal arm64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/RegisterView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftDriverJobDiscovery normal x86_64 Compiling BrandLogo.swift, CoffeeEvent.swift, CoffeeRepository.swift, Config.swift, DialCodes.swift, ExtremeCoffeeApp.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+SwiftCompile normal arm64 Compiling\ RootView.swift,\ SecondaryScreens.swift,\ SelfieCoffeeView.swift,\ Theme.swift,\ GeneratedAssetSymbols.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/RootView.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/SecondaryScreens.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/SelfieCoffeeView.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Theme/Theme.swift /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+SwiftCompile normal arm64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/RootView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal arm64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/SecondaryScreens.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal arm64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/SelfieCoffeeView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal arm64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Theme/Theme.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftDriverJobDiscovery normal arm64 Emitting module for ExtremeCoffee (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+SwiftDriver\ Compilation\ Requirements ExtremeCoffee normal arm64 com.apple.xcode.tools.swift.compiler (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name ExtremeCoffee -Onone @/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk -target arm64-apple-ios16.0-simulator -g -module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -F /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -c -j3 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.5-23F81a-688ef53f1462e2c8f657fdc38a81448ff45c64a1807a658693f2a61704f17a36.sdkstatcache -output-file-map /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee_const_extract_protocols.json -Xcc -iquote -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-generated-files.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-own-target-headers.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-all-target-headers.hmap -Xcc -iquote -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-project-headers.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources-normal/arm64 -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/arm64 -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee-Swift.h -working-directory /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe -experimental-emit-module-separately -disable-cmo
+
+SwiftDriverJobDiscovery normal arm64 Compiling RootView.swift, SecondaryScreens.swift, SelfieCoffeeView.swift, Theme.swift, GeneratedAssetSymbols.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+SwiftCompile normal arm64 Compiling\ BrandLogo.swift,\ CoffeeEvent.swift,\ CoffeeRepository.swift,\ Config.swift,\ DialCodes.swift,\ ExtremeCoffeeApp.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Theme/BrandLogo.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Model/CoffeeEvent.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Data/CoffeeRepository.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Data/Config.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Data/DialCodes.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/App/ExtremeCoffeeApp.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+SwiftCompile normal arm64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Theme/BrandLogo.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal arm64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Model/CoffeeEvent.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal arm64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Data/CoffeeRepository.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal arm64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Data/Config.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal arm64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Data/DialCodes.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal arm64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/App/ExtremeCoffeeApp.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftMergeGeneratedHeaders /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/ExtremeCoffee-Swift.h /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee-Swift.h /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee-Swift.h (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-swiftHeaderTool -arch arm64 /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee-Swift.h -arch x86_64 /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee-Swift.h -o /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/ExtremeCoffee-Swift.h
+
+SwiftDriverJobDiscovery normal arm64 Compiling HomeView.swift, InvitePopupView.swift, LaunchCoffeeView.swift, LauncherStatusView.swift, Profile.swift, RegisterView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+Copy /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.swiftmodule/arm64-apple-ios-simulator.swiftmodule /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.swiftmodule (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.swiftmodule /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.swiftmodule/arm64-apple-ios-simulator.swiftmodule
+
+Copy /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.swiftmodule/arm64-apple-ios-simulator.swiftdoc /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.swiftdoc (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.swiftdoc /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.swiftmodule/arm64-apple-ios-simulator.swiftdoc
+
+Copy /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.swiftmodule/arm64-apple-ios-simulator.abi.json /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.abi.json (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.abi.json /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.swiftmodule/arm64-apple-ios-simulator.abi.json
+
+Copy /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.swiftsourceinfo (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.swiftsourceinfo /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo
+
+SwiftCompile normal x86_64 Compiling\ HomeView.swift,\ InvitePopupView.swift,\ LaunchCoffeeView.swift,\ LauncherStatusView.swift,\ Profile.swift,\ RegisterView.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/HomeView.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/InvitePopupView.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/LaunchCoffeeView.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/LauncherStatusView.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Data/Profile.swift /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/RegisterView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+SwiftCompile normal x86_64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/HomeView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal x86_64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/InvitePopupView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal x86_64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/LaunchCoffeeView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal x86_64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/LauncherStatusView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal x86_64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Data/Profile.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftCompile normal x86_64 /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/UI/Screens/RegisterView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    
+
+SwiftDriverJobDiscovery normal arm64 Compiling BrandLogo.swift, CoffeeEvent.swift, CoffeeRepository.swift, Config.swift, DialCodes.swift, ExtremeCoffeeApp.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+SwiftDriver\ Compilation ExtremeCoffee normal arm64 com.apple.xcode.tools.swift.compiler (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-Swift-Compilation -- /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name ExtremeCoffee -Onone @/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk -target arm64-apple-ios16.0-simulator -g -module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -F /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -c -j3 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.5-23F81a-688ef53f1462e2c8f657fdc38a81448ff45c64a1807a658693f2a61704f17a36.sdkstatcache -output-file-map /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee_const_extract_protocols.json -Xcc -iquote -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-generated-files.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-own-target-headers.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-all-target-headers.hmap -Xcc -iquote -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-project-headers.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources-normal/arm64 -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/arm64 -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee-Swift.h -working-directory /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe -experimental-emit-module-separately -disable-cmo
+
+Ld /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/Binary/ExtremeCoffee.debug.dylib normal arm64 (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios16.0-simulator -dynamiclib -isysroot /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk -O0 -L/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator -L/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -F/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator -F/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -filelist /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.LinkFileList -install_name @rpath/ExtremeCoffee.debug.dylib -Xlinker -rpath -Xlinker /usr/lib/swift -Xlinker -rpath -Xlinker @executable_path/Frameworks -Xlinker -dead_strip -Xlinker -object_path_lto -Xlinker /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee_lto.o -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -dependency_info -Xlinker /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee_dependency_info.dat -fobjc-link-runtime -L/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator -L/usr/lib/swift -Xlinker -add_ast_path -Xlinker /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.swiftmodule @/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee-linker-args.resp -Xlinker -alias -Xlinker _main -Xlinker ___debug_main_executable_dylib_entry_point -o /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/Binary/ExtremeCoffee.debug.dylib
+
+ConstructStubExecutorLinkFileList /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-ExecutorLinkFileList-normal-arm64.txt (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    construct-stub-executor-link-file-list /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/Binary/ExtremeCoffee.debug.dylib /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libPreviewsJITStubExecutor_no_swift_entry_point.a /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libPreviewsJITStubExecutor.a --output /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-ExecutorLinkFileList-normal-arm64.txt
+note: Using stub executor library with Swift entry point. (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+Ld /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/Binary/ExtremeCoffee normal arm64 (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios16.0-simulator -isysroot /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk -O0 -L/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -F/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -Xlinker -rpath -Xlinker @executable_path -Xlinker -rpath -Xlinker @executable_path/Frameworks -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -e ___debug_blank_executor_main -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __debug_dylib -Xlinker /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-DebugDylibPath-normal-arm64.txt -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __debug_instlnm -Xlinker /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-DebugDylibInstallName-normal-arm64.txt -Xlinker -filelist -Xlinker /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-ExecutorLinkFileList-normal-arm64.txt /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/Binary/ExtremeCoffee.debug.dylib -o /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/Binary/ExtremeCoffee
+
+SwiftDriverJobDiscovery normal x86_64 Compiling HomeView.swift, InvitePopupView.swift, LaunchCoffeeView.swift, LauncherStatusView.swift, Profile.swift, RegisterView.swift (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+SwiftDriver\ Compilation ExtremeCoffee normal x86_64 com.apple.xcode.tools.swift.compiler (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-Swift-Compilation -- /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name ExtremeCoffee -Onone @/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk -target x86_64-apple-ios16.0-simulator -g -module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -F /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -c -j3 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.5-23F81a-688ef53f1462e2c8f657fdc38a81448ff45c64a1807a658693f2a61704f17a36.sdkstatcache -output-file-map /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee_const_extract_protocols.json -Xcc -iquote -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-generated-files.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-own-target-headers.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-all-target-headers.hmap -Xcc -iquote -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-project-headers.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources-normal/x86_64 -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources/x86_64 -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee-Swift.h -working-directory /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe -experimental-emit-module-separately -disable-cmo
+
+Ld /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/Binary/ExtremeCoffee.debug.dylib normal x86_64 (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target x86_64-apple-ios16.0-simulator -dynamiclib -isysroot /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk -O0 -L/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator -L/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -F/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator -F/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -filelist /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.LinkFileList -install_name @rpath/ExtremeCoffee.debug.dylib -Xlinker -rpath -Xlinker /usr/lib/swift -Xlinker -rpath -Xlinker @executable_path/Frameworks -Xlinker -dead_strip -Xlinker -object_path_lto -Xlinker /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee_lto.o -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -dependency_info -Xlinker /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee_dependency_info.dat -fobjc-link-runtime -L/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator -L/usr/lib/swift -Xlinker -add_ast_path -Xlinker /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.swiftmodule @/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee-linker-args.resp -Xlinker -alias -Xlinker _main -Xlinker ___debug_main_executable_dylib_entry_point -o /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/Binary/ExtremeCoffee.debug.dylib
+
+CreateUniversalBinary /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/ExtremeCoffee.debug.dylib normal arm64\ x86_64 (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo -create /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/Binary/ExtremeCoffee.debug.dylib /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/Binary/ExtremeCoffee.debug.dylib -output /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/ExtremeCoffee.debug.dylib
+
+ConstructStubExecutorLinkFileList /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-ExecutorLinkFileList-normal-x86_64.txt (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    construct-stub-executor-link-file-list /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/Binary/ExtremeCoffee.debug.dylib /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libPreviewsJITStubExecutor_no_swift_entry_point.a /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libPreviewsJITStubExecutor.a --output /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-ExecutorLinkFileList-normal-x86_64.txt
+note: Using stub executor library with Swift entry point. (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+Ld /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/Binary/ExtremeCoffee normal x86_64 (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target x86_64-apple-ios16.0-simulator -isysroot /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk -O0 -L/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -F/Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator -Xlinker -rpath -Xlinker @executable_path -Xlinker -rpath -Xlinker @executable_path/Frameworks -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -e ___debug_blank_executor_main -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __debug_dylib -Xlinker /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-DebugDylibPath-normal-x86_64.txt -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __debug_instlnm -Xlinker /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-DebugDylibInstallName-normal-x86_64.txt -Xlinker -filelist -Xlinker /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee-ExecutorLinkFileList-normal-x86_64.txt /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/Binary/ExtremeCoffee.debug.dylib -o /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/Binary/ExtremeCoffee
+
+CreateUniversalBinary /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/ExtremeCoffee normal arm64\ x86_64 (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo -create /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/Binary/ExtremeCoffee /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/Binary/ExtremeCoffee -output /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/ExtremeCoffee
+
+LinkAssetCatalog /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Assets.xcassets (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-linkAssetCatalog --thinned /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_output/thinned --thinned-dependencies /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_dependencies_thinned --thinned-info-plist-content /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_generated_info.plist_thinned --unthinned /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_output/unthinned --unthinned-dependencies /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_dependencies_unthinned --unthinned-info-plist-content /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_generated_info.plist_unthinned --output /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app --plist-output /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_generated_info.plist
+note: Emplaced /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/Assets.car (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+note: Emplaced /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/AppIcon76x76@2x~ipad.png (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+note: Emplaced /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/AppIcon60x60@2x.png (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+
+ProcessInfoPlistFile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/Info.plist /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Resources/Info.plist (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-infoPlistUtility /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee/Resources/Info.plist -producttype com.apple.product-type.application -genpkginfo /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/assetcatalog_generated_info.plist -o /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/Info.plist
+
+ExtractAppIntentsMetadata (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsmetadataprocessor --toolchain-dir /var/run/com.apple.security.cryptexd/mnt/com.apple.MobileAsset.MetalToolchain-v17.6.109.0.fvQJZC/Metal.xctoolchain --module-name ExtremeCoffee --sdk-root /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk --xcode-version 17F113 --platform-family iOS --deployment-target 16.0 --bundle-identifier com.extremecoffee.myapp --output /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app --target-triple arm64-apple-ios16.0-simulator --target-triple x86_64-apple-ios16.0-simulator --binary-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/ExtremeCoffee --dependency-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee_dependency_info.dat --dependency-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee_dependency_info.dat --stringsdata-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtractedAppShortcutsMetadata.stringsdata --stringsdata-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtractedAppShortcutsMetadata.stringsdata --source-file-list /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.SwiftFileList --source-file-list /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.SwiftFileList --metadata-file-list /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee.DependencyMetadataFileList --static-metadata-file-list /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee.DependencyStaticMetadataFileList --swift-const-vals-list /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/arm64/ExtremeCoffee.SwiftConstValuesFileList --swift-const-vals-list /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/Objects-normal/x86_64/ExtremeCoffee.SwiftConstValuesFileList --compile-time-extraction --deployment-aware-processing --validate-assistant-intents --no-app-shortcuts-localization
+2026-08-15 15:20:28.568 appintentsmetadataprocessor[4889:18362] Starting appintentsmetadataprocessor export
+2026-08-15 15:20:28.577 appintentsmetadataprocessor[4889:18362] warning: Metadata extraction skipped. No AppIntents.framework dependency found.
+
+CopySwiftLibs /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-swiftStdLibTool --copy --verbose --scan-executable /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/ExtremeCoffee.debug.dylib --scan-folder /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/Frameworks --scan-folder /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/PlugIns --scan-folder /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/SystemExtensions --scan-folder /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/Extensions --platform iphonesimulator --toolchain /var/run/com.apple.security.cryptexd/mnt/com.apple.MobileAsset.MetalToolchain-v17.6.109.0.fvQJZC/Metal.xctoolchain --toolchain /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os --back-deploy-swift-span
+Ignoring --strip-bitcode because --sign was not passed
+
+AppIntentsSSUTraining (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsnltrainingprocessor --infoplist-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/Info.plist --temp-dir-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ssu --bundle-id com.extremecoffee.myapp --product-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app --extracted-metadata-path /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/Metadata.appintents --metadata-file-list /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ExtremeCoffee.build/Debug-iphonesimulator/ExtremeCoffee.build/ExtremeCoffee.DependencyMetadataFileList --source-file /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app/Info.plist --archive-ssu-assets
+2026-08-15 15:20:28.616 appintentsnltrainingprocessor[4890:18369] Parsing options for appintentsnltrainingprocessor
+2026-08-15 15:20:28.617 appintentsnltrainingprocessor[4890:18369] Starting AppIntents SSU YAML Generation
+2026-08-15 15:20:28.622 appintentsnltrainingprocessor[4890:18369] No AppShortcuts found - Skipping.
+
+RegisterExecutionPolicyException /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-RegisterExecutionPolicyException /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app
+
+Validate /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    builtin-validationUtility /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app -shallow-bundle -infoplist-subpath Info.plist
+
+Touch /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+    cd /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe
+    /usr/bin/touch -c /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Products/Debug-iphonesimulator/ExtremeCoffee.app
+
+** BUILD SUCCEEDED **
+
+[32mInitialize new keychain to store code signing certificates at /Users/runner/Library/codemagic-cli-tools/keychains/15-08-26_k41j_ae3.keychain-db[0m
+Create keychain /Users/runner/Library/codemagic-cli-tools/keychains/15-08-26_k41j_ae3.keychain-db
+Set keychain /Users/runner/Library/codemagic-cli-tools/keychains/15-08-26_k41j_ae3.keychain-db timeout to "no timeout"
+Set keychain /Users/runner/Library/codemagic-cli-tools/keychains/15-08-26_k41j_ae3.keychain-db to system default keychain
+Unlock keychain /Users/runner/Library/codemagic-cli-tools/keychains/15-08-26_k41j_ae3.keychain-db
+[32mFound 1 Bundle ID matching specified filters: identifier=com.extremecoffee.myapp, platform=IOS.[0m
+- Extreme Coffee com.extremecoffee.myapp (K7L66VQQ87)
+
+[32mFound 1 Signing Certificate matching specified filters: certificateType=DISTRIBUTION,IOS_DISTRIBUTION.[0m
+[32mFiltered out 1 Signing Certificate for given private key[0m
+- Apple Distribution: DARIO CONDELLO (JCAXT89DTZ)
+
+Get Profiles for Bundle ID K7L66VQQ87
+[32mFound 1 Profile for Bundle ID K7L66VQQ87 matching specified filters: profileState=ACTIVE, profileType=IOS_APP_STORE.[0m
+
+[32mFiltered out 1 Profile that contain Signing Certificate Apple Distribution: DARIO CONDELLO (JCAXT89DTZ)[0m
+- IOS_APP_STORE Extreme Coffee ios_app_store 1786785381 (78V74KAF97)
+
+[32mSaved Signing Certificate Apple Distribution: DARIO CONDELLO (JCAXT89DTZ) to /Users/runner/Library/Developer/Xcode/UserData/Certificates/DISTRIBUTION_JCAXT89DTZ_885xfb3p.p12[0m
+[32mSaved Profile IOS_APP_STORE Extreme Coffee ios_app_store 1786785381 (78V74KAF97) to '/Users/runner/Library/Developer/Xcode/UserData/Provisioning Profiles/IOS_APP_STORE_78V74KAF97__arro39g.mobileprovision'[0m
+Add certificates to keychain /Users/runner/Library/codemagic-cli-tools/keychains/15-08-26_k41j_ae3.keychain-db
+Searching for files matching /Users/runner/Library/Developer/Xcode/UserData/Certificates/*.p12
+Searching for files matching /Users/runner/Library/MobileDevice/Certificates/*.p12
+Add certificate /Users/runner/Library/Developer/Xcode/UserData/Certificates/DISTRIBUTION_JCAXT89DTZ_885xfb3p.p12 to keychain /Users/runner/Library/codemagic-cli-tools/keychains/15-08-26_k41j_ae3.keychain-db
+security: SecKeychainItemImport: Unable to decode the provided data.
+1 key imported.
+1 certificate imported.
+[34mConfigure code signing settings[0m
+Searching for files matching /Users/runner/Library/Developer/Xcode/UserData/Provisioning Profiles/*.mobileprovision
+Searching for files matching /Users/runner/Library/Developer/Xcode/UserData/Provisioning Profiles/*.provisionprofile
+Searching for files matching /Users/runner/Library/MobileDevice/Provisioning Profiles/*.mobileprovision
+Searching for files matching /Users/runner/Library/MobileDevice/Provisioning Profiles/*.provisionprofile
+List available code signing certificates in keychain /Users/runner/Library/codemagic-cli-tools/keychains/15-08-26_k41j_ae3.keychain-db
+Searching for files matching /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/ExtremeCoffee.xcodeproj
+[32mCompleted configuring code signing settings[0m
+ [34m- Using profile "Extreme Coffee ios_app_store 1786785381" [abba155a-49d5-476a-b10a-2c66f02414fc] for target "ExtremeCoffee" [Debug] from project "ExtremeCoffee"[0m
+ [34m- Using profile "Extreme Coffee ios_app_store 1786785381" [abba155a-49d5-476a-b10a-2c66f02414fc] for target "ExtremeCoffee" [Release] from project "ExtremeCoffee"[0m
+[32mGenerated options for exporting the project[0m
+ [34m- Method: app-store[0m
+ [34m- Provisioning Profiles:[0m
+     [34m- com.extremecoffee.myapp: Extreme Coffee ios_app_store 1786785381[0m
+ [34m- Signing Certificate: Apple Distribution[0m
+ [34m- Signing Style: manual[0m
+ [34m- Team Id: DY53K8WYF9[0m
+[32mSaved export options to /Users/runner/export_options.plist[0m
+[34mUsing Xcode 26.6 (17F113)[0m
+[34m[0m
+[34mCheck ExtremeCoffee.xcodeproj build settings[0m
+Execute "xcodebuild -project ExtremeCoffee.xcodeproj -scheme ExtremeCoffee -showBuildSettings"
+
+[34mArchive ExtremeCoffee.xcodeproj[0m
+Execute "xcodebuild -project ExtremeCoffee.xcodeproj -scheme ExtremeCoffee -archivePath /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/build/ios/xcarchive/ExtremeCoffee_p4c_5un3.xcarchive archive COMPILER_INDEX_STORE_ENABLE=NO DEVELOPMENT_TEAM=DY53K8WYF9 'CODE_SIGN_IDENTITY=Apple Distribution' CODE_SIGN_STYLE=Manual"
+
+[33m▸[0m [39;1mCopying[0m /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ArchiveIntermediates/ExtremeCoffee/InstallationBuildProductsLocation/Applications/ExtremeCoffee.app/poppins_semibold.ttf
+[33m▸[0m [39;1mCopying[0m /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ArchiveIntermediates/ExtremeCoffee/InstallationBuildProductsLocation/Applications/ExtremeCoffee.app/poppins_regular.ttf
+[33m▸[0m [39;1mCopying[0m /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ArchiveIntermediates/ExtremeCoffee/InstallationBuildProductsLocation/Applications/ExtremeCoffee.app/poppins_medium.ttf
+[33m▸[0m [39;1mCopying[0m /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ArchiveIntermediates/ExtremeCoffee/InstallationBuildProductsLocation/Applications/ExtremeCoffee.app/poppins_bold.ttf
+[33m▸[0m [39;1mCopying[0m /Users/runner/Library/Developer/Xcode/DerivedData/ExtremeCoffee-atsunvqlwhrvdvbbernmqmjxohjo/Build/Intermediates.noindex/ArchiveIntermediates/ExtremeCoffee/InstallationBuildProductsLocation/Applications/ExtremeCoffee.app/dm_serif_display.ttf
+[33m▸[0m [39;1mProcessing[0m Info.plist
+[33m▸[0m [39;1mLinking[0m ExtremeCoffee
+[33m▸[0m [39;1mGenerating 'ExtremeCoffee.app.dSYM'[0m
+[33m▸[0m [39;1mTouching[0m ExtremeCoffee.app (in target 'ExtremeCoffee' from project 'ExtremeCoffee')
+[33m▸[0m [39;1mArchive[0m Succeeded
+[32mSuccessfully created archive at /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/build/ios/xcarchive/ExtremeCoffee_p4c_5un3.xcarchive[0m
+[32m[0m
+[34mExport /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/build/ios/xcarchive/ExtremeCoffee_p4c_5un3.xcarchive to build/ios/ipa[0m
+Execute "xcodebuild -exportArchive -archivePath /Users/runner/work/Xtreme-Coffe/Xtreme-Coffe/build/ios/xcarchive/ExtremeCoffee_p4c_5un3.xcarchive -exportPath build/ios/ipa -exportOptionsPlist /Users/runner/export_options.plist COMPILER_INDEX_STORE_ENABLE=NO"
+
+[33m▸[0m [39;1mExport[0m Succeeded
+[32mSuccessfully exported ipa to build/ios/ipa/ExtremeCoffee.ipa[0m
+[32m[0m
+Raw xcodebuild logs stored in /tmp/xcodebuild_logs/ExtremeCoffee.log
+total 5656
+-rw-r--r--  1 runner  staff   1.4K Aug 15 15:20 DistributionSummary.plist
+-rw-r--r--  1 runner  staff   832B Aug 15 15:20 ExportOptions.plist
+-rw-r--r--  1 runner  staff   2.7M Aug 15 15:20 ExtremeCoffee.ipa
+-rw-r--r--  1 runner  staff    17K Aug 15 15:20 Packaging.log
+IPA da caricare: build/ios/ipa/ExtremeCoffee.ipa
+
+[34mPublish "build/ios/ipa/ExtremeCoffee.ipa" to App Store Connect[0m
+App name: Extreme Coffee
+Bundle identifier: com.extremecoffee.myapp
+Certificate expires: 2027-08-15T09:06:20.000+0000
+Distribution type: App Store
+Min OS version: 16.0
+Provisioned devices: N/A
+Provisions all devices: No
+Supported platforms: iPhoneOS
+Version code: 12
+Version: 1.0.0
+
+[34mUpload "build/ios/ipa/ExtremeCoffee.ipa" to App Store Connect[0m
+Running altool at path '/Applications/Xcode_26.6.app/Contents/SharedFrameworks/ContentDelivery.framework/Resources/altool'...
+
+26.40.1 (174001)
+Running altool at path '/Applications/Xcode_26.6.app/Contents/SharedFrameworks/ContentDelivery.framework/Resources/altool'...
+
+2026-08-15 15:22:02.275  INFO: [ContentDelivery.Uploader.BB8C2C340] 
+==========================================
+UPLOAD SUCCEEDED with no errors
+Delivery UUID: 01b83ca1-3ad5-412b-bdcf-e3d5272c6ab4
+Transferred 2864031 bytes in 0.092 seconds (31.2MB/s, 249.992Mbps)
+==========================================
+{
+  "details" : {
+    "delivery-uuid" : "01b83ca1-3ad5-412b-bdcf-e3d5272c6ab4",
+    "transferred" : "2864031 bytes in 0.092 seconds (31.2MB/s, 249.992Mbps)"
+  },
+  "os-version" : "Version 26.5.2 (Build 25F84)",
+  "success-message" : "No errors uploading archive at 'build/ios/ipa/ExtremeCoffee.ipa'.",
+  "tool-path" : "/Applications/Xcode_26.6.app/Contents/SharedFrameworks/ContentDelivery.framework/Resources",
+  "tool-version" : "26.40.1 (174001)"
+}
+
+[32mNo errors uploading archive at 'build/ios/ipa/ExtremeCoffee.ipa'.[0m
